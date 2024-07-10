@@ -2,21 +2,22 @@
 using iTCShop.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace iTCShop.Controllers
+namespace iTCShop.Controllers.Response
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HomeController : Controller
+    public class AuthorizeUserController : Controller
     {
         private readonly iTCShopDbContext _dbContext;
 
-        public HomeController(iTCShopDbContext dbContext) { 
-            _dbContext = dbContext;
-    }
-        [HttpGet("/get")]
-        public IActionResult GetAll ()
+        public AuthorizeUserController(iTCShopDbContext dbContext)
         {
-           
+            _dbContext = dbContext;
+        }
+        [HttpGet("/get")]
+        public IActionResult GetAll()
+        {
+
             var data = _dbContext.AuthorizeUsers.ToList();
             return Ok(data);
         }

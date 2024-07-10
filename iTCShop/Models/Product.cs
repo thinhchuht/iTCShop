@@ -11,6 +11,20 @@
         public int     Memory      { get; set; }
         public string  Color       { get; set; }
         public int     RAM         { get; set; } 
-        public string  IMEI        { get; set; } 
+        public string  IMEI        { get; set; }
+
+        public Product(string name, decimal price, string description, decimal size, int battery, int memory, string color, int rAM, string iMEI)
+        {
+            ID          = Guid.NewGuid().ToString();
+            Name        = name;
+            Price       = price;
+            Description = description;
+            Size        = size;
+            Battery     = battery;
+            Memory      = memory;
+            Color       = color;
+            RAM         = rAM;
+            IMEI        = iMEI;
+        }
     }
 }
