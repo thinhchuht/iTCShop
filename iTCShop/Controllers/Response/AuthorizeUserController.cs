@@ -1,8 +1,4 @@
-﻿using iTCShop.Data;
-using iTCShop.Models;
-using Microsoft.AspNetCore.Mvc;
-
-namespace iTCShop.Controllers.Response
+﻿namespace iTCShop.Controllers.Response
 {
     [Route("api/[controller]")]
     [ApiController]

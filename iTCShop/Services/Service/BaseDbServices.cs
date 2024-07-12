@@ -1,8 +1,4 @@
-﻿using iTCShop.Data;
-using iTCShop.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
-
-namespace iTCShop.Services.Service
+﻿namespace iTCShop.Services.Service
 {
     public class BaseDbServices(iTCShopDbContext iTCShopDbContext) : IBaseDbServices
     {
@@ -29,14 +25,25 @@ namespace iTCShop.Services.Service
             await iTCShopDbContext.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync<T>(T newEntity,string id) where T : class
+        public async Task UpdateAsync<T>(T newEntity,T entity) where T : class
         {
-            var entity = await GetById<T>(id);
-            if (entity != null)
+            var entry = iTCShopDbContext.Entry(entity);
+            var newEntry = iTCShopDbContext.Entry(newEntity);
+            foreach (var property in entry.Properties)
             {
-                iTCShopDbContext.Entry(entity).CurrentValues.SetValues(newEntity);
-                await iTCShopDbContext.SaveChangesAsync();
+                // Nếu thuộc tính này là khóa chính, bỏ qua
+                if (property.Metadata.IsPrimaryKey())
+                {
+                    continue;
+                }
+
+                // Lấy giá trị của thuộc tính từ newEntity
+                var newValue = newEntry.Property(property.Metadata.Name).CurrentValue;
+
+                // Cập nhật giá trị cho entity
+                property.CurrentValue = newValue;
             }
+            await iTCShopDbContext.SaveChangesAsync();
         }
     }
 }

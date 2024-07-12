@@ -1,9 +1,4 @@
-﻿using iTCShop.Controllers.Request;
-using iTCShop.Models;
-using iTCShop.Services.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-
-namespace iTCShop.Controllers.Response
+﻿namespace iTCShop.Controllers.Response
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -72,7 +67,9 @@ namespace iTCShop.Controllers.Response
         {
             try
             {
-                var result = await productsServices.UpdateProduct(productsRequest,id);
+                var product = new Product(productsRequest.Name, productsRequest.Price, productsRequest.Description, productsRequest.Size,
+                                         productsRequest.Battery, productsRequest.Memory, productsRequest.Color, productsRequest.RAM, productsRequest.IMEI);
+                var result = await productsServices.UpdateProduct(product, id);
                 return Ok(result);
             }
             catch (Exception ex)

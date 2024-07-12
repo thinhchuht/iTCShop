@@ -1,8 +1,4 @@
-﻿using iTCShop.Constants;
-using iTCShop.Models;
-using iTCShop.Services.Interfaces;
-
-namespace iTCShop.Services.Service
+﻿namespace iTCShop.Services.Service
 {
     public class ProductsServices(IBaseDbServices baseDbServices) : IProductsServices
     {
@@ -43,11 +39,12 @@ namespace iTCShop.Services.Service
             }
         }
 
-        public async Task<ResponseModel> UpdateProduct(Product product)
+        public async Task<ResponseModel> UpdateProduct(Product newProduct,string id)
         {
             try
             {
-                await baseDbServices.UpdateAsync<Product>(product);
+                var product = await GetProductById(id);
+                await baseDbServices.UpdateAsync<Product>(newProduct, product);
                 return ResponseModel.SuccessResponse();
             }
             catch (Exception ex)    
