@@ -1,4 +1,6 @@
 using iTCShop.Data;
+using iTCShop.Services.Interfaces;
+using iTCShop.Services.Service;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +10,8 @@ var services = builder.Services;
 services.AddControllersWithViews();
 services.AddDbContext<iTCShopDbContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("iTCDb")));
 services.AddSwaggerGen();
+services.AddScoped<IBaseDbServices, BaseDbServices>();
+services.AddScoped<IProductsServices, ProductsServices>();
 var app = builder.Build();
 
 //Configure the HTTP request pipeline.
