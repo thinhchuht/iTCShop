@@ -11,7 +11,8 @@ services.AddControllersWithViews();
 services.AddDbContext<iTCShopDbContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("iTCDb")));
 services.AddSwaggerGen();
 services.AddScoped<IBaseDbServices, BaseDbServices>();
-services.AddScoped<IProductsServices, ProductsServices>();
+services.AddScoped<IProductsTypeServices, ProductsTypeServices>();
+services.AddScoped<IProductDbServices, ProductDbServices>();
 var app = builder.Build();
 
 //Configure the HTTP request pipeline.

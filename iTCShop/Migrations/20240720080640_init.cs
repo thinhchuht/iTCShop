@@ -24,7 +24,7 @@ namespace iTCShop.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Products",
+                name: "ProductTypes",
                 columns: table => new
                 {
                     ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -36,12 +36,11 @@ namespace iTCShop.Migrations
                     Memory = table.Column<int>(type: "int", nullable: false),
                     Color = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RAM = table.Column<int>(type: "int", nullable: false),
-                    IMEI = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Picture = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Products", x => x.ID);
+                    table.PrimaryKey("PK_ProductTypes", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -101,27 +100,21 @@ namespace iTCShop.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Inventories",
+                name: "Products",
                 columns: table => new
                 {
-                    ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
-                    ProductID = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    SupplierID = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    IMEI = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProductTypeId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Inventories", x => x.ID);
+                    table.PrimaryKey("PK_Products", x => x.IMEI);
                     table.ForeignKey(
-                        name: "FK_Inventories_Products_ProductID",
-                        column: x => x.ProductID,
-                        principalTable: "Products",
-                        principalColumn: "ID");
-                    table.ForeignKey(
-                        name: "FK_Inventories_Suppliers_SupplierID",
-                        column: x => x.SupplierID,
-                        principalTable: "Suppliers",
-                        principalColumn: "ID");
+                        name: "FK_Products_ProductTypes_ProductTypeId",
+                        column: x => x.ProductTypeId,
+                        principalTable: "ProductTypes",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -139,9 +132,9 @@ namespace iTCShop.Migrations
                 {
                     table.PrimaryKey("PK_StockIns", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_StockIns_Products_ProductID",
+                        name: "FK_StockIns_ProductTypes_ProductID",
                         column: x => x.ProductID,
-                        principalTable: "Products",
+                        principalTable: "ProductTypes",
                         principalColumn: "ID");
                     table.ForeignKey(
                         name: "FK_StockIns_Suppliers_SupplierID",
@@ -165,9 +158,9 @@ namespace iTCShop.Migrations
                 {
                     table.PrimaryKey("PK_StockOuts", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_StockOuts_Products_ProductID",
+                        name: "FK_StockOuts_ProductTypes_ProductID",
                         column: x => x.ProductID,
-                        principalTable: "Products",
+                        principalTable: "ProductTypes",
                         principalColumn: "ID");
                     table.ForeignKey(
                         name: "FK_StockOuts_Suppliers_SupplierID",
@@ -199,6 +192,30 @@ namespace iTCShop.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Inventories",
+                columns: table => new
+                {
+                    ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    ProductIMEI = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    SupplierID = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Inventories", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Inventories_Products_ProductIMEI",
+                        column: x => x.ProductIMEI,
+                        principalTable: "Products",
+                        principalColumn: "IMEI");
+                    table.ForeignKey(
+                        name: "FK_Inventories_Suppliers_SupplierID",
+                        column: x => x.SupplierID,
+                        principalTable: "Suppliers",
+                        principalColumn: "ID");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "OrderDetails",
                 columns: table => new
                 {
@@ -218,9 +235,9 @@ namespace iTCShop.Migrations
                         principalTable: "Orders",
                         principalColumn: "ID");
                     table.ForeignKey(
-                        name: "FK_OrderDetails_Products_ProductID",
+                        name: "FK_OrderDetails_ProductTypes_ProductID",
                         column: x => x.ProductID,
-                        principalTable: "Products",
+                        principalTable: "ProductTypes",
                         principalColumn: "ID");
                 });
 
@@ -235,9 +252,9 @@ namespace iTCShop.Migrations
                 column: "AuthID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Inventories_ProductID",
+                name: "IX_Inventories_ProductIMEI",
                 table: "Inventories",
-                column: "ProductID");
+                column: "ProductIMEI");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Inventories_SupplierID",
@@ -260,11 +277,9 @@ namespace iTCShop.Migrations
                 column: "CustomerID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_IMEI",
+                name: "IX_Products_ProductTypeId",
                 table: "Products",
-                column: "IMEI",
-                unique: true,
-                filter: "[IMEI] IS NOT NULL");
+                column: "ProductTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_StockIns_ProductID",
@@ -306,13 +321,16 @@ namespace iTCShop.Migrations
                 name: "StockOuts");
 
             migrationBuilder.DropTable(
-                name: "Orders");
-
-            migrationBuilder.DropTable(
                 name: "Products");
 
             migrationBuilder.DropTable(
+                name: "Orders");
+
+            migrationBuilder.DropTable(
                 name: "Suppliers");
+
+            migrationBuilder.DropTable(
+                name: "ProductTypes");
 
             migrationBuilder.DropTable(
                 name: "Customers");

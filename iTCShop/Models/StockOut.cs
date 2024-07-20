@@ -6,7 +6,7 @@
         public int      Quantity     { get; set; }
         public decimal  PriceOut     { get; set; }
         public DateTime TransOutDate { get; set; }
-        public Product  Product      { get; set; }
+        public ProductType  Product      { get; set; }
         public Supplier Supplier     { get; set; }
     }
 }

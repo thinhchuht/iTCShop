@@ -7,7 +7,8 @@ namespace iTCShop.Data
         public DbSet<AuthorizeUser> AuthorizeUsers { get; set; }
         public DbSet<Customer>      Customers      { get; set; }
         public DbSet<Admin>         Admins         { get; set; }
-        public DbSet<Product>       Products       { get; set; }
+        public DbSet<ProductType>   ProductTypes       { get; set; }
+        public DbSet<Product> Products { get; set; }    
         public DbSet<Order>         Orders         { get; set; }
         public DbSet <OrderDetail>  OrderDetails   { get; set; }
         public DbSet<Inventory>     Inventories    { get; set; }
@@ -17,12 +18,12 @@ namespace iTCShop.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Product>()
+            modelBuilder.Entity<ProductType>()
                  .HasKey(p => p.ID);
 
             modelBuilder.Entity<Product>()
-                .HasIndex(p => p.IMEI)
-                .IsUnique();
+                .HasKey(p => p.IMEI);
+
         }
     }
 }
