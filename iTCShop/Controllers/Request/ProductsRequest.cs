@@ -11,5 +11,6 @@
         public string  Color       { get; set; }
         public int     RAM         { get; set; }
         public string  IMEI        { get; set; }
+        public string  Picture     { get; set; }
     }
 }

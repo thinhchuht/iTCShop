@@ -18,7 +18,11 @@ namespace iTCShop.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Product>()
-                .HasKey(p => new { p.ID, p.IMEI });
+                 .HasKey(p => p.ID);
+
+            modelBuilder.Entity<Product>()
+                .HasIndex(p => p.IMEI)
+                .IsUnique();
         }
     }
 }

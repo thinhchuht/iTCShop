@@ -1,6 +1,6 @@
 ﻿namespace iTCShop.Services.Service
 {
-    public class ProductsServices(IBaseDbServices baseDbServices) : IProductsServices
+    public class ProductsServices(IBaseDbServices baseDbServices, iTCShopDbContext iTCShopDbContext) : IProductsServices
     {
         public async Task<ResponseModel> AddProduct(Product product)
         {
@@ -13,7 +13,7 @@
             {
                 return ResponseModel.FailureResponse(ex.ToString());
             }
-           
+
         }
 
         public Task<List<Product>> GetAllProducts()
@@ -31,7 +31,7 @@
             try
             {
                 await baseDbServices.DeleteAsync<Product>(id);
-                return  ResponseModel.SuccessResponse();
+                return ResponseModel.SuccessResponse();
             }
             catch (Exception ex)
             {
@@ -39,7 +39,7 @@
             }
         }
 
-        public async Task<ResponseModel> UpdateProduct(Product newProduct,string id)
+        public async Task<ResponseModel> UpdateProduct(Product newProduct, string id)
         {
             try
             {
@@ -47,10 +47,13 @@
                 await baseDbServices.UpdateAsync<Product>(newProduct, product);
                 return ResponseModel.SuccessResponse();
             }
-            catch (Exception ex)    
+            catch (Exception ex)
             {
                 return ResponseModel.FailureResponse(ex.ToString());
             }
         }
+
+        public Task<Product> GetProductByImei(string imei) 
+            => iTCShopDbContext.Products.SingleOrDefaultAsync(p => p.IMEI.Equals(imei));
     }
 }

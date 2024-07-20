@@ -12,8 +12,9 @@
         public string  Color       { get; set; }
         public int     RAM         { get; set; } 
         public string  IMEI        { get; set; }
+        public string  Picture     { get; set; }
 
-        public Product(string name, decimal price, string description, decimal size, int battery, int memory, string color, int rAM, string iMEI)
+        public Product(string name, decimal price, string description, decimal size, int battery, int memory, string color, int rAM, string iMEI, string picture)
         {
             ID          = Guid.NewGuid().ToString();
             Name        = name;
@@ -24,6 +25,7 @@
             Memory      = memory;
             Color       = color;
             RAM         = rAM;
+            Picture     = picture;
             IMEI        = iMEI;
         }
     }
