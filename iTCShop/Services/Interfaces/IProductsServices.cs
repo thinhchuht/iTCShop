@@ -7,5 +7,6 @@
         Task<ResponseModel> AddProduct(Product product);
         Task<ResponseModel> DeleteProduct(string id);
         Task<ResponseModel> UpdateProduct(Product newProduct, string id);
+        Task<Product> GetProductByImei(string imei);
     }
 }

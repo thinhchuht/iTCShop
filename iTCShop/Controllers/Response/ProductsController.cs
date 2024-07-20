@@ -32,13 +32,28 @@
             }
         }
 
+        [HttpGet("get-by-imei")]
+        public async Task<IActionResult> GetProductByImei(string imei)
+        {
+            try
+            {
+                var product = await productsServices.GetProductByImei(imei);
+                return Ok(product);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
+        }
         [HttpPost("add-product")]
         public async Task<IActionResult> AddProduct([FromBody]ProductsRequest productsRequest)
         {
             try
             {
-                var product = new Product(productsRequest.Name, productsRequest.Price, productsRequest.Description, productsRequest.Size,
-                                          productsRequest.Battery, productsRequest.Memory, productsRequest.Color, productsRequest.RAM, productsRequest.IMEI);
+                var product = new Product(productsRequest.Name, productsRequest.Price, productsRequest.Description, 
+                                          productsRequest.Size, productsRequest.Battery, productsRequest.Memory, productsRequest.Color, 
+                                          productsRequest.RAM, productsRequest.IMEI, productsRequest.Picture);
                 var result = await productsServices.AddProduct(product);
                 return Ok(result);
             }
@@ -68,7 +83,7 @@
             try
             {
                 var product = new Product(productsRequest.Name, productsRequest.Price, productsRequest.Description, productsRequest.Size,
-                                         productsRequest.Battery, productsRequest.Memory, productsRequest.Color, productsRequest.RAM, productsRequest.IMEI);
+                                         productsRequest.Battery, productsRequest.Memory, productsRequest.Color, productsRequest.RAM, productsRequest.IMEI, productsRequest.Picture);
                 var result = await productsServices.UpdateProduct(product, id);
                 return Ok(result);
             }
