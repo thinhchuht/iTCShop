@@ -31,16 +31,13 @@
             var newEntry = iTCShopDbContext.Entry(newEntity);
             foreach (var property in entry.Properties)
             {
-                // Nếu thuộc tính này là khóa chính, bỏ qua
                 if (property.Metadata.IsPrimaryKey())
                 {
                     continue;
                 }
 
-                // Lấy giá trị của thuộc tính từ newEntity
                 var newValue = newEntry.Property(property.Metadata.Name).CurrentValue;
 
-                // Cập nhật giá trị cho entity
                 property.CurrentValue = newValue;
             }
             await iTCShopDbContext.SaveChangesAsync();

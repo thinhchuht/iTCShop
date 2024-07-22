@@ -9,7 +9,19 @@
         public string               Phone         { get; set; }
         public string               Address       { get; set; }
         public DateTime             DateOfBirth   { get; set; }
+        public int                  AuthId { get; set; }
         public AuthorizeUser        Auth          { get; set; }
         public List<Order> Orders { get; set; }
+        public Customer(string name, string email, string password, string phone, string address, DateTime dateOfBirth)
+        {
+            ID = Guid.NewGuid().ToString();
+            Name = name;
+            Email = email;
+            Password = password;
+            Phone = phone;
+            Address = address;
+            DateOfBirth = dateOfBirth;
+            AuthId = 2;
+        }
     }
 }

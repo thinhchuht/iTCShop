@@ -2,25 +2,28 @@
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthorizeUserController : Controller
+    public class AuthorizeUserController(iTCShopDbContext _dbContext) : Controller
     {
-        private readonly iTCShopDbContext _dbContext;
-
-        public AuthorizeUserController(iTCShopDbContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
         [HttpGet("/get")]
         public IActionResult GetAll()
         {
-
-            var data = _dbContext.AuthorizeUsers.ToList();
-            return Ok(data);
+            try
+            {
+                var data = _dbContext.AuthorizeUsers.ToList();
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        
         }
 
         [HttpPost("/add")]
-        public IActionResult Add(AuthorizeUser user)
+        public IActionResult Add([FromBody] string Role)
         {
+            var user = new AuthorizeUser();
+            user.Role = Role;
             _dbContext.AuthorizeUsers.Add(user);
             _dbContext.SaveChanges();
             return Ok(user);

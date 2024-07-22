@@ -1,0 +1,45 @@
+﻿@model iTCShop.Controllers.Request.CustomerRequest;
+
+@{
+    ViewBag.Title = "Resgister";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div class="container mt-5">
+        <h2>Đăng ký tài khoản</h2>
+        <h3>@ViewBag.RegRs</h3>
+        <form action="/Customer/RegisterCustomer" method="post">
+            <div class="mb-3">
+                <label for="Name" class="form-label">Tên</label>
+                <input type="text" class="form-control" id="Name" name="Name" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="Email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="Email" name="Email" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="Password" class="form-label">Mật khẩu</label>
+                <input type="password" class="form-control" id="Password" name="Password" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="Phone" class="form-label">Số điện thoại</label>
+                <input type="text" class="form-control" id="Phone" name="Phone">
+            </div>
+
+            <div class="mb-3">
+                <label for="Address" class="form-label">Địa chỉ</label>
+                <input type="text" class="form-control" id="Address" name="Address">
+            </div>
+
+            <div class="mb-3">
+                <label for="DateOfBirth" class="form-label">Ngày sinh</label>
+                <input type="date" class="form-control" id="DateOfBirth" name="DateOfBirth" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Đăng ký</button>
+        </form>
+    </div>
+
