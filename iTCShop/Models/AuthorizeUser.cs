@@ -2,7 +2,7 @@
 {
     public class AuthorizeUser
     {
-        public string ID   {  get; set; }
+        public int ID   {  get; set; }
         public string Role { get; set; }
     }
 }

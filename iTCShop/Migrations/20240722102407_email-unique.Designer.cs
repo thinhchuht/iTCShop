@@ -12,8 +12,8 @@ using iTCShop.Data;
 namespace iTCShop.Migrations
 {
     [DbContext(typeof(iTCShopDbContext))]
-    [Migration("20240720080640_init")]
-    partial class init
+    [Migration("20240722102407_email-unique")]
+    partial class emailunique
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,8 +30,8 @@ namespace iTCShop.Migrations
                     b.Property<string>("ID")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("AuthID")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int?>("AuthID")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -45,8 +45,11 @@ namespace iTCShop.Migrations
 
             modelBuilder.Entity("iTCShop.Models.AuthorizeUser", b =>
                 {
-                    b.Property<string>("ID")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<string>("Role")
                         .HasColumnType("nvarchar(max)");
@@ -64,14 +67,14 @@ namespace iTCShop.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("AuthID")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("AuthId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -84,7 +87,11 @@ namespace iTCShop.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("AuthID");
+                    b.HasIndex("AuthId");
+
+                    b.HasIndex("Email")
+                        .IsUnique()
+                        .HasFilter("[Email] IS NOT NULL");
 
                     b.ToTable("Customers");
                 });
@@ -317,7 +324,9 @@ namespace iTCShop.Migrations
                 {
                     b.HasOne("iTCShop.Models.AuthorizeUser", "Auth")
                         .WithMany()
-                        .HasForeignKey("AuthID");
+                        .HasForeignKey("AuthId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Auth");
                 });

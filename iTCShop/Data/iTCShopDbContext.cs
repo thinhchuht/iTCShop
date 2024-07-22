@@ -24,6 +24,9 @@ namespace iTCShop.Data
             modelBuilder.Entity<Product>()
                 .HasKey(p => p.IMEI);
 
+            modelBuilder.Entity<Customer>()
+           .HasIndex(c => c.Email)
+           .IsUnique();
         }
     }
 }

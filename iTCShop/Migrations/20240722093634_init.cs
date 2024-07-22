@@ -15,7 +15,8 @@ namespace iTCShop.Migrations
                 name: "AuthorizeUsers",
                 columns: table => new
                 {
-                    ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Role = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -64,7 +65,7 @@ namespace iTCShop.Migrations
                 {
                     ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AuthID = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    AuthID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -87,16 +88,17 @@ namespace iTCShop.Migrations
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AuthID = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    AuthId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Customers", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Customers_AuthorizeUsers_AuthID",
-                        column: x => x.AuthID,
+                        name: "FK_Customers_AuthorizeUsers_AuthId",
+                        column: x => x.AuthId,
                         principalTable: "AuthorizeUsers",
-                        principalColumn: "ID");
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -247,9 +249,9 @@ namespace iTCShop.Migrations
                 column: "AuthID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Customers_AuthID",
+                name: "IX_Customers_AuthId",
                 table: "Customers",
-                column: "AuthID");
+                column: "AuthId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Inventories_ProductIMEI",

@@ -13,6 +13,7 @@ services.AddSwaggerGen();
 services.AddScoped<IBaseDbServices, BaseDbServices>();
 services.AddScoped<IProductsTypeServices, ProductsTypeServices>();
 services.AddScoped<IProductDbServices, ProductDbServices>();
+services.AddScoped<ICustomerServices, CustomerServices>();  
 var app = builder.Build();
 
 //Configure the HTTP request pipeline.
@@ -27,6 +28,10 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+
 app.UseAuthorization();
-app.MapControllers();
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=HomePage}/{id?}");
+
 app.Run();
