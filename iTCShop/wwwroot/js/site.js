@@ -1,4 +1,18 @@
 ﻿document.addEventListener('DOMContentLoaded', function () {
+    const loadProductTypes = async () => {
+        try {
+            const response = await fetch('/ProductType/ProductTypePartial');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const html = await response.text();
+            document.querySelector('#partialProductType').innerHTML = html;
+        } catch (error) {
+            console.error('There has been a problem with your fetch operation:', error);
+        }
+    };
+    loadProductTypes();
+
     var login = document.getElementById("log");
     login.onclick = () => {
         console.log(login.innerText);
@@ -22,5 +36,11 @@
                 alert('Logout failed.');
             });
         }
+    }
+    var cartItems = 0;
+    var addCart = (btn) => {
+        var cartHome = document.getElementById("cartHome");
+        cartItems++;
+        cartHome.innerHTML = `(${cartItems})`;
     }
 });

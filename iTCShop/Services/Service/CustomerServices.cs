@@ -1,8 +1,4 @@
-﻿
-
-using iTCShop.Models;
-
-namespace iTCShop.Services.Service
+﻿namespace iTCShop.Services.Service
 {
     public class CustomerServices(IBaseDbServices baseDbServices, iTCShopDbContext iTCShopDbContext) : ICustomerServices
     {
@@ -10,7 +6,9 @@ namespace iTCShop.Services.Service
         {
            try
             {
-                await baseDbServices.AddAsync<Customer>(customer);
+                await baseDbServices.AddAsync(customer);
+                var cart = new Cart(customer.ID);
+                await baseDbServices.AddAsync(cart);
                 return ResponseModel.SuccessResponse();
             }
             catch (Exception ex)

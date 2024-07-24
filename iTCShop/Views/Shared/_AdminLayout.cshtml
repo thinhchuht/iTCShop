@@ -1,4 +1,17 @@
-﻿<!DOCTYPE html>
+﻿@using iTCShop.Extensions
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    var user = SessionValueConverter.GetObjectFromJson<Customer>(HttpContextAccessor.HttpContext.Session, "user");
+
+    if (user == null)
+    {
+        ViewBag.Log = "Login";
+    }
+    else ViewBag.Log = "LogOut";
+}
+
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -18,9 +31,10 @@
                 <p>Home</p>
                 <p>Admin</p>
             </div>
-            <div class="headRight">
-                <p> <i class="fa-solid fa-right-to-bracket" style="color: #000000;"></i>&nbsp;Login</p>
-            </div>
+            <button id="log" style="border:none; background-color: aqua; font-weight: bold">
+                <i class="fa-solid fa-right-to-bracket" style="color: #000000;"></i>
+                &nbsp;@ViewBag.Log
+            </button>
         </div>
     </header>
 
@@ -78,13 +92,14 @@
             </div>
         </div>
         <div class="rightContent">
-           @RenderBody()
+            @RenderBody()
         </div>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
-        <script src="//code.jquery.com/jquery.js"></script>
-        <script src="Admin.js"></script>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+    <script src="//code.jquery.com/jquery.js"></script>
+    <script src="~/js/site.js"></script>
 </body>
 
 </html>

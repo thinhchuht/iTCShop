@@ -1,19 +1,12 @@
 ﻿namespace iTCShop.Controllers.Response
 {
 
-    public class ProductTypeController(IProductsTypeServices productTypesServices) : ControllerBase
+    public class ProductTypeController(IProductsTypeServices productTypesServices) : Controller
     {
-        public async Task<IActionResult> GetAllProductType()
+        public async Task<IActionResult> ProductTypePartial()
         {
-            try
-            {
                 var productTypes = await productTypesServices.GetAllProductTypes();
-                return Ok(productTypes);
-            }
-           catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+                return PartialView(productTypes);
         }
 
         public async Task<IActionResult> GetProductTypeById(string id)

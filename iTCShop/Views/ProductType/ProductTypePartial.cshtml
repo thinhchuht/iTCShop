@@ -1,0 +1,14 @@
+﻿@using iTCShop.Models
+@model List<ProductType>
+@{
+    foreach (var item in Model)
+    {
+        <div class="product" id="@item.ID">
+            <img src="~/asset/IP.jpg" alt="">
+            <del>@(item.Price + 5000)</del>
+            <p>@item.Price</p>
+            <p>@item.Name</p>
+            <button onclick="addCart(this)"><i class="fa-solid fa-plus"></i></button>
+        </div>
+    }
+}
