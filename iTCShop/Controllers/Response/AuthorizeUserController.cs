@@ -2,7 +2,7 @@
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthorizeUserController(iTCShopDbContext _dbContext) : Controller
+    public class AuthorizeUserController(iTCShopDbContext _dbContext, IAdminServices adminServices) : Controller
     {
         [HttpGet("/get")]
         public IActionResult GetAll()
@@ -17,6 +17,11 @@
                 return BadRequest(ex.Message);
             }
         
+        }
+        [HttpPost("add-admin")]
+        public async Task<IActionResult> AddAdmin(string userName,string password)
+        {
+            return Ok(await adminServices.AddAdmin(userName, password));
         }
 
         [HttpPost("/add")]

@@ -1,7 +1,15 @@
 ﻿@using iTCShop.Extensions
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @{
-    var user = SessionValueConverter.GetObjectFromJson<Customer>(HttpContextAccessor.HttpContext.Session,"user");
+    var user = SessionValueConverter.GetObjectFromJson<Customer>(HttpContextAccessor.HttpContext.Session, "user");
+
+    if (user == null)
+    {
+        ViewBag.Log = "Login";
+    }
+    else ViewBag.Log = "LogOut";
+
+
 }
 
 <!DOCTYPE html>
@@ -16,48 +24,51 @@
 </head>
 <body>
     <header class="header" id="header">
-        iTCShop Xin chào <span>
-                 @user?.Name
-        </span>
-        <a href="@Url.Action("SessionInfo", "Login")">Check Session Info</a>
+        iTCShop Xin chào
+            <p style="font-weight: bold; font-size: larger; color: red">@user?.Name </p>
+            <button id="log" style="border:none">
+                <i class="fa-solid fa-right-to-bracket" style="color: #000000;"></i>
+                &nbsp;@ViewBag.Log
+            </button>
     </header>
     <div class="container body-content">
         @RenderBody()
         <hr />
     </div>
-     <footer>
-            <div class="FootNavBar">
-                <div>
-                    <a>
+    <footer>
+        <div class="FootNavBar">
+            <div>
+                <a href="/">
                     <i class="fa-solid fa-house"></i>
                     <p>Trang chủ</p>
-                    </a>
-                </div>
-                <div>
-                <a>
+                </a>
+            </div>
+            <div>
+                <a href="/Admin/HomeAdmin">
                     <i class="fa-solid fa-cart-shopping"></i>
                     <p>Giỏ hàng</p>
                 </a>
-                  
-                </div>
-                <div>
+
+            </div>
+            <div>
                 <a href="/Customer/RegisterCustomer">
                     <i class="fa-brands fa-facebook-messenger"></i>
-                    <p>Tin nhắn</p>
+                    <p>Đăng ký</p>
                 </a>
-                   
-                </div>
-                <div>
+
+            </div>
+            <div>
                 <a href="/Login/Login">
                     <i class="fa-solid fa-user"></i>
                     <p>Tài khoản</p>
                 </a>
-                   
-                </div>
+
             </div>
-     </footer>
-      
-   
+        </div>
+    </footer>
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="~/js/site.js"></script>
 </body>
 </html>

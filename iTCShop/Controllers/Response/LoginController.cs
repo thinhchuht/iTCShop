@@ -16,7 +16,7 @@ namespace iTCShop.Controllers.Response
             if(customer != null)
             {
                 session.SetObjectAsJson("user", customer);
-                ViewBag.UserName = customer.Name;
+                //ViewBag.UserName = customer.Name;
                 return RedirectToAction("HomePage", "Home");
             }
             else
@@ -39,7 +39,7 @@ namespace iTCShop.Controllers.Response
         public IActionResult LogOut()
         {
             HttpContext.Session.Clear();
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("HomePage", "Home");
         }
 
         public IActionResult SessionInfo()

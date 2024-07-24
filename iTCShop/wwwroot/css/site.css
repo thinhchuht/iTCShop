@@ -10,6 +10,10 @@
 }
 /* Header start */
 #header {
+    display : flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0 50px;
     position: fixed;
     top: 0px;
     height: 80px;
@@ -18,13 +22,18 @@
     line-height: 80px;
     z-index: 100;
     background-color: beige;
+    color : red;
+    font-weight: bold;
+}
+
+ button{
+    background-color: beige;
 }
 
 /* Header end */
-
 .body-content {
-    margin-top : 80px;
-    margin-bottom : 80px;
+    margin-top: 80px;
+    margin-bottom: 80px;
 }
 /* Slide start */
 .slide {
