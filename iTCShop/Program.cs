@@ -1,7 +1,4 @@
-using iTCShop.Data;
-using iTCShop.Services.Interfaces;
 using iTCShop.Services.Service;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +18,7 @@ services.AddScoped<IProductsTypeServices, ProductsTypeServices>();
 services.AddScoped<IProductDbServices, ProductDbServices>();
 services.AddScoped<ICustomerServices, CustomerServices>();
 services.AddScoped<IAdminServices, AdminService>();
+services.AddHttpContextAccessor();
 var app = builder.Build();
 
 //Configure the HTTP request pipeline.

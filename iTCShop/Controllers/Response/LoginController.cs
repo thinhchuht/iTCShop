@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using iTCShop.Extensions;
+﻿using iTCShop.Extensions;
 namespace iTCShop.Controllers.Response
 {
     public class LoginController(ICustomerServices customerServices, IAdminServices adminServices) : Controller
@@ -26,7 +25,7 @@ namespace iTCShop.Controllers.Response
                 if(admin != null)
                 {
                     session.SetObjectAsJson("user", admin);
-                    return RedirectToAction("RegisterCustomer", "Customer");
+                    return RedirectToAction("HomeAdmin", "Admin");
                 }
                 else
                 {
@@ -37,10 +36,16 @@ namespace iTCShop.Controllers.Response
         }
 
         [HttpPost]
-        public async Task<IActionResult> Logout()
+        public IActionResult LogOut()
         {
             HttpContext.Session.Clear();
             return RedirectToAction("Login", "Account");
+        }
+
+        public IActionResult SessionInfo()
+        {
+            var user = HttpContext.Session.GetObjectFromJson<Customer>("user");
+            return View(user);
         }
     }
 }

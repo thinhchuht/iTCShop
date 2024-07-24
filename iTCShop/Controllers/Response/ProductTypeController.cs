@@ -1,10 +1,8 @@
 ﻿namespace iTCShop.Controllers.Response
 {
-    [Route("api/[controller]")]
-    [ApiController]
+
     public class ProductTypeController(IProductsTypeServices productTypesServices) : ControllerBase
     {
-        [HttpGet("get-all-productTypes")]
         public async Task<IActionResult> GetAllProductType()
         {
             try
@@ -18,7 +16,6 @@
             }
         }
 
-        [HttpGet("get-productType-id")]
         public async Task<IActionResult> GetProductTypeById(string id)
         {
             try

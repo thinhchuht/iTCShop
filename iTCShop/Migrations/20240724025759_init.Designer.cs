@@ -12,7 +12,7 @@ using iTCShop.Data;
 namespace iTCShop.Migrations
 {
     [DbContext(typeof(iTCShopDbContext))]
-    [Migration("20240723151454_init")]
+    [Migration("20240724025759_init")]
     partial class init
     {
         /// <inheritdoc />

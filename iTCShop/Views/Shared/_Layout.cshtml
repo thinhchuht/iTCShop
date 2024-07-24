@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using iTCShop.Extensions
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    var user = SessionValueConverter.GetObjectFromJson<Customer>(HttpContextAccessor.HttpContext.Session,"user");
+}
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -11,9 +17,9 @@
 <body>
     <header class="header" id="header">
         iTCShop Xin chào <span>
-            @HttpContext.Session.GetObjectFromJson<Customer>("user").Name
-
+                 @user?.Name
         </span>
+        <a href="@Url.Action("SessionInfo", "Login")">Check Session Info</a>
     </header>
     <div class="container body-content">
         @RenderBody()
