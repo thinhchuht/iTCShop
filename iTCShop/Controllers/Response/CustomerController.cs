@@ -25,7 +25,7 @@ namespace iTCShop.Controllers.Response
         {
             try
             {
-                var customer = new Customer(customerRequest.Name, customerRequest.Email, customerRequest.Password, customerRequest.Phone, customerRequest.Address, customerRequest.DateOfBirth);
+                var customer = new Customer(customerRequest.Name, customerRequest.Email, customerRequest.UserName, customerRequest.Password, customerRequest.Phone, customerRequest.Address, customerRequest.DateOfBirth);
 
                 var rs = await customerServices.AddCustomer(customer);
                 if (rs.IsSuccess())
@@ -47,22 +47,6 @@ namespace iTCShop.Controllers.Response
                 return View();
             }
 
-        }
-
-        public ActionResult LoginCustomer()
-        {
-            return View();
-        }
-        [HttpPost] 
-        public async Task<ActionResult> LoginCustomer(string email, string password)
-        {
-         var customer =  await customerServices.CheckCustomerAccount(email, password);
-            if (customer != null)
-            {
-              
-                return RedirectToAction("HomePage","Home");
-            }
-            else { return View(); }
         }
     }
 }

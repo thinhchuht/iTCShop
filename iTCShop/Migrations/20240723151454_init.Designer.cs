@@ -12,8 +12,8 @@ using iTCShop.Data;
 namespace iTCShop.Migrations
 {
     [DbContext(typeof(iTCShopDbContext))]
-    [Migration("20240722102407_email-unique")]
-    partial class emailunique
+    [Migration("20240723151454_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,15 +30,22 @@ namespace iTCShop.Migrations
                     b.Property<string>("ID")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("AuthID")
+                    b.Property<int>("AuthID")
                         .HasColumnType("int");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ID");
 
                     b.HasIndex("AuthID");
+
+                    b.HasIndex("UserName")
+                        .IsUnique()
+                        .HasFilter("[UserName] IS NOT NULL");
 
                     b.ToTable("Admins");
                 });
@@ -85,6 +92,9 @@ namespace iTCShop.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("ID");
 
                     b.HasIndex("AuthId");
@@ -92,6 +102,10 @@ namespace iTCShop.Migrations
                     b.HasIndex("Email")
                         .IsUnique()
                         .HasFilter("[Email] IS NOT NULL");
+
+                    b.HasIndex("UserName")
+                        .IsUnique()
+                        .HasFilter("[UserName] IS NOT NULL");
 
                     b.ToTable("Customers");
                 });
@@ -315,7 +329,9 @@ namespace iTCShop.Migrations
                 {
                     b.HasOne("iTCShop.Models.AuthorizeUser", "Auth")
                         .WithMany()
-                        .HasForeignKey("AuthID");
+                        .HasForeignKey("AuthID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Auth");
                 });

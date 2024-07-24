@@ -19,9 +19,9 @@ namespace iTCShop.Services.Service
             }
         }
 
-        public async Task<Customer> CheckCustomerAccount(string email, string password)
+        public async Task<Customer> CheckCustomerAccount(string userName, string password)
         {
-           return await iTCShopDbContext.Customers.SingleOrDefaultAsync(c => c.Email.Equals(email) && c.Password.Equals(password));
+           return await iTCShopDbContext.Customers.SingleOrDefaultAsync(c => c.UserName.Equals(userName) && c.Password.Equals(password));
         }
 
         public async Task<List<Customer>> GetAll()

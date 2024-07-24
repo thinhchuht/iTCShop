@@ -10,7 +10,10 @@
 </head>
 <body>
     <header class="header" id="header">
-        Header
+        iTCShop Xin chào <span>
+            @HttpContext.Session.GetObjectFromJson<Customer>("user").Name
+
+        </span>
     </header>
     <div class="container body-content">
         @RenderBody()
@@ -39,7 +42,7 @@
                    
                 </div>
                 <div>
-                <a href="/Customer/LoginCustomer">
+                <a href="/Login/Login">
                     <i class="fa-solid fa-user"></i>
                     <p>Tài khoản</p>
                 </a>

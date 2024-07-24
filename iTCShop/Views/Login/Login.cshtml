@@ -9,22 +9,20 @@
 
 <h3 class="text-danger">@ViewBag.Fail</h3>
 
-<form method="post" action="/Customer/LoginCustomer">
+<form method="post" action="/Login/Login">
 
     <div class="form-horizontal">
         <hr />
         <div class="form-group">
-            <label for="userMail" class="control-label col-md-2">Email:</label>
+            <label for="userName" class="control-label col-md-2">UserName:</label>
             <div class="col-md-10">
-                <input type="text" id="userMail" name="email" class="form-control" />
-                <!-- Validation message can be added here if needed -->
+                <input type="text" id="userMail" name="userName" class="form-control" />
             </div>
         </div>
         <div class="form-group">
-            <label for="password" class="control-label col-md-2">Mật khẩu:</label>
+            <label for="password" class="control-label col-md-2">Password:</label>
             <div class="col-md-10">
                 <input type="password" id="password" name="password" class="form-control" />
-                <!-- Validation message can be added here if needed -->
             </div>
         </div>
 
