@@ -20,6 +20,8 @@ services.AddScoped<ICustomerServices, CustomerServices>();
 services.AddScoped<IAdminServices, AdminService>();
 services.AddScoped<ICartDetailsServices, CartDetailsServices>();
 services.AddScoped<ICartService, CartServices>();
+services.AddScoped<IOrderDetailServices, OrderDetailService>();
+services.AddScoped<IOrderService, OrderService>();
 services.AddHttpContextAccessor();
 var app = builder.Build();
 
