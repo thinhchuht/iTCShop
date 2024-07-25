@@ -2,13 +2,13 @@
 
 const addCart = async (el) => {
     try {
-        var productType = el.getAttribute('data-product-type');
+        var productTypeId = el.getAttribute('product-type-id');
         const response = await fetch('/Cart/AddCart', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(productType) 
+            body: JSON.stringify(productTypeId) 
         });
 
         console.log(response);
