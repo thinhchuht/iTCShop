@@ -1,8 +1,4 @@
-﻿
-
-using iTCShop.Models;
-
-namespace iTCShop.Services.Service
+﻿namespace iTCShop.Services.Service
 {
     public class CustomerServices(IBaseDbServices baseDbServices, iTCShopDbContext iTCShopDbContext) : ICustomerServices
     {
@@ -10,7 +6,7 @@ namespace iTCShop.Services.Service
         {
            try
             {
-                await baseDbServices.AddAsync<Customer>(customer);
+                await baseDbServices.AddAsync(customer);
                 return ResponseModel.SuccessResponse();
             }
             catch (Exception ex)
@@ -19,9 +15,9 @@ namespace iTCShop.Services.Service
             }
         }
 
-        public async Task<Customer> CheckCustomerAccount(string email, string password)
+        public async Task<Customer> CheckCustomerAccount(string userName, string password)
         {
-           return await iTCShopDbContext.Customers.SingleOrDefaultAsync(c => c.Email.Equals(email) && c.Password.Equals(password));
+           return await iTCShopDbContext.Customers.SingleOrDefaultAsync(c => c.UserName.Equals(userName) && c.Password.Equals(password));
         }
 
         public async Task<List<Customer>> GetAll()

@@ -1,0 +1,252 @@
+﻿* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/*  HEADER */
+a {
+    text-decoration: none;
+}
+
+.adminHeader {
+    display: flex;
+    background-color: aqua;
+    align-items: center;
+    height: 50px;
+    justify-content: space-between;
+    padding: 10px 40px;
+}
+
+header div {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    font-weight: bold;
+    font-size: large;
+}
+
+/*  HEADER */
+
+/* BODY */
+.body {
+    display: flex;
+    flex-direction: row;
+    margin-left: 15%;
+    margin-right: 10%;
+}
+
+    /* LEFT */
+    .body h3 {
+        margin: 20px 0;
+    }
+
+    .body .leftBar {
+        width: 30%;
+    }
+
+    .body table {
+        border-collapse: collapse;
+        width: 70%;
+    }
+
+    .body .leftBar table td {
+        border: 1px solid black;
+        height: 50px;
+        text-align: center;
+    }
+
+td button {
+    border: none;
+    height: 100%;
+    width: 100%;
+}
+
+.body .leftBar table tr :hover {
+    background-color: aqua;
+}
+
+.body .leftBar .categorysBtns {
+    border: 1px solid black;
+    width: 70%;
+}
+
+/*.body .leftBar .categorys table tr td {
+    align-items: left !important;
+}*/
+
+.body .leftBar .categorys select {
+    height: 30px;
+    margin: 5px 15px;
+}
+
+.body .leftBar .categorys button {
+    height: 30px;
+    width: 70px;
+    margin: 5px 15px;
+}
+
+/* LEFT */
+
+/* RIGHT */
+.rightContent {
+    width: 100%;
+    padding: 20px;
+    padding-top: 60px;
+}
+
+    .rightContent .searchBar {
+        padding: 15px;
+        border: 0.5px solid black;
+        width: 100%;
+    }
+
+        .rightContent .searchBar input {
+            width: 80%;
+            height: 30px;
+        }
+
+        .rightContent .searchBar button {
+            width: 10%;
+            height: 30px;
+            background-color: green;
+            color: white;
+            border-radius: 10%;
+            margin-left: 30px;
+        }
+
+.details {
+    margin-top: 20px;
+    border: 1px solid black;
+    border-collapse: collapse;
+    height: 100%;
+}
+
+    .details .btnAdd {
+        margin: 15px;
+        width: 70px;
+        height: 30px;
+        background-color: aqua;
+        border-radius: 10%;
+    }
+
+    .details table {
+        /* border: 1px solid black; */
+        width: 100%;
+        height: 80%;
+    }
+
+        .details table th {
+            border-bottom: 1px solid black;
+            padding: 5px;
+        }
+
+        .details table td {
+            padding: 10px;
+        }
+
+
+    .details .btnEdit {
+        background-color: orange;
+        height: 30px;
+        width: 50px;
+        color: white;
+        border-radius: 10%;
+    }
+
+    .details .btnDelete {
+        background-color: green;
+        height: 30px;
+        width: 70px;
+        color: white;
+        border-radius: 10%;
+    }
+
+    .details a {
+        text-decoration: none;
+    }
+
+    .details .btns {
+        margin-left: 15px;
+    }
+
+    .details .btn {
+        height: 30px;
+        width: 30px;
+    }
+
+.hidden {
+    display: none !important;
+}
+
+.addNew {
+    display: block;
+    background-color: white;
+    position: fixed;
+    top: 100px;
+    left: 25%;
+    right: 25%;
+    display: flex;
+    flex-direction: column;
+}
+
+.x {
+    height: 20px;
+    width: 20px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    background-color: white;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.addNew form {
+    margin-left: 30px;
+}
+
+    .addNew form input,
+    select {
+        height: 30px;
+        width: 70%;
+    }
+
+.addNew label {
+    font-weight: bold;
+}
+
+.addNew .info {
+    height: 60px;
+}
+
+.addNew .detail {
+    height: 80px;
+}
+
+.addNew .images {
+    border: 1px solid black;
+    background-color: white;
+}
+
+.addNew .save {
+    background-color: aqua;
+    width: 60px;
+    margin-bottom: 10px;
+}
+
+.addNew .reset {
+    background-color: orange;
+    width: 60px;
+    margin-bottom: 10px;
+}
+
+.backdrop {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: 999;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.2);
+    display: none;
+}

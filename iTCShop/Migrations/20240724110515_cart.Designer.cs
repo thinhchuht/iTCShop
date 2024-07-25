@@ -12,8 +12,8 @@ using iTCShop.Data;
 namespace iTCShop.Migrations
 {
     [DbContext(typeof(iTCShopDbContext))]
-    [Migration("20240722102407_email-unique")]
-    partial class emailunique
+    [Migration("20240724110515_cart")]
+    partial class cart
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,15 +30,22 @@ namespace iTCShop.Migrations
                     b.Property<string>("ID")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("AuthID")
+                    b.Property<int>("AuthID")
                         .HasColumnType("int");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ID");
 
                     b.HasIndex("AuthID");
+
+                    b.HasIndex("UserName")
+                        .IsUnique()
+                        .HasFilter("[UserName] IS NOT NULL");
 
                     b.ToTable("Admins");
                 });
@@ -57,6 +64,16 @@ namespace iTCShop.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("AuthorizeUsers");
+                });
+
+            modelBuilder.Entity("iTCShop.Models.Cart", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Carts");
                 });
 
             modelBuilder.Entity("iTCShop.Models.Customer", b =>
@@ -85,6 +102,9 @@ namespace iTCShop.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("ID");
 
                     b.HasIndex("AuthId");
@@ -92,6 +112,10 @@ namespace iTCShop.Migrations
                     b.HasIndex("Email")
                         .IsUnique()
                         .HasFilter("[Email] IS NOT NULL");
+
+                    b.HasIndex("UserName")
+                        .IsUnique()
+                        .HasFilter("[UserName] IS NOT NULL");
 
                     b.ToTable("Customers");
                 });
@@ -183,11 +207,16 @@ namespace iTCShop.Migrations
                     b.Property<string>("IMEI")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("CartId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("ProductTypeId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("IMEI");
+
+                    b.HasIndex("CartId");
 
                     b.HasIndex("ProductTypeId");
 
@@ -315,7 +344,9 @@ namespace iTCShop.Migrations
                 {
                     b.HasOne("iTCShop.Models.AuthorizeUser", "Auth")
                         .WithMany()
-                        .HasForeignKey("AuthID");
+                        .HasForeignKey("AuthID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Auth");
                 });
@@ -370,6 +401,10 @@ namespace iTCShop.Migrations
 
             modelBuilder.Entity("iTCShop.Models.Product", b =>
                 {
+                    b.HasOne("iTCShop.Models.Cart", null)
+                        .WithMany("Product")
+                        .HasForeignKey("CartId");
+
                     b.HasOne("iTCShop.Models.ProductType", "ProductType")
                         .WithMany()
                         .HasForeignKey("ProductTypeId")
@@ -407,6 +442,11 @@ namespace iTCShop.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("Supplier");
+                });
+
+            modelBuilder.Entity("iTCShop.Models.Cart", b =>
+                {
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("iTCShop.Models.Customer", b =>

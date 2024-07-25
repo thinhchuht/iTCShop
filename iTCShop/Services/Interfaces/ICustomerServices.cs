@@ -4,6 +4,6 @@
     {
         Task<List<Customer>> GetAll();
         Task<ResponseModel> AddCustomer(Customer customer);
-        Task<Customer> CheckCustomerAccount(string email, string password);
+        Task<Customer> CheckCustomerAccount(string userName, string password);
     }
 }

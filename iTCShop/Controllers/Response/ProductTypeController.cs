@@ -1,24 +1,14 @@
 ﻿namespace iTCShop.Controllers.Response
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ProductTypeController(IProductsTypeServices productTypesServices) : ControllerBase
+
+    public class ProductTypeController(IProductsTypeServices productTypesServices) : Controller
     {
-        [HttpGet("get-all-productTypes")]
-        public async Task<IActionResult> GetAllProductType()
+        public async Task<IActionResult> ProductTypePartial()
         {
-            try
-            {
                 var productTypes = await productTypesServices.GetAllProductTypes();
-                return Ok(productTypes);
-            }
-           catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+                return PartialView(productTypes);
         }
 
-        [HttpGet("get-productType-id")]
         public async Task<IActionResult> GetProductTypeById(string id)
         {
             try

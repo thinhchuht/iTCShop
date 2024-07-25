@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -64,8 +63,9 @@ namespace iTCShop.Migrations
                 columns: table => new
                 {
                     ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AuthID = table.Column<int>(type: "int", nullable: true)
+                    UserName = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AuthID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -74,7 +74,8 @@ namespace iTCShop.Migrations
                         name: "FK_Admins_AuthorizeUsers_AuthID",
                         column: x => x.AuthID,
                         principalTable: "AuthorizeUsers",
-                        principalColumn: "ID");
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -83,7 +84,8 @@ namespace iTCShop.Migrations
                 {
                     ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -249,9 +251,30 @@ namespace iTCShop.Migrations
                 column: "AuthID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Admins_UserName",
+                table: "Admins",
+                column: "UserName",
+                unique: true,
+                filter: "[UserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Customers_AuthId",
                 table: "Customers",
                 column: "AuthId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Customers_Email",
+                table: "Customers",
+                column: "Email",
+                unique: true,
+                filter: "[Email] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Customers_UserName",
+                table: "Customers",
+                column: "UserName",
+                unique: true,
+                filter: "[UserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Inventories_ProductIMEI",
