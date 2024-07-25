@@ -9,10 +9,10 @@ namespace iTCShop.Services.Service
             try
             {
                 var admin = new Admin(userName, password);
-                await baseDbServices.AddAsync<Admin>(admin);
+                await baseDbServices.AddAsync(admin);
                 return ResponseModel.SuccessResponse();
             }
-            catch (Exception ex)
+            catch 
             {
                 return ResponseModel.FailureResponse("Thất bại");
             }

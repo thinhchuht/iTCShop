@@ -8,7 +8,9 @@
             <del>@(item.Price + 5000)</del>
             <p>@item.Price</p>
             <p>@item.Name</p>
-            <button onclick="addCart(this)"><i class="fa-solid fa-plus"></i></button>
+            <i class="fa-solid fa-plus" data-product-type="@item.ID"></i>
         </div>
     }
 }
+
+

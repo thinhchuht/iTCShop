@@ -1,6 +1,6 @@
 ﻿namespace iTCShop.Services.Service
 {
-    public class ProductsTypeServices(IBaseDbServices baseDbServices, iTCShopDbContext iTCShopDbContext) : IProductsTypeServices
+    public class ProductsTypeServices(IBaseDbServices baseDbServices) : IProductsTypeServices
     {
         public async Task<ResponseModel> AddProductType(ProductType product)
         {
@@ -13,7 +13,6 @@
             {
                 return ResponseModel.FailureResponse(ex.ToString());
             }
-
         }
 
         public Task<List<ProductType>> GetAllProductTypes()
@@ -52,7 +51,5 @@
                 return ResponseModel.FailureResponse(ex.ToString());
             }
         }
-        //public Task<ProductType> GetProductByImei(string imei) 
-        //    => iTCShopDbContext.Products.SingleOrDefaultAsync(p => p.IMEI.Equals(imei));
     }
 }

@@ -33,5 +33,15 @@
             _dbContext.SaveChanges();
             return Ok(user);
         }
+
+        [HttpPut("update")]
+        public IActionResult Update(int id, string role)
+        {
+           var auth = _dbContext.AuthorizeUsers.Find(id);
+            auth.Role = role;
+            _dbContext.AuthorizeUsers.Update(auth);
+            _dbContext.SaveChanges();
+            return Ok(GetAll());
+        }
     }
 }

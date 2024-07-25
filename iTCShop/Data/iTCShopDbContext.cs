@@ -17,6 +17,7 @@ namespace iTCShop.Data
         public DbSet<StockOut>      StockOuts      { get; set; }
         public DbSet<Supplier>      Suppliers      { get; set; }
         public DbSet<Cart>          Carts          { get; set; }
+        public DbSet<CartDetails>   CartDetails    { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

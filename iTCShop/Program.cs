@@ -18,6 +18,8 @@ services.AddScoped<IProductsTypeServices, ProductsTypeServices>();
 services.AddScoped<IProductDbServices, ProductDbServices>();
 services.AddScoped<ICustomerServices, CustomerServices>();
 services.AddScoped<IAdminServices, AdminService>();
+services.AddScoped<ICartDetailsServices, CartDetailsServices>();
+services.AddScoped<ICartService, CartServices>();
 services.AddHttpContextAccessor();
 var app = builder.Build();
 

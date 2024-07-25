@@ -16,7 +16,6 @@ namespace iTCShop.Controllers.Response
             if(customer != null)
             {
                 session.SetObjectAsJson("user", customer);
-                //ViewBag.UserName = customer.Name;
                 return RedirectToAction("HomePage", "Home");
             }
             else

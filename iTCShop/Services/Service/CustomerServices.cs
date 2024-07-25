@@ -7,8 +7,6 @@
            try
             {
                 await baseDbServices.AddAsync(customer);
-                var cart = new Cart(customer.ID);
-                await baseDbServices.AddAsync(cart);
                 return ResponseModel.SuccessResponse();
             }
             catch (Exception ex)

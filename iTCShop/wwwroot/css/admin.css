@@ -72,9 +72,9 @@ td button {
     width: 70%;
 }
 
-.body .leftBar .categorys table tr td {
+/*.body .leftBar .categorys table tr td {
     align-items: left !important;
-}
+}*/
 
 .body .leftBar .categorys select {
     height: 30px;
