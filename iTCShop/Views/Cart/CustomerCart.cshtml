@@ -3,7 +3,8 @@
 @{
     ViewBag.Title = "Cart";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    int i = 0;
+    var i = 0;
+    decimal total = 0 ;
 }
 
 <table class="table table-success table-striped table-hover">
@@ -19,9 +20,10 @@
         </tr>
     </thead>
     <tbody>
-        
-            @foreach ( var item in Model)
-            {
+        @foreach (var item in Model)
+        {
+
+            @(total += item.ProductType.Price * item.Quantity);
             <tr>
                 <th scope="row">@(++i)</th>
                 <td>@item.ProductType.Picture</td>
@@ -29,9 +31,27 @@
                 <td>@item.ProductType.Price</td>
                 <td>@item.Quantity</td>
                 <td>@(item.ProductType.Price * item.Quantity)</td>
-                <th scope="col"><button type="button" class="btn btn-primary">Delete</button></th>
+                <th scope="col" style="display: flex; gap: 10px">
+                    <form action="/Cart/DropCartDetails" method="post">
+                        <input type="hidden" name="id" value="@item.ID" />
+                        <button type="submit" class="btn btn-primary" id="@item.ID">Drop</button>
+                    </form>
+                    <form action="/Cart/AddCartDetails" method="post">
+                        <input type="hidden" name="productTypeID" value="@item.ProductTypeID" />
+                        <input type="hidden" name="cartID" value="@item.CartID" />
+                        <button type="submit" class="btn btn-primary" id="@item.ID">Add</button>
+                    </form>
+                </th>
             </tr>
-            }
-        
+          
+        }
     </tbody>
 </table>
+<br />
+<div>
+    <h2 >Total : @total </h2>
+    <form action="/Cart/AddCartDetails" method="post">
+        <button type="submit" class="btn btn-primary">Pay</button>
+    </form>
+</div>
+

@@ -10,17 +10,16 @@ namespace iTCShop.Controllers.Response
             if (customer == null)
             {
                 return RedirectToAction("Login", "Login");
-            } 
+            }
             else
             {
                 var cartDetails = await cartDetailsServices.GetAllByCartId(customer.ID);
                 return View(cartDetails);
             }
-         
+
         }
 
-       
-        public async Task<IActionResult> AddCart([FromBody] string productType)
+        public async Task<IActionResult> AddCart([FromBody] string productTypeId)
         {
             var customer = HttpContext.Session.GetObjectFromJson<Customer>("user");
             if (customer == null)
@@ -29,10 +28,23 @@ namespace iTCShop.Controllers.Response
             }
             else
             {
-                var response = await cartService.AddToCart(customer.ID, productType);
+                var response = await cartService.AddToCart(customer.ID, productTypeId);
                 return Json(response);
             }
-          
+        }
+
+        public async Task<IActionResult> DropCartDetails(string id)
+        {
+            var rs = await cartDetailsServices.UpdateDropQuantity(id);
+            if (rs.IsSuccess()) return RedirectToAction("CustomerCart");
+            else return BadRequest();
+        }
+
+        public async Task<IActionResult> AddCartDetails(string productTypeId, string cartId) 
+        {
+            var rs = await cartDetailsServices.AddCartDetail(productTypeId, cartId);
+            if (rs.IsSuccess()) return RedirectToAction("CustomerCart");
+            else return BadRequest();
         }
     }
 }
