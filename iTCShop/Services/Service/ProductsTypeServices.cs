@@ -43,7 +43,7 @@
             try
             {
                 var product = await GetProductTypeById(newProduct.ID);
-                await baseDbServices.UpdateAsync<ProductType>(newProduct, product);
+                await baseDbServices.UpdateAsync(newProduct, product);
                 return ResponseModel.SuccessResponse();
             }
             catch (Exception ex)

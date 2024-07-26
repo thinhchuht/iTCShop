@@ -1,4 +1,6 @@
-﻿namespace iTCShop.Controllers.Response
+﻿using Newtonsoft.Json;
+
+namespace iTCShop.Controllers.Response
 {
 
     public class ProductTypeController(IProductsTypeServices productTypesServices) : Controller
@@ -22,7 +24,38 @@
             }
         }
 
-        [HttpPost("add-product")]
+        public async Task<IActionResult> Search(string search, string sort)
+        {
+            var productTypes = await productTypesServices.GetAllProductTypes(); 
+
+            // Lọc theo từ khóa tìm kiếm
+            if (!string.IsNullOrEmpty(search))
+            {
+                productTypes = productTypes.Where(p => p.Name.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+
+            // Sắp xếp sản phẩm
+            switch (sort)
+            {
+                case "nameAZ":
+                    productTypes = productTypes.OrderBy(p => p.Name).ToList();
+                    break;
+                case "nameZA":
+                    productTypes = productTypes.OrderByDescending(p => p.Name).ToList();
+                    break;
+                case "priceDes":
+                    productTypes = productTypes.OrderByDescending(p => p.Price).ToList();
+                    break;
+                case "priceAcs":
+                    productTypes = productTypes.OrderBy(p => p.Price).ToList();
+                    break;
+            }
+            TempData["productTypes"] = JsonConvert.SerializeObject(productTypes);
+            return RedirectToAction("HomePage", "Home");
+        }
+
+        [Route("add-product")]
         public async Task<IActionResult> AddProductType([FromBody]ProductTypesRequest productTypesRequest)
         {
             try

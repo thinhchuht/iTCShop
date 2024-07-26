@@ -1,6 +1,6 @@
 ﻿namespace iTCShop.Services.Service
 {
-    public class CartDetailsServices(IBaseDbServices baseDbServices, iTCShopDbContext iTCShopDbContext) : ICartDetailsServices
+    public class CartDetailsServices(IBaseDbServices baseDbServices, IProductDbServices productDbServices, iTCShopDbContext iTCShopDbContext) : ICartDetailsServices
     {
 
         public async Task<CartDetails> GetCartDetailByProductTypeId(string productTypeId, string cartId)
@@ -12,6 +12,8 @@
         {
             try
             {
+                var checkStock = await productDbServices.IsAvailableCheck(productTypeId);
+                if (!checkStock.IsSuccess()) return ResponseModel.FailureResponse("Out of stocks");
                 var existCartDetail = await GetCartDetailByProductTypeId(productTypeId, cartId);
                 if (existCartDetail == null)
                 {

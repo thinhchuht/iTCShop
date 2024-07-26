@@ -17,6 +17,7 @@
             }
         }
 
+        [HttpPost]
         public async Task<ResponseModel> DeleteProduct(string imei)
         {
             try 
@@ -44,6 +45,13 @@
         public async Task<List<Product>> GetProductsByProductType(string productTypeId)
         {
             return await iTCShopDbContext.Products.Include(p=>p.ProductType).Where(p => p.ProductTypeId.Equals(productTypeId)).ToListAsync();
+        }
+
+        public async Task<ResponseModel> IsAvailableCheck(string productTypeId)
+        {
+            var product = await GetProductsByProductType(productTypeId);
+            if (product.Count == 0) return ResponseModel.FailureResponse("Out of stocks");
+            else return ResponseModel.SuccessResponse();
         }
 
         public async Task<ResponseModel> UpdateProduct(ProductRequest productRequest)

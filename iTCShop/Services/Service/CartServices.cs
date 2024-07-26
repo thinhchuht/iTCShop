@@ -11,12 +11,13 @@ namespace iTCShop.Services.Service
         {
             try
             {
-                await cartDetailsServices.AddCartDetail(productTypeId, id);
+                var rs = await cartDetailsServices.AddCartDetail(productTypeId, id);
+                if (!rs.IsSuccess()) return rs;
                 var cartDetails = await cartDetailsServices.GetCartDetailByProductTypeId(productTypeId, id);
                 var cart = await GetCartById(id);
                 cart.CartDetails.Add(cartDetails);
-
                 return ResponseModel.SuccessResponse();
+
             }
             catch (Exception ex)
             {

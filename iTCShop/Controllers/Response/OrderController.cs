@@ -2,14 +2,18 @@
 
 namespace iTCShop.Controllers.Response
 {
-    public class OrderController(IOrderService orderService, IOrderDetailServices orderDetailServices, IProductDbServices productDbServices, ICartDetailsServices cartDetailsServices) : Controller
+    public class OrderController(IOrderService orderService, IOrderDetailServices orderDetailServices, IProductDbServices productDbServices, ICartDetailsServices cartDetailsServices, IProductDbServices productDbServices1) : Controller
     {
 
         public async Task<IActionResult> GetAllOrders()
         {
             var customer = HttpContext.Session.GetObjectFromJson<Customer>("user");
-            var orders = await orderService.GetOrdersByCustomerId(customer.ID);
-            return View(orders);
+            if (customer == null) return RedirectToAction("Login", "Login");
+            else
+            {
+                var orders = await orderService.GetOrdersByCustomerId(customer.ID);
+                return View(orders);
+            }
         }
 
         [HttpPost]
@@ -31,7 +35,7 @@ namespace iTCShop.Controllers.Response
                         var orderDetail = new OrderDetail(item.Quantity, p.ProductType.Price, p.IMEI, order.ID);
                         await orderDetailServices.AddOrderDetail(orderDetail);
                         order.OrderDetails.Add(orderDetail);
-
+                       await productDbServices1.DeleteProduct(p.IMEI);
                     }
                 }
                 await cartDetailsServices.DeleteAllCartDetail(customer.ID);

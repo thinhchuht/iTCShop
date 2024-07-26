@@ -1,16 +1,43 @@
-﻿@using iTCShop.Models
-@model List<ProductType>
+﻿@model iTCShop.Models.ProductType
 @{
-    foreach (var item in Model)
-    {
-        <div class="product" id="@item.ID">
-            <img src="~/asset/IP.jpg" alt="">
-            <del>@(item.Price + 5000)</del>
-            <p>@item.Price</p>
-            <p>@item.Name</p>
-            <i class="fa-solid fa-plus" product-type-id="@item.ID"></i>
-        </div>
-    }
+    var isEdit = Model != null;
 }
-
-
+<form id="@ViewData["formId"]" action="@ViewData["formAction"]" method="post">
+    <div class="form-group">
+        <label for="productName">Name</label>
+        <input type="text" class="form-control" id="productName" name="name" value="@Model?.Name" required>
+    </div>
+    <div class="form-group">
+        <label for="productPrice">Price</label>
+        <input type="number" class="form-control" id="productPrice" name="price" value="@Model?.Price" required>
+    </div>
+    <div class="form-group">
+        <label for="productDescription">Description</label>
+        <textarea class="form-control" id="productDescription" name="description" required>@Model?.Description</textarea>
+    </div>
+    <div class="form-group">
+        <label for="productSize">Size</label>
+        <input type="number" class="form-control" id="productSize" name="size" value="@Model?.Size" required>
+    </div>
+    <div class="form-group">
+        <label for="productBattery">Battery</label>
+        <input type="number" class="form-control" id="productBattery" name="battery" value="@Model?.Battery" required>
+    </div>
+    <div class="form-group">
+        <label for="productMemory">Memory</label>
+        <input type="number" class="form-control" id="productMemory" name="memory" value="@Model?.Memory" required>
+    </div>
+    <div class="form-group">
+        <label for="productColor">Color</label>
+        <input type="text" class="form-control" id="productColor" name="color" value="@Model?.Color" required>
+    </div>
+    <div class="form-group">
+        <label for="productRAM">RAM</label>
+        <input type="number" class="form-control" id="productRAM" name="ram" value="@Model?.RAM" required>
+    </div>
+    <div class="form-group">
+        <label for="productPicture">Picture</label>
+        <input type="text" class="form-control" id="productPicture" name="picture" value="@Model?.Picture" required>
+    </div>
+    <button type="submit" class="btn btn-primary">@isEdit ? "Save changes"</button>
+</form>

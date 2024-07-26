@@ -8,19 +8,20 @@ const addCart = async (el) => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(productTypeId) 
+            body: JSON.stringify(productTypeId)
         });
-
-        console.log(response);
-        const result = await response.json(); 
-        console.log(result);
-        if (result.code === 1) {
-            alert(result.message);
-            const cartHome = document.getElementById("cartHome");
-            cartItems++; 
-            cartHome.innerHTML = `(${cartItems})`;
+        if (response.redirected) {
+            window.location.href = response.url;
         } else {
-            alert(result.message);
+            const result = await response.json();
+            if (result.code === 1) {
+                alert(result.message);
+                const cartHome = document.getElementById("cartHome");
+                cartItems++;
+                cartHome.innerHTML = `(${cartItems})`;
+            } else {
+                alert(result.message);
+            }
         }
     } catch (error) {
         console.error('Error:', error);
@@ -28,21 +29,13 @@ const addCart = async (el) => {
     }
 };
 
-document.addEventListener('DOMContentLoaded', function () {
-    const loadProductTypes = async () => {
-        try {
-            const response = await fetch('/ProductType/ProductTypePartial');
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const html = await response.text();
-            document.querySelector('#partialProductType').innerHTML = html;
-            attachAddCartEvent(); 
-        } catch (error) {
-            console.error('There has been a problem with your fetch operation:', error);
-        }
-    };
+function setProductId(id) {
+    console.log(id);
+    console.log(document.getElementById('imei'));
+    document.getElementById('imei').value = id;
+}
 
+document.addEventListener('DOMContentLoaded', function () {
     const attachAddCartEvent = () => {
         const icons = document.querySelectorAll('.product .fa-plus');
         icons.forEach(icon => {
@@ -50,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     };
 
-    loadProductTypes();
+    attachAddCartEvent();
 
     const login = document.getElementById("log");
     login.onclick = () => {
@@ -77,4 +70,3 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 });
-    

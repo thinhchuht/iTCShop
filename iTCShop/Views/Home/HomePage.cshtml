@@ -27,14 +27,30 @@
 
 <div class="filter center">
     <h2 id="title">IPHONE</h2>
-    <input type="text" id="search" placeholder="Tìm kiếm">
-    <select name="filter" id="arrange">
-        <option value="nameAZ">Theo tên A - Z</option>
-        <option value="nameZA">Theo tên Z - A</option>
-        <option value="priceDes">Theo giá giảm dần</option>
-        <option value="priceAcs">Theo giá tăng dần</option>
-    </select>
+    <form action="/ProductType/Search" method="get">
+        <!-- Đường dẫn đến action tìm kiếm -->
+        <input type="text" id="search" name="search" placeholder="Tìm kiếm">
+        <select name="sort" id="arrange">
+            <option value="nameAZ">Theo tên A - Z</option>
+            <option value="nameZA">Theo tên Z - A</option>
+            <option value="priceDes">Theo giá giảm dần</option>
+            <option value="priceAcs">Theo giá tăng dần</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Tìm kiếm</button> <!-- Nút tìm kiếm -->
+    </form>
 </div>
 
 <div id="partialProductType" class="content center">
+    @{
+        foreach (var item in Model)
+        {
+            <div class="product" id="@item.ID">
+                <img src="~/asset/IP.jpg" alt="">
+                <del>@(item.Price + 5000)</del>
+                <p>@item.Price</p>
+                <p>@item.Name</p>
+                <i class="fa-solid fa-plus" product-type-id="@item.ID"></i>
+            </div>
+        }
+    }
 </div>

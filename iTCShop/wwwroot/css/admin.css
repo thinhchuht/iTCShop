@@ -2,10 +2,11 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
 }
 
-/*  HEADER */
+body {
+    font-family: Arial, sans-serif;
+}
 a {
     text-decoration: none;
 }
@@ -27,226 +28,146 @@ header div {
     font-size: large;
 }
 
-/*  HEADER */
-
-/* BODY */
 .body {
+    margin-top: 80px; /* Space for fixed header */
     display: flex;
-    flex-direction: row;
-    margin-left: 15%;
-    margin-right: 10%;
 }
 
-    /* LEFT */
-    .body h3 {
-        margin: 20px 0;
-    }
-
-    .body .leftBar {
-        width: 30%;
-    }
-
-    .body table {
-        border-collapse: collapse;
-        width: 70%;
-    }
-
-    .body .leftBar table td {
-        border: 1px solid black;
-        height: 50px;
-        text-align: center;
-    }
-
-td button {
-    border: none;
-    height: 100%;
-    width: 100%;
-}
-
-.body .leftBar table tr :hover {
-    background-color: aqua;
-}
-
-.body .leftBar .categorysBtns {
-    border: 1px solid black;
-    width: 70%;
-}
-
-/*.body .leftBar .categorys table tr td {
-    align-items: left !important;
-}*/
-
-.body .leftBar .categorys select {
-    height: 30px;
-    margin: 5px 15px;
-}
-
-.body .leftBar .categorys button {
-    height: 30px;
-    width: 70px;
-    margin: 5px 15px;
-}
-
-/* LEFT */
-
-/* RIGHT */
-.rightContent {
-    width: 100%;
+.leftBar {
+    width: 200px; /* Fixed width for sidebar */
+    background-color: #f9f9f9;
     padding: 20px;
-    padding-top: 60px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
-    .rightContent .searchBar {
-        padding: 15px;
-        border: 0.5px solid black;
+    .leftBar .menu {
+        margin-bottom: 20px;
+    }
+
+    .leftBar table {
         width: 100%;
     }
 
-        .rightContent .searchBar input {
-            width: 80%;
-            height: 30px;
-        }
+    .leftBar td {
+        padding: 10px;
+        text-align: left;
+    }
 
-        .rightContent .searchBar button {
-            width: 10%;
-            height: 30px;
-            background-color: green;
-            color: white;
-            border-radius: 10%;
-            margin-left: 30px;
-        }
-
-.details {
-    margin-top: 20px;
-    border: 1px solid black;
-    border-collapse: collapse;
-    height: 100%;
+.rightContent {
+    flex: 1; /* Take remaining space */
+    padding: 20px;
 }
 
-    .details .btnAdd {
-        margin: 15px;
-        width: 70px;
-        height: 30px;
-        background-color: aqua;
-        border-radius: 10%;
-    }
-
-    .details table {
-        /* border: 1px solid black; */
-        width: 100%;
-        height: 80%;
-    }
-
-        .details table th {
-            border-bottom: 1px solid black;
-            padding: 5px;
-        }
-
-        .details table td {
-            padding: 10px;
-        }
-
-
-    .details .btnEdit {
-        background-color: orange;
-        height: 30px;
-        width: 50px;
-        color: white;
-        border-radius: 10%;
-    }
-
-    .details .btnDelete {
-        background-color: green;
-        height: 30px;
-        width: 70px;
-        color: white;
-        border-radius: 10%;
-    }
-
-    .details a {
-        text-decoration: none;
-    }
-
-    .details .btns {
-        margin-left: 15px;
-    }
-
-    .details .btn {
-        height: 30px;
-        width: 30px;
-    }
-
-.hidden {
-    display: none !important;
+.table-container {
+    margin-top: 20px; /* Adjust margin */
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.addNew {
-    display: block;
-    background-color: white;
-    position: fixed;
-    top: 100px;
-    left: 25%;
-    right: 25%;
+.table-title {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #007bff;
+}
+
+.search-bar {
+    margin-bottom: 20px;
     display: flex;
-    flex-direction: column;
+    justify-content: flex-end;
+    gap: 10px;
 }
 
-.x {
-    height: 20px;
-    width: 20px;
-    position: absolute;
-    right: 5px;
-    top: 5px;
-    background-color: white;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-}
-
-.addNew form {
-    margin-left: 30px;
-}
-
-    .addNew form input,
-    select {
-        height: 30px;
-        width: 70%;
+    .search-bar input,
+    .search-bar select,
+    .search-bar button {
+        padding: 10px;
+        border: 1px solid #dee2e6;
+        border-radius: 5px;
     }
 
-.addNew label {
-    font-weight: bold;
-}
+    .search-bar select {
+        height: 50px;
+    }
 
-.addNew .info {
-    height: 60px;
-}
+    .search-bar button {
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+    }
 
-.addNew .detail {
-    height: 80px;
-}
-
-.addNew .images {
-    border: 1px solid black;
-    background-color: white;
-}
-
-.addNew .save {
-    background-color: aqua;
-    width: 60px;
-    margin-bottom: 10px;
-}
-
-.addNew .reset {
-    background-color: orange;
-    width: 60px;
-    margin-bottom: 10px;
-}
-
-.backdrop {
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    z-index: 999;
-    height: 100%;
+.table {
     width: 100%;
-    background: rgba(0, 0, 0, 0.2);
-    display: none;
+    border-collapse: collapse;
+}
+
+    .table thead th {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .table tbody tr {
+        border: 1px solid #dee2e6;
+    }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .table tbody tr:hover {
+            background-color: #e9ecef;
+        }
+
+    .table tbody td {
+        padding: 10px;
+        border: 1px solid #dee2e6;
+    }
+
+.product-img {
+    max-width: 100px;
+    max-height: 100px;
+    border-radius: 5px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.edit-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.modal-content {
+    padding: 20px;
+}
+
+.modal-header {
+    justify-content: space-between;
+}
+
+.modal-title {
+    margin: 0;
+}
+
+/* Footer navigation styles */
+.FootNavBar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    height: 90px;
+    width: 100%;
+    text-align: center;
+    z-index: 100;
+    background-color: beige;
+    padding: 10px 30px;
 }
