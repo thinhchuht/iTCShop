@@ -13,6 +13,8 @@
                 <th scope="col">No.</th>
                 <th scope="col">Image</th>
                 <th scope="col">Name</th>
+                <th scope="col">Color</th>
+                <th scope="col">Memory</th>
                 <th scope="col">Price</th>
                 <th scope="col">Quantity</th>
                 <th scope="col">Total</th>
@@ -20,15 +22,16 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
+            @for (int index = 0; index < Model.Count; index++)
             {
-
-                @(total += item.ProductType.Price * item.Quantity)
-                ;
+                var item = Model[index];
+                total += item.ProductType.Price * item.Quantity;
                 <tr>
                     <th scope="row">@(++i)</th>
                     <td>@item.ProductType.Picture</td>
                     <td>@item.ProductType.Name</td>
+                    <td>@item.ProductType.Color</td>
+                    <td>@item.ProductType.Memory</td>
                     <td>@item.ProductType.Price</td>
                     <td>@item.Quantity</td>
                     <td>@(item.ProductType.Price * item.Quantity)</td>
@@ -43,11 +46,10 @@
                             <button type="submit" class="btn btn-primary" id="@item.ID">Add</button>
                         </form>
                     </th>
-                    <input type="hidden" name="cartDetails[@i].ProductTypeID" value="@item.ProductTypeID" />
-                    <input type="hidden" name="cartDetails[@i].Quantity" value="@item.Quantity" />
-                    <input type="hidden" name="cartDetails[@i].Price" value="@item.ProductType.Price" />
+                    <input type="hidden" name="cartDetails[@index].ProductTypeID" value="@item.ProductTypeID" />
+                    <input type="hidden" name="cartDetails[@index].Quantity" value="@item.Quantity" />
+                    <input type="hidden" name="cartDetails[@index].Price" value="@item.ProductType.Price" />
                 </tr>
-
             }
         </tbody>
     </table>

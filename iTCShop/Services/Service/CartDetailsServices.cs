@@ -73,5 +73,23 @@
                 return ResponseModel.FailureResponse(ex.ToString());
             }
         }
+
+        public async Task<ResponseModel> DeleteAllCartDetail(string id)
+        {
+            try
+            {
+                var cartDetails = await GetAllByCartId(id);
+                foreach (var cartDetail in cartDetails)
+                {
+                    await DeleteCartDetail(cartDetail.ID);
+                }
+                return ResponseModel.SuccessResponse();
+            }
+            catch (Exception ex)
+            {
+                return ResponseModel.FailureResponse(ex.ToString());
+            }
+          
+        }
     }
 }

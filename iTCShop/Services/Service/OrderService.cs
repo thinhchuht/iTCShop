@@ -1,7 +1,8 @@
 ﻿
+
 namespace iTCShop.Services.Service
 {
-    public class OrderService(IBaseDbServices baseDbServices) : IOrderService
+    public class OrderService(IBaseDbServices baseDbServices, iTCShopDbContext iTCShopDbContext) : IOrderService
     {
         public async Task<ResponseModel> AddOrder(Order order)
         {
@@ -11,6 +12,35 @@ namespace iTCShop.Services.Service
                 return ResponseModel.SuccessResponse();
             }
             catch(Exception ex)
+            {
+                return ResponseModel.FailureResponse(ex.ToString());
+            }
+        }
+
+        public async Task<List<Order>> GetAllOrders()
+        {
+            return await iTCShopDbContext.Orders.Include(o => o.OrderDetails).ToListAsync();
+        }
+
+        public async Task<Order> GetOrderById(string id)
+        {
+            return await baseDbServices.GetById<Order>(id);
+        }
+
+        public async Task<List<Order>> GetOrdersByCustomerId(string id)
+        {
+            return await iTCShopDbContext.Orders.Include(o => o.OrderDetails).Where(o=> o.CustomerId.Equals(id)).ToListAsync();
+        }
+
+        public ResponseModel UpdateOrder(Order order)
+        {
+            try
+            {
+                iTCShopDbContext.Update(order);
+                iTCShopDbContext.SaveChanges();
+                return ResponseModel.SuccessResponse();
+            }
+            catch (Exception ex)
             {
                 return ResponseModel.FailureResponse(ex.ToString());
             }

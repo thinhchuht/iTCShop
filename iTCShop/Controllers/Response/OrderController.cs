@@ -1,35 +1,65 @@
-﻿using iTCShop.Models;
+﻿using iTCShop.Extensions;
 
 namespace iTCShop.Controllers.Response
 {
-    public class OrderController(IOrderService orderService, IOrderDetailServices orderDetailServices, IProductDbServices productDbServices) : Controller
+    public class OrderController(IOrderService orderService, IOrderDetailServices orderDetailServices, IProductDbServices productDbServices, ICartDetailsServices cartDetailsServices) : Controller
     {
+
+        public async Task<IActionResult> GetAllOrders()
+        {
+            var customer = HttpContext.Session.GetObjectFromJson<Customer>("user");
+            var orders = await orderService.GetOrdersByCustomerId(customer.ID);
+            return View(orders);
+        }
+
         [HttpPost]
-        public async Task<IActionResult> Order( List<CartDetailsRequest> cartDetails)
+        public async Task<IActionResult> Order(List<CartDetailsRequest> cartDetails, decimal total)
         {
             try
             {
-                //string shipAddress, decimal totalPay, int payMethod, int status, string customerId,
+                var customer = HttpContext.Session.GetObjectFromJson<Customer>("user");
                 var order = new Order();
-               await orderService.AddOrder(order);
-
-                foreach(var item in cartDetails)
+                order.TotalPay = total;
+                order.CustomerId = customer.ID;
+                await orderService.AddOrder(order);
+                foreach (var item in cartDetails)
                 {
-                    var allProducts =  await productDbServices.GetProductsByProductType(item.ProductTypeID);
+                    var allProducts = await productDbServices.GetProductsByProductType(item.ProductTypeID);
                     var products = allProducts.Take(item.Quantity).ToList();
-                    foreach ( var p in products) {
+                    foreach (var p in products)
+                    {
                         var orderDetail = new OrderDetail(item.Quantity, p.ProductType.Price, p.IMEI, order.ID);
                         await orderDetailServices.AddOrderDetail(orderDetail);
                         order.OrderDetails.Add(orderDetail);
+
                     }
                 }
-
+                await cartDetailsServices.DeleteAllCartDetail(customer.ID);
                 return View(order);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
+
+
+        [HttpPost]
+        public async Task<IActionResult> GetAllOrders(int payMethod, string shipAddress, string id)
+        {
+            try
+            {
+                var order = await orderService.GetOrderById(id);
+                order.PayMethod = (OrderPayMethod)payMethod;
+                order.ShipAddress = shipAddress;
+                orderService.UpdateOrder(order);
+                return RedirectToAction("GetAllOrders");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }

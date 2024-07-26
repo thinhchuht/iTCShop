@@ -1,8 +1,4 @@
-﻿
-using iTCShop.Models;
-using System.Net.WebSockets;
-
-namespace iTCShop.Services.Service
+﻿namespace iTCShop.Services.Service
 {
     public class ProductDbServices(IBaseDbServices baseDbServices, iTCShopDbContext iTCShopDbContext) : IProductDbServices
     {
@@ -47,7 +43,7 @@ namespace iTCShop.Services.Service
 
         public async Task<List<Product>> GetProductsByProductType(string productTypeId)
         {
-            return await iTCShopDbContext.Products.Where(p => p.ProductTypeId.Equals(productTypeId)).ToListAsync();
+            return await iTCShopDbContext.Products.Include(p=>p.ProductType).Where(p => p.ProductTypeId.Equals(productTypeId)).ToListAsync();
         }
 
         public async Task<ResponseModel> UpdateProduct(ProductRequest productRequest)

@@ -18,10 +18,10 @@
 <div class="container mt-5">
     <div class="form-container">
         <h2 class="text-center">Order Form</h2>
-        <form>
+        <form action="/Order/GetAllOrders" method="post">
             <div class="form-group">
                 <label for="orderDate">OrderDate</label>
-                <input type="date" class="form-control" id="orderDate" name="orderDate" value="@Model.OrderDate" readonly>
+                <input type="datetime-local" class="form-control" id="orderDate" name="orderDate" value="@Model.OrderDate.ToString("yyyy-MM-dd HH:mm:ss")" readonly>
             </div>
             <div class="form-group">
                 <label for="shipAddress">Shipping Address</label>
@@ -31,10 +31,13 @@
                 <label for="totalPay">Total Pay</label>
                 <input type="number" step="0.01" class="form-control" id="totalPay" value="@Model.TotalPay" name="totalPay" readonly>
             </div>
-            <div class="form-group">
-                <label for="payMethod">Payment Method</label>
-                <input type="text" class="form-control" id="payMethod" name="payMethod">
-            </div>
+            <select class="form-control" id="payMethod" name="PayMethod">
+                @foreach (OrderPayMethod method in Enum.GetValues(typeof(OrderPayMethod)))
+                {
+                    <option value="@((int)method)">@method.ToString()</option>
+                }
+            </select>
+            <input type="hidden" class="form-control" value="@Model.ID" name="id">
             <button type="submit" class="btn btn-primary">Submit Order</button>
         </form>
     </div>

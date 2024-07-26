@@ -8,5 +8,6 @@
         Task<ResponseModel> AddCartDetail(string productTypeId, string cartId);
         Task<ResponseModel> UpdateDropQuantity (string id);    
         Task<ResponseModel> DeleteCartDetail(string id);
+        Task<ResponseModel> DeleteAllCartDetail(string id);
     }
 }
