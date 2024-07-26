@@ -1,4 +1,4 @@
-﻿@model List<CartDetails>
+﻿@model Order
 
 @{
     ViewBag.Title = "Order";
@@ -20,16 +20,16 @@
         <h2 class="text-center">Order Form</h2>
         <form>
             <div class="form-group">
-                <label for="orderDate">Order Date</label>
-                <input type="date" class="form-control" id="orderDate" name="orderDate">
+                <label for="orderDate">OrderDate</label>
+                <input type="date" class="form-control" id="orderDate" name="orderDate" value="@Model.OrderDate" readonly>
             </div>
             <div class="form-group">
                 <label for="shipAddress">Shipping Address</label>
                 <textarea class="form-control" id="shipAddress" name="shipAddress" rows="3"></textarea>
             </div>
             <div class="form-group">
-                <label for="totalPay">Total Payment</label>
-                <input type="number" step="0.01" class="form-control" id="totalPay" name="totalPay">
+                <label for="totalPay">Total Pay</label>
+                <input type="number" step="0.01" class="form-control" id="totalPay" value="@Model.TotalPay" name="totalPay" readonly>
             </div>
             <div class="form-group">
                 <label for="payMethod">Payment Method</label>

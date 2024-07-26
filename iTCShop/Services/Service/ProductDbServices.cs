@@ -11,8 +11,8 @@ namespace iTCShop.Services.Service
             try
             {
                 var productType = await baseDbServices.GetById<ProductType>(productRequest.ProductId);
-                var newProduct =  new Product(productRequest.Imei, productType.ID, productType);
-                await baseDbServices.AddAsync<Product>(newProduct);
+                var newProduct =  new Product(productRequest.Imei, productType.ID);
+                await baseDbServices.AddAsync(newProduct);
                 return ResponseModel.SuccessResponse();
             }
             catch (Exception ex)
@@ -45,6 +45,11 @@ namespace iTCShop.Services.Service
             return await iTCShopDbContext.Products.Include(p => p.ProductType).FirstOrDefaultAsync(p => p.IMEI.Equals(imei));
         }
 
+        public async Task<List<Product>> GetProductsByProductType(string productTypeId)
+        {
+            return await iTCShopDbContext.Products.Where(p => p.ProductTypeId.Equals(productTypeId)).ToListAsync();
+        }
+
         public async Task<ResponseModel> UpdateProduct(ProductRequest productRequest)
         {
             try
@@ -53,9 +58,9 @@ namespace iTCShop.Services.Service
                 var productType = await baseDbServices.GetById<ProductType>(productRequest.ProductId);
                 if (productType == null) return ResponseModel.FailureResponse("Can not found ProducTypeID");
                 var oldProduct = await GetProductByImei(productRequest.Imei);
-                var newProduct = new Product(productRequest.Imei,productType.ID, productType);
+                var newProduct = new Product(productRequest.Imei,productType.ID);
                 
-                await baseDbServices.UpdateAsync<Product>(newProduct, oldProduct);
+                await baseDbServices.UpdateAsync(newProduct, oldProduct);
                 return ResponseModel.SuccessResponse();
             }
             catch (Exception ex)

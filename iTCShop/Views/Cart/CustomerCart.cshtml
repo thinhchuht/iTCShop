@@ -4,54 +4,58 @@
     ViewBag.Title = "Cart";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var i = 0;
-    decimal total = 0 ;
+    decimal total = 0;
 }
-
-<table class="table table-success table-striped table-hover">
-    <thead>
-        <tr>
-            <th scope="col">No.</th>
-            <th scope="col">Image</th>
-            <th scope="col">Name</th>
-            <th scope="col">Price</th>
-            <th scope="col">Quantity</th>
-            <th scope="col">Total</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-
-            @(total += item.ProductType.Price * item.Quantity);
+<form action="/Order/Order" method="post">
+    <table class="table table-success table-striped table-hover">
+        <thead>
             <tr>
-                <th scope="row">@(++i)</th>
-                <td>@item.ProductType.Picture</td>
-                <td>@item.ProductType.Name</td>
-                <td>@item.ProductType.Price</td>
-                <td>@item.Quantity</td>
-                <td>@(item.ProductType.Price * item.Quantity)</td>
-                <th scope="col" style="display: flex; gap: 10px">
-                    <form action="/Cart/DropCartDetails" method="post">
-                        <input type="hidden" name="id" value="@item.ID" />
-                        <button type="submit" class="btn btn-primary" id="@item.ID">Drop</button>
-                    </form>
-                    <form action="/Cart/AddCartDetails" method="post">
-                        <input type="hidden" name="productTypeID" value="@item.ProductTypeID" />
-                        <input type="hidden" name="cartID" value="@item.CartID" />
-                        <button type="submit" class="btn btn-primary" id="@item.ID">Add</button>
-                    </form>
-                </th>
+                <th scope="col">No.</th>
+                <th scope="col">Image</th>
+                <th scope="col">Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Total</th>
+                <th></th>
             </tr>
-          
-        }
-    </tbody>
-</table>
-<br />
-<div>
-    <h2 >Total : @total </h2>
-    <form action="/Cart/AddCartDetails" method="post">
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+
+                @(total += item.ProductType.Price * item.Quantity)
+                ;
+                <tr>
+                    <th scope="row">@(++i)</th>
+                    <td>@item.ProductType.Picture</td>
+                    <td>@item.ProductType.Name</td>
+                    <td>@item.ProductType.Price</td>
+                    <td>@item.Quantity</td>
+                    <td>@(item.ProductType.Price * item.Quantity)</td>
+                    <th scope="col" style="display: flex; gap: 10px">
+                        <form action="/Cart/DropCartDetails" method="post">
+                            <input type="hidden" name="id" value="@item.ID" />
+                            <button type="submit" class="btn btn-primary" id="@item.ID">Drop</button>
+                        </form>
+                        <form action="/Cart/AddCartDetails" method="post">
+                            <input type="hidden" name="productTypeID" value="@item.ProductTypeID" />
+                            <input type="hidden" name="cartID" value="@item.CartID" />
+                            <button type="submit" class="btn btn-primary" id="@item.ID">Add</button>
+                        </form>
+                    </th>
+                    <input type="hidden" name="cartDetails[@i].ProductTypeID" value="@item.ProductTypeID" />
+                    <input type="hidden" name="cartDetails[@i].Quantity" value="@item.Quantity" />
+                    <input type="hidden" name="cartDetails[@i].Price" value="@item.ProductType.Price" />
+                </tr>
+
+            }
+        </tbody>
+    </table>
+    <br />
+    <div>
+        <h2>Total : @total </h2>
+        <input type="hidden" name="total" value="@total" />
         <button type="submit" class="btn btn-primary">Order</button>
-    </form>
-</div>
+    </div>
+</form>
 

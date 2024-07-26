@@ -5,11 +5,10 @@ namespace iTCShop.Models
     public class Product
     {
         public Product() {}
-        public Product(string iMEI , string productTypeId, ProductType productType)
+        public Product(string iMEI , string productTypeId)
         {
             IMEI = iMEI;
             ProductTypeId = productTypeId;
-            ProductType = productType;
         }
 
         public string IMEI { get; set; }
