@@ -19,6 +19,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/admin.css">
     <title>Admin</title>
 </head>
@@ -45,50 +46,18 @@
                 <h3>Danh Mục</h3>
                 <table>
                     <tr>
-                        <td id="manufacturer" onclick="toManu()">Manufacturer</td>
+                        <td id="product"><a href="~/AProds">Products</a> </td>
                     </tr>
                     <tr>
-                        <td id="category">Category</td>
+                        <td id="productType"> <a href="~/ATypes">Product Types</a></td>
                     </tr>
                     <tr>
-                        <td id="product">Product</td>
+                        <td id="Order">Orders</td>
                     </tr>
                     <tr>
-                        <td id="account">Account</td>
+                        <td id="account">Accounts</td>
                     </tr>
                 </table>
-            </div>
-            <div class="manufacturer">
-                <h3>Manufacturer</h3>
-                <table>
-                    <tr>
-                        <td>SAMSUNG</td>
-                    </tr>
-                    <tr>
-                        <td>APPLE</td>
-                    </tr>
-                    <tr>
-                        <td>XIAOMI</td>
-                    </tr>
-                    <tr>
-                        <td>OPPO</td>
-                    </tr>
-                </table>
-            </div>
-            <div class="categorys">
-                <h3>Categorys</h3>
-                <div class="categorysBtns">
-                    <select class="select" name=" selectCate">
-                        <option value="" disabled selected>--Select Cate</option>
-                        <option value="1">Option 1</option>
-                        <option value="2">Option 2</option>
-                        <option value="3">Option 3</option>
-                    </select>
-                    <br>
-                    <button> Filter</button>
-
-                </div>
-
             </div>
         </div>
         <div class="rightContent">
@@ -98,6 +67,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery.js"></script>
     <script src="~/js/site.js"></script>
 </body>

@@ -1,14 +1,8 @@
-﻿using iTCShop.Controllers.Request;
-using iTCShop.Services.Service;
-using Microsoft.AspNetCore.Mvc;
-using System.Net.WebSockets;
-using System.Threading;
+﻿using Newtonsoft.Json;
 
 namespace iTCShop.Controllers.Response
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ProductController(IProductDbServices productDbServices) : Controller
+    public class ProductController(IProductDbServices productDbServices, IOrderDetailServices orderDetailServices) : Controller
     {
         [HttpGet("get-all-products")]
         public async Task<IActionResult> GetAllProducts()
@@ -24,7 +18,7 @@ namespace iTCShop.Controllers.Response
             }
         }
 
-        [HttpGet("get-product-id")]
+        [HttpGet("get-product")]
         public async Task<IActionResult> GetProductByImei(string imei)
         {
             try
@@ -38,13 +32,14 @@ namespace iTCShop.Controllers.Response
             }
         }
 
-        [HttpPost("add-product")]
-        public async Task<IActionResult> AddProduct([FromBody] ProductRequest productRequest)
+        [HttpPost]
+        public async Task<IActionResult> AddProduct(ProductRequest productRequest)
         {
             try
             {
                 var result = await productDbServices.AddProduct(productRequest);
-                return Ok(result);
+                if (result.IsSuccess()) return Redirect("~/AProds");
+                return BadRequest(result);
             }
             catch (Exception ex)
             {
@@ -52,13 +47,13 @@ namespace iTCShop.Controllers.Response
             }
         }
 
-        [HttpDelete("delete-product")]
-        public async Task<IActionResult> DeleteProduct([FromBody] string imei)
+        [HttpPost]
+        public async Task<IActionResult> DeleteProduct(string imei)
         {
             try
             {
                 var result = await productDbServices.DeleteProduct(imei);
-                return Ok(result);
+                return RedirectToAction("HomeAdmin","Admin");
             }
             catch (Exception ex)
             {
@@ -66,18 +61,42 @@ namespace iTCShop.Controllers.Response
             }
         }
 
-        [HttpPut("update-product")]
-        public async Task<IActionResult> UpdateProduct([FromBody] ProductRequest productRequest)
+        [HttpPost]
+        public async Task<IActionResult> UpdateProduct( ProductRequest productRequest)
         {
             try
             {
                 var result = await productDbServices.UpdateProduct(productRequest);
-                return Ok(result);
+                if (result.IsSuccess()) return Redirect("~/AProds");
+                return BadRequest(result);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        public async Task<IActionResult> Search(string search, string sort)
+        {
+            var products = await productDbServices.GetAllProducts();
+
+           if(!string.IsNullOrEmpty(search))
+            {
+                switch (sort)
+                {
+                    case "typeID":
+                        products = products.Where(p => p.ProductTypeId.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+                        break;
+                    case "name":
+                        products = products.Where(p => p.ProductType.Name.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+                        break;
+                    case "imei":
+                        products = products.Where(p => p.IMEI.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+                        break;
+                }
+            }
+            TempData["products"] = JsonConvert.SerializeObject(products);
+            return RedirectToAction("HomeAdmin", "Admin");
         }
     }
 }

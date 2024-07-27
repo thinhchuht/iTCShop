@@ -1,28 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Text.Json;
 
 namespace iTCShop.Controllers.Response
 {
-    public class HomeController : Controller
+    public class HomeController(IProductsTypeServices productsTypeServices) : Controller
     { 
   
-        public ActionResult HomePage()
+        public async Task<IActionResult> HomePage()
         {
-            return View();
+            var productTypes = new List<ProductType>();
+            if (TempData["productTypes"] == null) productTypes = await productsTypeServices.GetAllProductTypes();
+            else productTypes = JsonSerializer.Deserialize<List<ProductType>>(TempData["productTypes"].ToString());
+            return View(productTypes);
         }
 
-    
-        public ActionResult Contact()
-        {
-            return View();
-        }
-
-
-        public ActionResult About()
-        {
-            return View();
-        }
-
- 
         public ActionResult Products()
         {
             return View();

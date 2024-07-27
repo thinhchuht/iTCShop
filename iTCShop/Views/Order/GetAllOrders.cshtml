@@ -1,0 +1,35 @@
+﻿@model List<Order>
+
+@{
+    ViewBag.Title = "Order List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center">Order List</h2>
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Order Code</th>
+                <th>Order Date</th>
+                <th>Shipping Address</th>
+                <th>Total Pay</th>
+                <th>Status</th>
+                <th>Payment Method</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td>@order.ID</td>
+                    <td>@order.OrderDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                    <td>@order.ShipAddress</td>
+                    <td>@order.TotalPay</td>
+                    <td>@order.Status</td>
+                    <td>@order.PayMethod</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

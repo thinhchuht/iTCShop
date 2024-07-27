@@ -1,6 +1,6 @@
 ﻿namespace iTCShop.Services.Service
 {
-    public class ProductsTypeServices(IBaseDbServices baseDbServices) : IProductsTypeServices
+    public class ProductsTypeServices(IBaseDbServices baseDbServices, IProductDbServices productDbServices) : IProductsTypeServices
     {
         public async Task<ResponseModel> AddProductType(ProductType product)
         {
@@ -29,6 +29,8 @@
         {
             try
             {
+                var rs = await productDbServices.DeleteProductByProductTypeID(id);
+                if (!rs.IsSuccess()) return rs;
                 await baseDbServices.DeleteAsync<ProductType>(id);
                 return ResponseModel.SuccessResponse();
             }
@@ -43,7 +45,7 @@
             try
             {
                 var product = await GetProductTypeById(newProduct.ID);
-                await baseDbServices.UpdateAsync<ProductType>(newProduct, product);
+                await baseDbServices.UpdateAsync(newProduct, product);
                 return ResponseModel.SuccessResponse();
             }
             catch (Exception ex)

@@ -24,5 +24,24 @@
         {
             return await iTCShopDbContext.Customers.Include(p=> p.Auth).Include(p=>p.Orders).ToListAsync();
         }
+
+        public async Task<Customer> GetCustomerById(string id)
+        {
+            return await baseDbServices.GetById<Customer>(id);
+        }
+
+        public  ResponseModel UpdateCustomer(Customer customer)
+        {
+            try
+            {
+                iTCShopDbContext.Update(customer);
+                iTCShopDbContext.SaveChanges();
+                return ResponseModel.SuccessResponse();
+            }
+            catch (Exception ex)
+            {
+                return ResponseModel.FailureResponse(ex.ToString());
+            }
+        }
     }
 }

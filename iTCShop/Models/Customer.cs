@@ -15,10 +15,14 @@
         public Cart          Cart        { get; set; }
         public AuthorizeUser Auth        { get; set; }
         public List<Order>   Orders      { get; set; }
-
-        public Customer(string name, string email, string userName, string password, string phone, string address, DateTime dateOfBirth)
+        public Customer()
         {
-            ID = Guid.NewGuid().ToString();
+            
+        }
+
+        public Customer(string name, string email, string userName, string password, string phone, string address, DateTime dateOfBirth, string id = null)
+        {
+            ID = id ?? Guid.NewGuid().ToString();
             Name = name;
             Email = email;
             UserName = userName;

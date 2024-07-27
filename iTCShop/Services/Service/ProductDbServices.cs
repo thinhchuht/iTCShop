@@ -1,8 +1,4 @@
-﻿
-using iTCShop.Models;
-using System.Net.WebSockets;
-
-namespace iTCShop.Services.Service
+﻿namespace iTCShop.Services.Service
 {
     public class ProductDbServices(IBaseDbServices baseDbServices, iTCShopDbContext iTCShopDbContext) : IProductDbServices
     {
@@ -10,9 +6,9 @@ namespace iTCShop.Services.Service
         {
             try
             {
-                var productType = await baseDbServices.GetById<ProductType>(productRequest.ProductId);
-                var newProduct =  new Product(productRequest.Imei, productType.ID, productType);
-                await baseDbServices.AddAsync<Product>(newProduct);
+                var productType = await baseDbServices.GetById<ProductType>(productRequest.ProductTypeId);
+                var newProduct =  new Product(productRequest.Imei, productType.ID);
+                await baseDbServices.AddAsync(newProduct);
                 return ResponseModel.SuccessResponse();
             }
             catch (Exception ex)
@@ -21,6 +17,7 @@ namespace iTCShop.Services.Service
             }
         }
 
+        [HttpPost]
         public async Task<ResponseModel> DeleteProduct(string imei)
         {
             try 
@@ -34,6 +31,17 @@ namespace iTCShop.Services.Service
             }
         }
 
+        public async Task<ResponseModel> DeleteProductByProductTypeID(string productTypeId)
+        {
+            var productLst = await GetProductsByProductType(productTypeId);
+            foreach (var product in productLst)
+            {
+               var rs = await DeleteProduct(product.IMEI);
+                if (!rs.IsSuccess()) return rs;
+            }
+            return ResponseModel.SuccessResponse();
+        }
+
         public async Task<List<Product>> GetAllProducts()
         {
            return await iTCShopDbContext.Products.Include(p => p.ProductType).ToListAsync();
@@ -45,17 +53,31 @@ namespace iTCShop.Services.Service
             return await iTCShopDbContext.Products.Include(p => p.ProductType).FirstOrDefaultAsync(p => p.IMEI.Equals(imei));
         }
 
+        public async Task<List<Product>> GetProductsByProductType(string productTypeId)
+        {
+            return await iTCShopDbContext.Products.Include(p=>p.ProductType).Where(p => p.ProductTypeId.Equals(productTypeId)).ToListAsync();
+        }
+
+
+
+        public async Task<ResponseModel> IsAvailableCheck(string productTypeId)
+        {
+            var product = await GetProductsByProductType(productTypeId);
+            if (product.Count == 0) return ResponseModel.FailureResponse("Out of stocks");
+            else return ResponseModel.SuccessResponse();
+        }
+
         public async Task<ResponseModel> UpdateProduct(ProductRequest productRequest)
         {
             try
             {
               
-                var productType = await baseDbServices.GetById<ProductType>(productRequest.ProductId);
+                var productType = await baseDbServices.GetById<ProductType>(productRequest.ProductTypeId);
                 if (productType == null) return ResponseModel.FailureResponse("Can not found ProducTypeID");
                 var oldProduct = await GetProductByImei(productRequest.Imei);
-                var newProduct = new Product(productRequest.Imei,productType.ID, productType);
+                var newProduct = new Product(productRequest.Imei,productType.ID);
                 
-                await baseDbServices.UpdateAsync<Product>(newProduct, oldProduct);
+                await baseDbServices.UpdateAsync(newProduct, oldProduct);
                 return ResponseModel.SuccessResponse();
             }
             catch (Exception ex)

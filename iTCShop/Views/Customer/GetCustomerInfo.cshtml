@@ -1,0 +1,52 @@
+﻿@model Customer
+
+@{
+    ViewBag.Title = "Information";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header bg-primary text-white text-center">
+            <h2>Information</h2>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Basic Information</h5>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="name"><strong>Name:</strong></label>
+                    <p id="name">@Model.Name</p>
+                </div>
+                <div class="col-md-6">
+                    <label for="email"><strong>Email:</strong></label>
+                    <p id="email">@Model.Email</p>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="username"><strong>Username:</strong></label>
+                    <p id="username">@Model.UserName</p>
+                </div>
+                <div class="col-md-6">
+                    <label for="phone"><strong>Phone:</strong></label>
+                    <p id="phone">@Model.Phone</p>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="address"><strong>Address:</strong></label>
+                    <p id="address">@Model.Address</p>
+                </div>
+                <div class="col-md-6">
+                    <label for="dob"><strong>Date of Birth:</strong></label>
+                    <p id="dob">@Model.DateOfBirth.ToString("dd/MM/yyyy")</p>
+                </div>
+            </div>
+            <div class="mt-4 text-center">
+                <a href="/Customer/Edit" class="btn btn-warning">Edit Profile</a>
+            </div>
+        </div>
+    </div>
+</div>

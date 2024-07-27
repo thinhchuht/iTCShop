@@ -2,8 +2,8 @@
 {
     public class ProductRequest
     {
-        public string Imei { get; set; }
-        public string ProductId { get; set; }
+        public string Imei          { get; set; }
+        public string ProductTypeId { get; set; }
 
     }
 }

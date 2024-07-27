@@ -1,4 +1,6 @@
-﻿namespace iTCShop.Controllers.Response
+﻿using iTCShop.Extensions;
+
+namespace iTCShop.Controllers.Response
 {
 
     public class CustomerController(ICustomerServices customerServices, ICartService cartService) : Controller
@@ -32,7 +34,40 @@
             {
                 return View();
             }
+        }
 
+        public ActionResult GetCustomerInfo()
+        {
+            var customer = HttpContext.Session.GetObjectFromJson<Customer>("user");
+            if (customer == null) return RedirectToAction("Login", "Login");
+            else return View(customer);
+        }
+
+        public async Task<IActionResult> Edit()
+        {
+            var customer = await customerServices.GetCustomerById(HttpContext.Session.GetObjectFromJson<Customer>("user").ID);
+            return View(customer);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(Customer updatedCustomer)
+        {
+            var customer = await customerServices.GetCustomerById(HttpContext.Session.GetObjectFromJson<Customer>("user").ID);
+            customer.Name = updatedCustomer.Name;
+            customer.Email = updatedCustomer.Email;
+            customer.Password = updatedCustomer.Password;
+            customer.Phone = updatedCustomer.Phone;
+            customer.Address = updatedCustomer.Address;
+            customer.DateOfBirth = updatedCustomer.DateOfBirth;
+
+           var rs = customerServices.UpdateCustomer(customer);
+            HttpContext.Session.SetObjectAsJson("user", customer);
+            if (rs.IsSuccess()) return RedirectToAction("GetCustomerInfo");
+            else
+            {
+                ViewBag.Fail = "UpdateFailed";
+                return View("Edit", customer);
+            }
         }
     }
 }

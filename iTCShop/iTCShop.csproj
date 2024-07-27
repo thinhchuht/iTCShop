@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Admin\" />
+    <Folder Include="Views\ProductType\" />
     <Folder Include="wwwroot\Asset\" />
   </ItemGroup>
 

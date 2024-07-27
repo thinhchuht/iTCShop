@@ -1,14 +1,17 @@
-﻿namespace iTCShop.Controllers.Response
+﻿using Newtonsoft.Json;
+
+namespace iTCShop.Controllers.Response
 {
 
     public class ProductTypeController(IProductsTypeServices productTypesServices) : Controller
     {
-        public async Task<IActionResult> ProductTypePartial()
+        public async Task<IActionResult> ProductPartial()
         {
-                var productTypes = await productTypesServices.GetAllProductTypes();
-                return PartialView(productTypes);
+            var productTypes = await productTypesServices.GetAllProductTypes();
+            return PartialView(productTypes);
         }
 
+     
         public async Task<IActionResult> GetProductTypeById(string id)
         {
             try
@@ -22,16 +25,53 @@
             }
         }
 
-        [HttpPost("add-product")]
-        public async Task<IActionResult> AddProductType([FromBody]ProductTypesRequest productTypesRequest)
+        public async Task<IActionResult> Search(string search, string sort)
+        {
+            var productTypes = await productTypesServices.GetAllProductTypes();
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                switch (sort)
+                {
+                    case "typeID":
+                        productTypes = productTypes.Where(p => p.Name.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+                        TempData["productTypes"] = JsonConvert.SerializeObject(productTypes);
+                        return RedirectToAction("HomeAdminProductType", "Admin");
+                    case "name":
+                        productTypes = productTypes.Where(p => p.Name.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+                        break;
+                }
+            }
+
+            switch (sort)
+            {
+                case "nameAZ":
+                    productTypes = productTypes.OrderBy(p => p.Name).ToList();
+                    break;
+                case "nameZA":
+                    productTypes = productTypes.OrderByDescending(p => p.Name).ToList();
+                    break;
+                case "priceDes":
+                    productTypes = productTypes.OrderByDescending(p => p.Price).ToList();
+                    break;
+                case "priceAcs":
+                    productTypes = productTypes.OrderBy(p => p.Price).ToList();
+                    break;
+            }
+            TempData["productTypes"] = JsonConvert.SerializeObject(productTypes);
+            return RedirectToAction("HomePage", "Home");
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddProductType(ProductTypesRequest productTypesRequest)
         {
             try
             {
-                var product = new ProductType(productTypesRequest.ID, productTypesRequest.Name, productTypesRequest.Price, productTypesRequest.Description, 
-                                          productTypesRequest.Size, productTypesRequest.Battery, productTypesRequest.Memory, productTypesRequest.Color, 
+                var product = new ProductType(productTypesRequest.ID, productTypesRequest.Name, productTypesRequest.Price, productTypesRequest.Description,
+                                          productTypesRequest.Size, productTypesRequest.Battery, productTypesRequest.Memory, productTypesRequest.Color,
                                           productTypesRequest.RAM, productTypesRequest.Picture);
                 var result = await productTypesServices.AddProductType(product);
-                return Ok(result);
+                if (result.IsSuccess()) return RedirectToAction("HomeAdminProductType", "Admin");
+                else return BadRequest(result);
             }
             catch (Exception ex)
             {
@@ -39,13 +79,14 @@
             }
         }
 
-        [HttpDelete("delete-product")]
-        public async Task<IActionResult> DeleteProductType([FromBody]string id) 
+        [HttpPost]
+        public async Task<IActionResult> DeleteProductType(string id)
         {
             try
             {
                 var result = await productTypesServices.DeleteProductType(id);
-                return Ok(result);
+                if (!result.IsSuccess()) return BadRequest(result);
+               return RedirectToAction("HomeAdminProductType", "Admin");
             }
             catch (Exception ex)
             {
@@ -53,15 +94,16 @@
             }
         }
 
-        [HttpPut("update-product")]
-        public async Task<IActionResult> UpdateProductType([FromBody]ProductTypesRequest productTypesRequest)
+        [HttpPost]
+        public async Task<IActionResult> UpdateProductType(ProductTypesRequest productTypesRequest)
         {
             try
             {
                 var newProduct = new ProductType(productTypesRequest.ID, productTypesRequest.Name, productTypesRequest.Price, productTypesRequest.Description, productTypesRequest.Size,
                                          productTypesRequest.Battery, productTypesRequest.Memory, productTypesRequest.Color, productTypesRequest.RAM, productTypesRequest.Picture);
                 var result = await productTypesServices.UpdateProductType(newProduct);
-                return Ok(result);
+                if (result.IsSuccess()) return RedirectToAction("HomeAdminProductType", "Admin");
+                else return BadRequest(result);
             }
             catch (Exception ex)
             {
