@@ -32,13 +32,14 @@ namespace iTCShop.Controllers.Response
             }
         }
 
-        [HttpPost("add-product")]
-        public async Task<IActionResult> AddProduct([FromBody] ProductRequest productRequest)
+        [HttpPost]
+        public async Task<IActionResult> AddProduct(ProductRequest productRequest)
         {
             try
             {
                 var result = await productDbServices.AddProduct(productRequest);
-                return Ok(result);
+                if (result.IsSuccess()) return Redirect("~/AProds");
+                return BadRequest(result);
             }
             catch (Exception ex)
             {
@@ -51,7 +52,6 @@ namespace iTCShop.Controllers.Response
         {
             try
             {
-                //orderDetailServices
                 var result = await productDbServices.DeleteProduct(imei);
                 return RedirectToAction("HomeAdmin","Admin");
             }
@@ -67,7 +67,8 @@ namespace iTCShop.Controllers.Response
             try
             {
                 var result = await productDbServices.UpdateProduct(productRequest);
-                return Ok(result);
+                if (result.IsSuccess()) return Redirect("~/AProds");
+                return BadRequest(result);
             }
             catch (Exception ex)
             {

@@ -6,7 +6,7 @@
         {
             try
             {
-                var productType = await baseDbServices.GetById<ProductType>(productRequest.ProductId);
+                var productType = await baseDbServices.GetById<ProductType>(productRequest.ProductTypeId);
                 var newProduct =  new Product(productRequest.Imei, productType.ID);
                 await baseDbServices.AddAsync(newProduct);
                 return ResponseModel.SuccessResponse();
@@ -31,6 +31,17 @@
             }
         }
 
+        public async Task<ResponseModel> DeleteProductByProductTypeID(string productTypeId)
+        {
+            var productLst = await GetProductsByProductType(productTypeId);
+            foreach (var product in productLst)
+            {
+               var rs = await DeleteProduct(product.IMEI);
+                if (!rs.IsSuccess()) return rs;
+            }
+            return ResponseModel.SuccessResponse();
+        }
+
         public async Task<List<Product>> GetAllProducts()
         {
            return await iTCShopDbContext.Products.Include(p => p.ProductType).ToListAsync();
@@ -47,6 +58,8 @@
             return await iTCShopDbContext.Products.Include(p=>p.ProductType).Where(p => p.ProductTypeId.Equals(productTypeId)).ToListAsync();
         }
 
+
+
         public async Task<ResponseModel> IsAvailableCheck(string productTypeId)
         {
             var product = await GetProductsByProductType(productTypeId);
@@ -59,7 +72,7 @@
             try
             {
               
-                var productType = await baseDbServices.GetById<ProductType>(productRequest.ProductId);
+                var productType = await baseDbServices.GetById<ProductType>(productRequest.ProductTypeId);
                 if (productType == null) return ResponseModel.FailureResponse("Can not found ProducTypeID");
                 var oldProduct = await GetProductByImei(productRequest.Imei);
                 var newProduct = new Product(productRequest.Imei,productType.ID);

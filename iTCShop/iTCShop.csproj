@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Views\ProductType\" />
     <Folder Include="wwwroot\Asset\" />
   </ItemGroup>
 

@@ -29,10 +29,15 @@ const addCart = async (el) => {
     }
 };
 
-function setProductId(id) {
+function setProductId(id,check) {
     console.log(id);
+    console.log(check);
     console.log(document.getElementById('imei'));
-    document.getElementById('imei').value = id;
+    console.log(document.getElementById('productId'));
+    if (check === "prod") document.getElementById('imei').value = id; 
+    if (check === "type") document.getElementById('productId').value = id
+    console.log(document.getElementById('imei'));
+    
 }
 
 document.addEventListener('DOMContentLoaded', function () {

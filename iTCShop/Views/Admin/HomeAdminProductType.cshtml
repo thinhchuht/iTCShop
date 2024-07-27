@@ -32,13 +32,20 @@
     <h2>Product Types</h2>
 
     <!-- Search Form -->
-    <form class="form-inline mb-3">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" id="searchInput">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="searchProduct()">Search</button>
-    </form>
+    <div class="search-bar" style="display:flex; justify-content: space-between; height: 50px">
+        <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addProductDiv" style="height:50px">Add New Product Type</button>
+        <form action="/ProductType/Search" method="get" style="display: flex">
+            <select name="sort">
+                <option value="typeID">Type ID</option>
+            </select>
+            <input type="text" name="search" placeholder="Search..." required />
+            <button type="submit">Search</button>
+        </form>
+     
+    </div>
 
     <!-- Add Button -->
-    <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addProductModal">Add New Product Type</button>
+
 
     <table class="table custom-table">
         <thead>
@@ -72,8 +79,8 @@
                     <td><img src="@productType.Picture" alt="Product Image" style="width: 50px; height: auto;"></td>
                     <td>
                         <div class="action-buttons">
-                            <button type="button" class="btn btn-warning btn-sm edit-btn" data-toggle="modal" data-target="#editProductModal" onclick="setProductId('')">Edit</button>
-                            <form action="/Product/DeleteProduct" method="post" style="display:inline;">
+                            <button type="button" class="btn btn-warning btn-sm edit-btn" data-toggle="modal" data-target="#editProductDiv" onclick="setProductId('@productType.ID','type')">Edit</button>
+                            <form action="/ProductType/DeleteProductType" method="post" style="display:inline;">
                                 <input type="hidden" name="id" value="@productType.ID" />
                                 <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                             </form>
@@ -85,34 +92,22 @@
     </table>
 </div>
 
-<div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="addProductModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addProductModalLabel">Add New Product Type</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                @Html.Partial("_ProductForm", new iTCShop.Models.ProductType(), new ViewDataDictionary { { "formId", "addProductForm" }, { "formAction", "/Product/AddProductType" } })
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Edit Product Modal -->
-<div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="editProductModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editProductModalLabel">Edit Product Type</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                @Html.Partial("_ProductForm", null, new ViewDataDictionary { { "formId", "editProductForm" }, { "formAction", "/Product/UpdateProductType" } })
-            </div>
-        </div>
-    </div>
-</div>
+@{
+    ViewData["divId"] = "editProductDiv";
+    ViewData["formId"] = "editProductForm";
+    ViewData["formAction"] = "/ProductType/UpdateProductType";
+    ViewData["buttonText"] = "Save Changes";
+    ViewData["functionName"] = "Edit";
+    Html.RenderPartial("ProductTypePartial", new iTCShop.Models.ProductType());
+}
+
+@{
+    ViewData["divId"] = "addProductDiv";
+    ViewData["formId"] = "addProductForm";
+    ViewData["formAction"] = "/ProductType/AddProductType";
+    ViewData["buttonText"] = "Save Changes";
+    ViewData["functionName"] = "Add";
+    Html.RenderPartial("ProductTypePartial", new iTCShop.Models.ProductType());
+}
+
+
