@@ -8,7 +8,7 @@
         Task<ResponseModel> AddProduct(ProductRequest productRequest);
         Task<ResponseModel> UpdateProduct(ProductRequest productRequest);
         Task<ResponseModel> DeleteProduct(string imei);
-        Task<ResponseModel> IsAvailableCheck(string productTypeId);
+        Task<ResponseModel> IsAvailableCheck(string productTypeId, int quantity = 0);
         Task<ResponseModel> DeleteProductByProductTypeID(string productTypeId);
 
 

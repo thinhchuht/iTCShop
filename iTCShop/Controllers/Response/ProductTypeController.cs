@@ -37,7 +37,7 @@ namespace iTCShop.Controllers.Response
                         productTypes = productTypes.Where(p => p.Name.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
                         TempData["productTypes"] = JsonConvert.SerializeObject(productTypes);
                         return RedirectToAction("HomeAdminProductType", "Admin");
-                    case "name":
+                    default :
                         productTypes = productTypes.Where(p => p.Name.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
                         break;
                 }

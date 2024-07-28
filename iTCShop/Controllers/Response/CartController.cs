@@ -37,14 +37,14 @@ namespace iTCShop.Controllers.Response
         {
             var rs = await cartDetailsServices.UpdateDropQuantity(id);
             if (rs.IsSuccess()) return RedirectToAction("CustomerCart");
-            else return BadRequest();
+            return BadRequest(rs);
         }
 
         public async Task<IActionResult> AddCartDetails(string productTypeId, string cartId) 
         {
             var rs = await cartDetailsServices.AddCartDetail(productTypeId, cartId);
             if (rs.IsSuccess()) return RedirectToAction("CustomerCart");
-            else return BadRequest();
+            return BadRequest(rs);
         }
     }
 }

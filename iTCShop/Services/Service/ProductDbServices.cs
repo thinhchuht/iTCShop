@@ -60,10 +60,11 @@
 
 
 
-        public async Task<ResponseModel> IsAvailableCheck(string productTypeId)
+        public async Task<ResponseModel> IsAvailableCheck(string productTypeId, int quantity = 0)
         {
             var product = await GetProductsByProductType(productTypeId);
             if (product.Count == 0) return ResponseModel.FailureResponse("Out of stocks");
+            if(product.Count < quantity) return ResponseModel.FailureResponse("Out of stocks");
             else return ResponseModel.SuccessResponse();
         }
 
