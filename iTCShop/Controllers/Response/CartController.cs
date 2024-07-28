@@ -32,14 +32,14 @@ namespace iTCShop.Controllers.Response
                 return Json(response);
             }
         }
-
+        [HttpPost]
         public async Task<IActionResult> DropCartDetails(string id)
         {
             var rs = await cartDetailsServices.UpdateDropQuantity(id);
             if (rs.IsSuccess()) return RedirectToAction("CustomerCart");
             return BadRequest(rs);
         }
-
+        [HttpPost]
         public async Task<IActionResult> AddCartDetails(string productTypeId, string cartId) 
         {
             var rs = await cartDetailsServices.AddCartDetail(productTypeId, cartId);
