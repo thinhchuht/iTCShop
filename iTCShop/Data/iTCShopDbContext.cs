@@ -26,6 +26,9 @@ namespace iTCShop.Data
 
             modelBuilder.Entity<Product>()
                 .HasKey(p => p.IMEI);
+            modelBuilder.Entity<Product>()
+                .Property(o => o.Status)
+                .HasConversion<int>();
 
             modelBuilder.Entity<Customer>()
                 .HasIndex(c => c.Email).IsUnique();
@@ -45,10 +48,7 @@ namespace iTCShop.Data
                 .Property(o => o.PayMethod)
                 .HasConversion<int>();
 
-            modelBuilder.Entity<Order>()
-         .HasMany(o => o.OrderDetails)
-         .WithOne(od => od.Order)
-         .HasForeignKey(od => od.OrderId);
+          
         }
      
     }

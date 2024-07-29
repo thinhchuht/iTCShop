@@ -2,7 +2,7 @@
 
 namespace iTCShop.Controllers.Response
 {
-    public class OrderController(IOrderService orderService, IOrderDetailServices orderDetailServices, IProductDbServices productDbServices, ICartDetailsServices cartDetailsServices, IProductDbServices productDbServices1) : Controller
+    public class OrderController(IOrderService orderService, IOrderDetailServices orderDetailServices, IProductDbServices productDbServices, ICartDetailsServices cartDetailsServices) : Controller
     {
         public async Task<IActionResult> GetAllOrders()
         {
@@ -40,7 +40,7 @@ namespace iTCShop.Controllers.Response
                         var orderDetail = new OrderDetail(item.Quantity, p.ProductType.Price, p.IMEI, order.ID);
                         await orderDetailServices.AddOrderDetail(orderDetail);
                         order.OrderDetails.Add(orderDetail);
-                       await productDbServices1.DeleteProduct(p.IMEI);
+                        await productDbServices.AddProductToOrder(p.IMEI);
                     }
                 }
                 await cartDetailsServices.DeleteAllCartDetail(customer.ID);

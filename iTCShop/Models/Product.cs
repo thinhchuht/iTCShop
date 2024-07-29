@@ -14,6 +14,7 @@ namespace iTCShop.Models
         public string IMEI { get; set; }
         [Required]
         public string ProductTypeId { get; set; }
+        public OrderStatus Status { get; set; }
         public ProductType ProductType { get; set; }
     }
 }

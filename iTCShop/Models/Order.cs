@@ -2,9 +2,10 @@
 {
     public enum OrderStatus
     {
-        Pending = 1,
+        OnStock    = 0,
+        Pending    = 1,
         InProgress = 2,
-        Completed = 3
+        Completed  = 3
     }
 
     public enum OrderPayMethod

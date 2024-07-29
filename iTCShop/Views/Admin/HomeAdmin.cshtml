@@ -124,7 +124,8 @@
                 <th>No.</th>
                 <th>IMEI</th>
                 <th>TypeID</th>
-                <th>Product Name</th>
+                <th>Status</th>
+                <th>Name</th>
                 <th>Price</th>
                 <th>Description</th>
                 <th>Size</th>
@@ -132,7 +133,7 @@
                 <th>Memory</th>
                 <th>Color</th>
                 <th>RAM</th>
-            @*     <th>Picture</th> *@
+                @*     <th>Picture</th> *@
                 <th>Actions</th>
             </tr>
         </thead>
@@ -143,6 +144,7 @@
                     <td>@(++i)</td>
                     <td>@product.IMEI</td>
                     <td> @product.ProductType.ID</td>
+                    <td> @product.Status</td>
                     <td> @product.ProductType.Name</td>
                     <td>@product.ProductType.Price</td>
                     <td>@product.ProductType.Description</td>
@@ -151,9 +153,9 @@
                     <td>@product.ProductType.Memory</td>
                     <td>@product.ProductType.Color</td>
                     <td>@product.ProductType.RAM</td>
-                   @*   <td>
-                         <img src="@product.ProductType.Picture" alt="Picture" class="product-img" />
-                     </td> *@
+                    @*   <td>
+                <img src="@product.ProductType.Picture" alt="Picture" class="product-img" />
+                </td> *@
                     <td>
                         <div class="action-buttons">
                             <button type="button" class="edit-btn" data-toggle="modal" data-target="#editProductDiv" onclick="setProductId('@product.IMEI','prod')">Edit</button>
