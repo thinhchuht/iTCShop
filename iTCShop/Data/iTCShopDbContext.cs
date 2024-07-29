@@ -44,6 +44,12 @@ namespace iTCShop.Data
             modelBuilder.Entity<Order>()
                 .Property(o => o.PayMethod)
                 .HasConversion<int>();
+
+            modelBuilder.Entity<Order>()
+         .HasMany(o => o.OrderDetails)
+         .WithOne(od => od.Order)
+         .HasForeignKey(od => od.OrderId);
         }
+     
     }
 }

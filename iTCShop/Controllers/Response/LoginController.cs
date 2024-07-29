@@ -23,7 +23,7 @@ namespace iTCShop.Controllers.Response
                 var admin = await adminServices.CheckAdmin(userName, password);
                 if(admin != null)
                 {
-                    session.SetObjectAsJson("user", admin);
+                    session.SetObjectAsJson("admin", admin);
                     return RedirectToAction("HomeAdmin", "Admin");
                 }
                 else
