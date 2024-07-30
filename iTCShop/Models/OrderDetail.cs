@@ -12,12 +12,12 @@
         public Product     Product     { get; set; }
         public OrderDetail(int quantity, decimal price, string productID,string orderId)
         {
-            ID = Guid.NewGuid().ToString();
-            Quantity = quantity;
-            Price = price;
+            ID          = Guid.NewGuid().ToString();
+            Quantity    = quantity;
+            Price       = price;
             TotalAmount = price*quantity;
-            OrderId = orderId;
-            ProductID = productID;
+            OrderId     = orderId;
+            ProductID   = productID;
         }
     }
 }

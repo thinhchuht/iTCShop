@@ -61,6 +61,8 @@ namespace iTCShop.Controllers.Response
                     break;
             }
             TempData["productTypes"] = JsonConvert.SerializeObject(productTypes);
+            TempData["Search"] = search;
+            TempData["Sort"] = sort;
             return RedirectToAction("HomePage", "Home");
         }
         [HttpPost]

@@ -1,4 +1,5 @@
-﻿@model List<ProductType>
+﻿@using System.Globalization
+@model List<ProductType>
 
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -69,7 +70,7 @@
                 <tr class="custom-row">
                     <td>@productType.ID</td>
                     <td>@productType.Name</td>
-                    <td>@productType.Price.ToString("C")</td>
+                    <td>@productType.Price.ToString("C0", new CultureInfo("vi-VN"))</td>
                     <td>@productType.Description</td>
                     <td>@productType.Size</td>
                     <td>@productType.Battery</td>

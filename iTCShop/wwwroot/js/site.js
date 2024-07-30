@@ -34,8 +34,9 @@ function setProductId(id,check) {
     console.log(check);
     console.log(document.getElementById('imei'));
     console.log(document.getElementById('productId'));
-    if (check === "prod") document.getElementById('imei').value = id; 
-    if (check === "type") document.getElementById('productId').value = id
+    if (check === "prod") document.getElementById('imei').value = id;;
+    if (check === "type") document.getElementById('productId').value = id;
+    if (check === "order") document.getElementById('orderId').value = id;
     console.log(document.getElementById('imei'));
     
 }

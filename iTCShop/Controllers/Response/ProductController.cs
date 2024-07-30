@@ -96,6 +96,8 @@ namespace iTCShop.Controllers.Response
                 }
             }
             TempData["products"] = JsonConvert.SerializeObject(products);
+            TempData["Search"] = search;
+            TempData["Sort"] = sort;
             return RedirectToAction("HomeAdmin", "Admin");
         }
     }

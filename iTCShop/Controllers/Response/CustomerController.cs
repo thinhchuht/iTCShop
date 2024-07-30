@@ -8,7 +8,7 @@ namespace iTCShop.Controllers.Response
     {
         //public async Task<IActionResult> GetAllCustomers()
         //{
-                
+
         //    return RedirectToAction("HomeAdminCustomers", "Admin");
         //}
         public ActionResult RegisterCustomer()
@@ -51,7 +51,7 @@ namespace iTCShop.Controllers.Response
             {
                 var customers = await customerServices.GetAll();
                 TempData["customers"] = JsonConvert.SerializeObject(customers);
-                return RedirectToAction("HomeAdminCustomer", "Admin");
+                return RedirectToAction("HomeAdminCustomers", "Admin");
             }
             return BadRequest(rs);
         }
@@ -72,20 +72,22 @@ namespace iTCShop.Controllers.Response
         {
             var customers = await customerServices.GetAll();
             var customerLst = new List<Customer>();
-                switch (sort)
-                {
-                    case "ID":
-                        customerLst = customers.Where(p => p.ID.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
-                        break;
-                    case "Name":
-                        customerLst = customers.Where(p => p.Name.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
-                        break;
-                    default:
-                        customerLst = customers.Where(p => p.UserName.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
-                        break;
-                }
-                TempData["customers"] = JsonConvert.SerializeObject(customerLst);
-                return RedirectToAction("HomeAdminCustomers", "Admin"); ;
+            switch (sort)
+            {
+                case "ID":
+                    customerLst = customers.Where(p => p.ID.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+                    break;
+                case "Name":
+                    customerLst = customers.Where(p => p.Name.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+                    break;
+                default:
+                    customerLst = customers.Where(p => p.UserName.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+                    break;
+            }
+            TempData["customers"] = JsonConvert.SerializeObject(customerLst);
+            TempData["sort"] = sort;
+            TempData["search"] = search;
+            return RedirectToAction("HomeAdminCustomers", "Admin"); ;
         }
         [HttpPost]
         public async Task<IActionResult> Edit(Customer updatedCustomer)

@@ -18,6 +18,7 @@
         public int            AuthId      { get; set; }
         public CustomerStatus Status      { get; set; }
         public string         CartId      { get; set; }
+        public DateTime       CreateDate  { get; set; }
         public Cart           Cart        { get; set; }
         public AuthorizeUser  Auth        { get; set; }
         public List<Order>    Orders      { get; set; }
@@ -39,6 +40,7 @@
             AuthId      = 2;
             CartId      = ID;
             Status      = CustomerStatus.Available;
+            CreateDate  = DateTime.Now;
         }
     }
 }

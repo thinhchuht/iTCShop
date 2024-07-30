@@ -24,7 +24,7 @@ namespace iTCShop.Services.Service
 
         public async Task<Order> GetOrderById(string id)
         {
-            return await baseDbServices.GetById<Order>(id);
+            return await iTCShopDbContext.Orders.Include(o=>o.OrderDetails).FirstOrDefaultAsync(o => o.ID.Equals(id));
         }
 
         public async Task<List<Order>> GetOrdersByCustomerId(string id)

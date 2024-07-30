@@ -7,6 +7,14 @@
     if (user != null) Layout = "~/Views/Shared/_Layout.cshtml";
     if (admin != null) Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewBag.Title = "Home Page";
+    var az = false;
+    if (ViewBag.Sort == "nameAZ") az = true;
+    var za = false;
+    if (ViewBag.Sort == "nameZA") za = true;
+    var desc = false;
+    if (ViewBag.Sort == "priceDes") desc = true;
+    var acs = false;
+    if (ViewBag.Sort == "priceAcs") acs = true;
 }
 <link rel="stylesheet" href="~/css/Site.css">
 <div id="carouselExampleInterval" class="carousel slide center" data-bs-ride="carousel">
@@ -34,15 +42,14 @@
 <div class="filter center">
     <h2 id="title">IPHONE</h2>
     <form action="/ProductType/Search" method="get">
-        <!-- Đường dẫn đến action tìm kiếm -->
-        <input type="text" id="search" name="search" placeholder="Tìm kiếm">
+        <input type="text" id="search" name="search" placeholder="Tìm kiếm" value="@ViewBag.Search">
         <select name="sort" id="arrange">
-            <option value="nameAZ">Theo tên A - Z</option>
-            <option value="nameZA">Theo tên Z - A</option>
-            <option value="priceDes">Theo giá giảm dần</option>
-            <option value="priceAcs">Theo giá tăng dần</option>
+            <option value="nameAZ" selected="@az">Theo tên A - Z</option>
+            <option value="nameZA" selected="@za">Theo tên Z - A</option>
+            <option value="priceDes" selected="@desc">Theo giá giảm dần</option>
+            <option value="priceAcs" selected="@acs">Theo giá tăng dần</option>
         </select>
-        <button type="submit" class="btn btn-primary">Tìm kiếm</button> <!-- Nút tìm kiếm -->
+        <button type="submit" class="btn btn-primary">Tìm kiếm</button> 
     </form>
 </div>
 

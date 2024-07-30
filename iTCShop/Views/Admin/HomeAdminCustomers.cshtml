@@ -3,17 +3,23 @@
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewBag.Title = "Customers";
+    var isID = false;
+    if (ViewBag.Sort == "ID") isID = true;
+    var isName = false;
+    if (ViewBag.Sort == "Name") isName = true;
+    var isUserName = false;
+    if (ViewBag.Sort == "UserName") isUserName = true;
 }
 
-<h2 class="text-center mt-4">Customer Account Management</h2>
+<h2 class="text" >Customer Management</h2>
 <div class="search-bar" style="display:flex; justify-content: flex-end; height: 50px">
     <form action="/Customer/Search" method="get" style="display: flex">
         <select name="sort" class="form-select">
-            <option value="Name">Name</option>
-            <option value="ID">ID</option>
-            <option value="UserName">Username</option>
+            <option value="Name" selected="@isName">Name</option>
+            <option value="ID" selected="@isID">ID</option>
+            <option value="UserName" selected="@isUserName">Username</option>
         </select>
-        <input type="text" name="search" placeholder="Search..." required />
+        <input type="text" name="search" placeholder="Search..." required value="@ViewBag.Search"/>
         <button type="submit">Search</button>
     </form>
 </div>
@@ -27,6 +33,7 @@
                 <th scope="col">Phone</th>
                 <th scope="col">Address</th>
                 <th scope="col">Date of Birth</th>
+                <th scope="col">Create Date</th>
                 <th scope="col">Status</th>
                 <th scope="col">Actions</th>
             </tr>
@@ -41,6 +48,7 @@
                     <td>@customer.Phone</td>
                     <td>@customer.Address</td>
                     <td>@customer.DateOfBirth.ToString("MM/dd/yyyy")</td>
+                    <td>@customer.CreateDate</td>
                     <td>
                         @if (customer.Status == CustomerStatus.Available)
                         {

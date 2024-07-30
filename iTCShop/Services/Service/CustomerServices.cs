@@ -22,7 +22,7 @@
 
         public async Task<List<Customer>> GetAll()
         {
-            return await iTCShopDbContext.Customers.Include(p=> p.Auth).Include(p=>p.Orders).ToListAsync();
+            return await iTCShopDbContext.Customers.Include(p=> p.Auth).ToListAsync();
         }
 
         public async Task<Customer> GetCustomerById(string id)

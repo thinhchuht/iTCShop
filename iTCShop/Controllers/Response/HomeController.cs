@@ -10,6 +10,8 @@ namespace iTCShop.Controllers.Response
             var productTypes = new List<ProductType>();
             if (TempData["productTypes"] == null) productTypes = await productsTypeServices.GetAllProductTypes();
             else productTypes = JsonSerializer.Deserialize<List<ProductType>>(TempData["productTypes"].ToString());
+            ViewBag.Sort = TempData["sort"];
+            ViewBag.Search = TempData["search"];
             return View(productTypes);
         }
 

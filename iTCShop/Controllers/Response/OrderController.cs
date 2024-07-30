@@ -22,6 +22,54 @@ namespace iTCShop.Controllers.Response
             }
         }
 
+        public async Task<IActionResult> Search(string search, string sort, string status)
+        {
+            ViewBag.Search = search;
+            ViewBag.Sort = sort;
+            ViewBag.Status = status;
+            var orders = await orderService.GetAllOrders();
+            var ordersomerLst = new List<Order>();
+            if (string.IsNullOrEmpty(search) && string.IsNullOrEmpty(status))
+            {
+               
+                return View("GetOrdersAdmin", orders);
+            }
+            else if (string.IsNullOrEmpty(search) && !string.IsNullOrEmpty(status))
+            {
+                orders = orders.Where(o => string.Equals(o.Status.ToString(), status, StringComparison.OrdinalIgnoreCase)).ToList();
+                return View("GetOrdersAdmin", orders);
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(status))
+                {
+                    orders = orders.Where(o => o.Status.Equals(status)).ToList();
+                }
+                switch (sort)
+                {
+                    case "customerID":
+                        ordersomerLst = orders.Where(p => p.CustomerId.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+                        break;
+                    case "ID":
+                        ordersomerLst = orders.Where(p => p.ID.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+                        break;
+                    default:
+                        return View("GetOrdersAdmin", orders);
+                }
+            }
+            return View("GetOrdersAdmin", ordersomerLst); 
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeStatus(int newStatus, string orderId)
+        {
+            var orderList = new List<Order>();
+            var order = await orderService.GetOrderById(orderId);
+            order.Status = (OrderStatus)newStatus;
+           var rs = orderService.UpdateOrder(order);
+            orderList.Add(order);
+            return View("GetOrdersAdmin", orderList);
+        }
         [HttpPost]
         public IActionResult Order(List<CartDetailsRequest> cartDetails, decimal total)
         {
