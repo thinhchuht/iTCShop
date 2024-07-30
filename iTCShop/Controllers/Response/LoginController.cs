@@ -15,6 +15,7 @@ namespace iTCShop.Controllers.Response
             var customer = await customerServices.CheckCustomerAccount(userName, password);
             if(customer != null)
             {
+                if (customer.Status == 0) return BadRequest("You have been banned due to our Policy");
                 session.SetObjectAsJson("user", customer);
                 return RedirectToAction("HomePage", "Home");
             }

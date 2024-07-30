@@ -26,7 +26,7 @@
         {
             <tr>
                 <td>@order.ID</td>
-                <td>@order.OrderDate.ToShortDateString()</td>
+                <td>@order.OrderDate</td>
                 <td>@order.ShipAddress</td>
                 <td>@order.TotalPay.ToString("C")</td>
                 <td>@order.Status</td>
@@ -44,6 +44,7 @@
                         <thead>
                             <tr>
                                 <th>Product ID</th>
+                                <th>Product Type</th>
                                 <th>Quantity</th>
                                 <th>Price</th>
                                 <th>Total Amount</th>
@@ -54,6 +55,7 @@
                             {
                                 <tr>
                                     <td>@detail.ProductID</td>
+                                    <td>@detail.Product.ProductTypeId</td>
                                     <td>@detail.Quantity</td>
                                     <td>@detail.Price.ToString("C")</td>
                                     <td>@detail.TotalAmount.ToString("C")</td>

@@ -15,9 +15,9 @@
         
 
         public ProductType() { }
-        public ProductType(string id, string name, decimal price, string description, decimal size, int battery, int memory, string color, int rAM, string picture)
+        public ProductType(string name, decimal price, string description, decimal size, int battery, int memory, string color, int rAM, string picture)
         {
-            ID          = id;
+            ID          = $"{name[0]}{name[name.Length - 1]}{memory}{color[0]}";
             Name        = name;
             Price       = price;
             Description = description;

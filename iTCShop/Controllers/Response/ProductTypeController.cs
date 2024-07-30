@@ -25,6 +25,8 @@ namespace iTCShop.Controllers.Response
             }
         }
 
+
+
         public async Task<IActionResult> Search(string search, string sort)
         {
             var productTypes = await productTypesServices.GetAllProductTypes();
@@ -66,7 +68,7 @@ namespace iTCShop.Controllers.Response
         {
             try
             {
-                var product = new ProductType(productTypesRequest.ID, productTypesRequest.Name, productTypesRequest.Price, productTypesRequest.Description,
+                var product = new ProductType(productTypesRequest.Name, productTypesRequest.Price, productTypesRequest.Description,
                                           productTypesRequest.Size, productTypesRequest.Battery, productTypesRequest.Memory, productTypesRequest.Color,
                                           productTypesRequest.RAM, productTypesRequest.Picture);
                 var result = await productTypesServices.AddProductType(product);
@@ -99,7 +101,7 @@ namespace iTCShop.Controllers.Response
         {
             try
             {
-                var newProduct = new ProductType(productTypesRequest.ID, productTypesRequest.Name, productTypesRequest.Price, productTypesRequest.Description, productTypesRequest.Size,
+                var newProduct = new ProductType(productTypesRequest.Name, productTypesRequest.Price, productTypesRequest.Description, productTypesRequest.Size,
                                          productTypesRequest.Battery, productTypesRequest.Memory, productTypesRequest.Color, productTypesRequest.RAM, productTypesRequest.Picture);
                 var result = await productTypesServices.UpdateProductType(newProduct);
                 if (result.IsSuccess()) return RedirectToAction("HomeAdminProductType", "Admin");

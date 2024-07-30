@@ -48,7 +48,9 @@ namespace iTCShop.Data
                 .Property(o => o.PayMethod)
                 .HasConversion<int>();
 
-          
+            modelBuilder.Entity<Customer>()
+           .Property(c => c.Status)
+           .HasConversion<int>();
         }
      
     }

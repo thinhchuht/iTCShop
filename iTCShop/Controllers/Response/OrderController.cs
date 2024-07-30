@@ -1,4 +1,5 @@
 ﻿using iTCShop.Extensions;
+using Newtonsoft.Json;
 
 namespace iTCShop.Controllers.Response
 {
@@ -10,7 +11,7 @@ namespace iTCShop.Controllers.Response
             var admin = HttpContext.Session.GetObjectFromJson<Admin>("admin");
             if (customer == null && admin == null) return RedirectToAction("Login", "Login");
             else
-            { 
+            {
                 if (admin == null)
                 {
                     var cusOrders = await orderService.GetOrdersByCustomerId(customer.ID);
@@ -22,28 +23,18 @@ namespace iTCShop.Controllers.Response
         }
 
         [HttpPost]
-        public async Task<IActionResult> Order(List<CartDetailsRequest> cartDetails, decimal total)
+        public IActionResult Order(List<CartDetailsRequest> cartDetails, decimal total)
         {
             try
             {
+                TempData["cartDetails"] = JsonConvert.SerializeObject(cartDetails); 
                 var customer = HttpContext.Session.GetObjectFromJson<Customer>("user");
-                var order = new Order();
-                order.TotalPay = total;
-                order.CustomerId = customer.ID;
-                await orderService.AddOrder(order);
-                foreach (var item in cartDetails)
+                var order = new Order()
                 {
-                    var allProducts = await productDbServices.GetProductsByProductType(item.ProductTypeID);
-                    var products = allProducts.Take(item.Quantity).ToList();
-                    foreach (var p in products)
-                    {
-                        var orderDetail = new OrderDetail(item.Quantity, p.ProductType.Price, p.IMEI, order.ID);
-                        await orderDetailServices.AddOrderDetail(orderDetail);
-                        order.OrderDetails.Add(orderDetail);
-                        await productDbServices.AddProductToOrder(p.IMEI);
-                    }
-                }
-                await cartDetailsServices.DeleteAllCartDetail(customer.ID);
+                    TotalPay = total,
+                    CustomerId = customer.ID
+                };
+                TempData.Keep();
                 return View(order);
             }
             catch (Exception ex)
@@ -54,14 +45,32 @@ namespace iTCShop.Controllers.Response
 
 
         [HttpPost]
-        public async Task<IActionResult> GetAllOrders(int payMethod, string shipAddress, string id)
+        public async Task<IActionResult> GetAllOrders(int payMethod, string shipAddress, string customerId, decimal totalPay)
         {
             try
             {
-                var order = await orderService.GetOrderById(id);
-                order.PayMethod = (OrderPayMethod)payMethod;
-                order.ShipAddress = shipAddress;
-                orderService.UpdateOrder(order);
+                var order = new Order()
+                {
+                    TotalPay = totalPay,
+                    CustomerId = customerId,
+                    PayMethod = (OrderPayMethod)payMethod,
+                    ShipAddress = shipAddress,
+                };
+                await orderService.AddOrder(order);
+                var cartDetails = JsonConvert.DeserializeObject<List<CartDetailsRequest>>(TempData.Peek("cartDetails").ToString());
+                foreach (var item in cartDetails)
+                {
+                    var allProducts = await productDbServices.GetProductsByProductType(item.ProductTypeID);
+                    var products = allProducts.Take(item.Quantity).ToList();
+                    foreach (var p in products)
+                    {
+                        var orderDetail = new OrderDetail(1, p.ProductType.Price, p.IMEI, order.ID);
+                        await orderDetailServices.AddOrderDetail(orderDetail);
+                        order.OrderDetails.Add(orderDetail);
+                        await productDbServices.AddProductToOrder(p.IMEI);
+                    }
+                }
+                await cartDetailsServices.DeleteAllCartDetail(customerId);
                 return RedirectToAction("GetAllOrders");
             }
             catch (Exception ex)

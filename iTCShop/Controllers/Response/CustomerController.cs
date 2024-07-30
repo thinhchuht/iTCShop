@@ -1,10 +1,16 @@
 ﻿using iTCShop.Extensions;
+using Newtonsoft.Json;
 
 namespace iTCShop.Controllers.Response
 {
 
     public class CustomerController(ICustomerServices customerServices, ICartService cartService) : Controller
     {
+        //public async Task<IActionResult> GetAllCustomers()
+        //{
+                
+        //    return RedirectToAction("HomeAdminCustomers", "Admin");
+        //}
         public ActionResult RegisterCustomer()
         {
             return View();
@@ -35,7 +41,20 @@ namespace iTCShop.Controllers.Response
                 return View();
             }
         }
-
+        public async Task<IActionResult> UpdateStatus(string id)
+        {
+            var customer = await customerServices.GetCustomerById(id);
+            if (customer.Status == CustomerStatus.Available) customer.Status = CustomerStatus.Banned;
+            else customer.Status = CustomerStatus.Available;
+            var rs = customerServices.UpdateCustomer(customer);
+            if (rs.IsSuccess())
+            {
+                var customers = await customerServices.GetAll();
+                TempData["customers"] = JsonConvert.SerializeObject(customers);
+                return RedirectToAction("HomeAdminCustomer", "Admin");
+            }
+            return BadRequest(rs);
+        }
         public ActionResult GetCustomerInfo()
         {
             var customer = HttpContext.Session.GetObjectFromJson<Customer>("user");
@@ -49,6 +68,25 @@ namespace iTCShop.Controllers.Response
             return View(customer);
         }
 
+        public async Task<IActionResult> Search(string search, string sort)
+        {
+            var customers = await customerServices.GetAll();
+            var customerLst = new List<Customer>();
+                switch (sort)
+                {
+                    case "ID":
+                        customerLst = customers.Where(p => p.ID.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+                        break;
+                    case "Name":
+                        customerLst = customers.Where(p => p.Name.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+                        break;
+                    default:
+                        customerLst = customers.Where(p => p.UserName.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+                        break;
+                }
+                TempData["customers"] = JsonConvert.SerializeObject(customerLst);
+                return RedirectToAction("HomeAdminCustomers", "Admin"); ;
+        }
         [HttpPost]
         public async Task<IActionResult> Edit(Customer updatedCustomer)
         {
@@ -60,7 +98,7 @@ namespace iTCShop.Controllers.Response
             customer.Address = updatedCustomer.Address;
             customer.DateOfBirth = updatedCustomer.DateOfBirth;
 
-           var rs = customerServices.UpdateCustomer(customer);
+            var rs = customerServices.UpdateCustomer(customer);
             HttpContext.Session.SetObjectAsJson("user", customer);
             if (rs.IsSuccess()) return RedirectToAction("GetCustomerInfo");
             else

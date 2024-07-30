@@ -31,17 +31,5 @@
             OrderDate = DateTime.Now;
             Status = OrderStatus.Pending;
         }
-        public Order(string shipAddress, decimal totalPay, int status, int payMethod, string customerId )
-        {
-            ID          = Guid.NewGuid().ToString();
-            OrderDate   = DateTime.Now;
-            ShipAddress = shipAddress;
-            TotalPay    = totalPay;
-            Status      = (OrderStatus)status;
-            PayMethod   = (OrderPayMethod)payMethod;
-            CustomerId  = customerId;
-        }
     }
-
-   
 }

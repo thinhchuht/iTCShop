@@ -19,7 +19,7 @@ namespace iTCShop.Services.Service
 
         public async Task<List<Order>> GetAllOrders()
         {
-            return await iTCShopDbContext.Orders.Include(o => o.OrderDetails).ToListAsync();
+            return await iTCShopDbContext.Orders.Include(o => o.OrderDetails).ThenInclude(od => od.Product).ToListAsync();
         }
 
         public async Task<Order> GetOrderById(string id)

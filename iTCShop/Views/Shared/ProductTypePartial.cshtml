@@ -5,7 +5,7 @@
     var formId = ViewData["formId"];
     var formAction = ViewData["formAction"];
     var buttonText = ViewData["buttonText"];
-    var isEdit = ViewData["functionName"].ToString().Contains("Edit")?true: false;
+    // var isEdit = ViewData["functionName"].ToString().Contains("Edit")?true: false;
 }
 
 <div class="modal fade" id="@divId" tabindex="-1" role="dialog" aria-labelledby="editProductModalLabel" aria-hidden="true">
@@ -21,7 +21,7 @@
                 <form id="@formId" action="@formAction" method="post">
                     <div class="form-group">
                         <label for="productName">ID</label>
-                        <input type="text" class="form-control" id="productId" name="id" value="" required readonly="@isEdit"}>
+                        <input type="text" class="form-control" id="productId" name="id" value="" required readonly>
                     </div>
                     <div class="form-group">
                         <label for="productName">Name</label>
@@ -29,7 +29,7 @@
                     </div>
                     <div class="form-group">
                         <label for="productPrice">Price</label>
-                        <input type="number" class="form-control" id="productPrice" name="price" value="@Model?.Price" required>
+                        <input type="number" class="form-control" id="productPrice" name="price" value="$@Model?.Price" required>
                     </div>
                     <div class="form-group">
                         <label for="productDescription">Description</label>
@@ -37,7 +37,7 @@
                     </div>
                     <div class="form-group">
                         <label for="productSize">Size</label>
-                        <input type="number" class="form-control" id="productSize" name="size" value="@Model?.Size" required>
+                        <input type="number" step="0.01" class="form-control" id="productSize" name="size" value="@Model?.Size" required>
                     </div>
                     <div class="form-group">
                         <label for="productBattery">Battery</label>

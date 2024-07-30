@@ -1,5 +1,11 @@
-﻿@model List<ProductType>
+﻿@using iTCShop.Extensions
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@model List<ProductType>
 @{
+    var user = SessionValueConverter.GetObjectFromJson<Customer>(HttpContextAccessor.HttpContext.Session, "user");
+    var admin = SessionValueConverter.GetObjectFromJson<Admin>(HttpContextAccessor.HttpContext.Session, "admin");
+    if (user != null) Layout = "~/Views/Shared/_Layout.cshtml";
+    if (admin != null) Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewBag.Title = "Home Page";
 }
 <link rel="stylesheet" href="~/css/Site.css">
@@ -46,10 +52,11 @@
         {
             <div class="product" id="@item.ID">
                 <img src="~/asset/IP.jpg" alt="">
+                <p style="font-size: larger; font-weight: bold">@item.Name</p>
                 <del>@(item.Price + 5000)</del>
-                <p>@item.Price</p>
-                <p>@item.Name</p>
-                <i class="fa-solid fa-plus" product-type-id="@item.ID"></i>
+                <p style="color: red; font-size: large; font-weight: bold">$ @item.Price</p>
+                <p>@item.Memory GB @item.Color</p>
+                <i class="fa-solid fa-plus" style="color:red; font-size: large; border:1px solid red; padding-top: 5px; margin-bottom: 8px;" product-type-id="@item.ID"></i>
             </div>
         }
     }
