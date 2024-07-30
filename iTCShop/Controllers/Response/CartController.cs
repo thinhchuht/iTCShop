@@ -1,6 +1,4 @@
-﻿using iTCShop.Extensions;
-
-namespace iTCShop.Controllers.Response
+﻿namespace iTCShop.Controllers.Response
 {
     public class CartController(ICartService cartService, ICartDetailsServices cartDetailsServices) : Controller
     {

@@ -6,12 +6,19 @@
         {
            try
             {
+                var customers = await GetAll();
+                if (customer.DateOfBirth > DateTime.Now) return ResponseModel.FailureResponse("That not your bithday!");
+                foreach (var cus in customers)
+                {
+                    if(customer.Email == cus.Email) return ResponseModel.FailureResponse("This Email is already being used !");
+                    if(customer.UserName == cus.UserName) return ResponseModel.FailureResponse("This UserName is already being used !");
+                }
                 await baseDbServices.AddAsync(customer);
                 return ResponseModel.SuccessResponse();
             }
-            catch (Exception ex)
+            catch
             {
-                return ResponseModel.FailureResponse(ex.ToString());
+                return ResponseModel.ExceptionResponse();
             }
         }
 

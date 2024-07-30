@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-
+﻿
 namespace iTCShop.Controllers.Response
 {
 
@@ -38,6 +37,7 @@ namespace iTCShop.Controllers.Response
                     case "typeID":
                         productTypes = productTypes.Where(p => p.Name.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
                         TempData["productTypes"] = JsonConvert.SerializeObject(productTypes);
+                        
                         return RedirectToAction("HomeAdminProductType", "Admin");
                     default :
                         productTypes = productTypes.Where(p => p.Name.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();

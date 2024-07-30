@@ -1,1 +1,9 @@
-﻿
+﻿@model ResponseModel
+<script>
+    @{
+        if (Model != null)
+        {
+            <text>alert("@Model.Message") </text>
+        }
+    }
+</script>

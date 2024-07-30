@@ -11,6 +11,7 @@
         Task<ResponseModel> IsAvailableCheck(string productTypeId, int quantity = 0);
         Task<ResponseModel> DeleteProductByProductTypeID(string productTypeId);
         Task<ResponseModel> AddProductToOrder(string imei);
+        Task<ResponseModel> UpdateProductStatus(string imei, int newStatus);
 
 
     }

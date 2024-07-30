@@ -1,7 +1,4 @@
-﻿using iTCShop.Extensions;
-using Newtonsoft.Json;
-
-namespace iTCShop.Controllers.Response
+﻿namespace iTCShop.Controllers.Response
 {
 
     public class CustomerController(ICustomerServices customerServices, ICartService cartService) : Controller
@@ -26,14 +23,13 @@ namespace iTCShop.Controllers.Response
                 var rs = await customerServices.AddCustomer(customer);
                 if (rs.IsSuccess())
                 {
-                    ViewBag.RegRs = "Đăng kí thành công. Đăng nhập ngay";
+                    ViewBag.RegRs = "Register sucessfully. Go to login.";
                     ViewBag.isReg = true;
-                    return View("RegisterCustomer");
+                    return View("RegisterCustomer",rs);
                 }
                 else
                 {
-                    ViewBag.RegRs = "Đăng kí thất bại. Hãy thử lại";
-                    return View("RegisterCustomer");
+                    return View("RegisterCustomer",rs);
                 }
             }
             catch

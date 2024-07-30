@@ -27,9 +27,9 @@
 
         public Order()
         {
-            ID = Guid.NewGuid().ToString();
+            ID        = Guid.NewGuid().ToString();
             OrderDate = DateTime.Now;
-            Status = OrderStatus.Pending;
+            Status    = OrderStatus.Pending;
         }
     }
 }

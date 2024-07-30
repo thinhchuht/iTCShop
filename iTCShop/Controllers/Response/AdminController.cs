@@ -1,6 +1,4 @@
-﻿using System.Text.Json;
-
-namespace iTCShop.Controllers.Response
+﻿namespace iTCShop.Controllers.Response
 {
     public class AdminController(IProductDbServices productDbServices, IProductsTypeServices productsTypeServices, ICustomerServices customerServices, IOrderService orderService) : Controller
     {
@@ -13,7 +11,7 @@ namespace iTCShop.Controllers.Response
             list.ProductTypes.AddRange(productTypes);
             var products = new List<Product>();
             if (TempData["products"] == null) products = await productDbServices.GetAllProducts();
-            else products = JsonSerializer.Deserialize<List<Product>>(TempData["products"].ToString());
+            else products = JsonConvert.DeserializeObject<List<Product>>(TempData["products"].ToString());
             list.Products.AddRange(products);
             ViewBag.Search = TempData["Search"];
             ViewBag.Sort = TempData["Sort"];
@@ -25,8 +23,7 @@ namespace iTCShop.Controllers.Response
         {
             var productTypes = new List<ProductType>();
             if (TempData["productTypes"] == null) productTypes = await productsTypeServices.GetAllProductTypes();
-            else productTypes = JsonSerializer.Deserialize<List<ProductType>>(TempData["productTypes"].ToString());
-
+            else productTypes = JsonConvert.DeserializeObject<List<ProductType>>(TempData["productTypes"].ToString());
             return View(productTypes);
         }
 
@@ -35,7 +32,7 @@ namespace iTCShop.Controllers.Response
         {
             var customers = new List<Customer>();
             if (TempData["customers"] == null) customers = await customerServices.GetAll();
-            else customers = JsonSerializer.Deserialize<List<Customer>>(TempData["customers"].ToString());
+            else customers = JsonConvert.DeserializeObject<List<Customer>>(TempData["customers"].ToString());
             ViewBag.Sort = TempData["sort"];
             ViewBag.Search = TempData["search"];
             return View(customers);
@@ -44,7 +41,7 @@ namespace iTCShop.Controllers.Response
         [Route("ARev")]
         public async Task<IActionResult> HomeAdminRevenue()
         {
-            var orders = await orderService.GetAllOrders();
+            var orders = await orderService.GetAllCompletedOrders();
             ViewBag.Sort = TempData["sort"];
             ViewBag.Search = TempData["search"];
             return View(orders);

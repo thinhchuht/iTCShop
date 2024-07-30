@@ -1,6 +1,4 @@
-﻿using System.Text.Json;
-
-namespace iTCShop.Controllers.Response
+﻿namespace iTCShop.Controllers.Response
 {
     public class HomeController(IProductsTypeServices productsTypeServices) : Controller
     { 
@@ -9,7 +7,7 @@ namespace iTCShop.Controllers.Response
         {
             var productTypes = new List<ProductType>();
             if (TempData["productTypes"] == null) productTypes = await productsTypeServices.GetAllProductTypes();
-            else productTypes = JsonSerializer.Deserialize<List<ProductType>>(TempData["productTypes"].ToString());
+            else productTypes = JsonConvert.DeserializeObject<List<ProductType>>(TempData["productTypes"].ToString());
             ViewBag.Sort = TempData["sort"];
             ViewBag.Search = TempData["search"];
             return View(productTypes);

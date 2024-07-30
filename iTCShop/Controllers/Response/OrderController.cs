@@ -67,6 +67,13 @@ namespace iTCShop.Controllers.Response
             var order = await orderService.GetOrderById(orderId);
             order.Status = (OrderStatus)newStatus;
            var rs = orderService.UpdateOrder(order);
+            if(rs.IsSuccess())
+            { 
+                foreach(var item in order.OrderDetails)
+                {
+                  await productDbServices.UpdateProductStatus(item.ProductID, newStatus);
+                }
+            }
             orderList.Add(order);
             return View("GetOrdersAdmin", orderList);
         }
@@ -75,6 +82,7 @@ namespace iTCShop.Controllers.Response
         {
             try
             {
+                if (cartDetails.Count == 0) return RedirectToAction("HomePage", "Home");
                 TempData["cartDetails"] = JsonConvert.SerializeObject(cartDetails); 
                 var customer = HttpContext.Session.GetObjectFromJson<Customer>("user");
                 var order = new Order()

@@ -74,6 +74,21 @@
             else return ResponseModel.SuccessResponse();
         }
 
+        public async Task<ResponseModel> UpdateProductStatus(string imei, int newStatus)
+        {
+            try
+            {
+                var product = await GetProductByImei(imei);
+                product.Status = (OrderStatus)newStatus;
+                iTCShopDbContext.Update(product);
+               await iTCShopDbContext.SaveChangesAsync();
+                return ResponseModel.SuccessResponse();
+            }
+            catch 
+            {
+                return ResponseModel.FailureResponse("Failed to update status");
+            }
+        }
         public async Task<ResponseModel> UpdateProduct(ProductRequest productRequest)
         {
             try

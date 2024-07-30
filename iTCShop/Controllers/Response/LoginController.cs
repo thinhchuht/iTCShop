@@ -1,5 +1,4 @@
-﻿using iTCShop.Extensions;
-namespace iTCShop.Controllers.Response
+﻿namespace iTCShop.Controllers.Response
 {
     public class LoginController(ICustomerServices customerServices, IAdminServices adminServices) : Controller
     {
@@ -15,9 +14,9 @@ namespace iTCShop.Controllers.Response
             var customer = await customerServices.CheckCustomerAccount(userName, password);
             if(customer != null)
             {
-                if (customer.Status == 0) return BadRequest("You have been banned due to our Policy");
+                if (customer.Status == 0) return View(ResponseModel.FailureResponse("You have been banned due to our Policy!"));
                 session.SetObjectAsJson("user", customer);
-                return RedirectToAction("HomePage", "Home");
+                return RedirectToAction("HomePage", "Home",ResponseModel.SuccessResponse());
             }
             else
             {
@@ -25,12 +24,12 @@ namespace iTCShop.Controllers.Response
                 if(admin != null)
                 {
                     session.SetObjectAsJson("admin", admin);
-                    return RedirectToAction("HomeAdmin", "Admin");
+                    return RedirectToAction("HomeAdmin", "Admin", ResponseModel.SuccessResponse());
                 }
                 else
                 {
                     ViewBag.Fail = "Login failed";
-                    return View("Login","Login");
+                    return View("Login",ResponseModel.FailureResponse("Invalid Username or Password"));
                 }
             }
         }
