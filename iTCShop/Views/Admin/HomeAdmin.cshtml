@@ -153,7 +153,7 @@
                     <td> @product.ProductType.ID</td>
                     <td> @product.Status</td>
                     <td> @product.ProductType.Name</td>
-                    <td>@product.ProductType.Price.ToString("C0", new CultureInfo("vi-VN"))</td>
+                    <td>@MoneyDTO.Convert(@product.ProductType.Price)</td>
                     <td>@product.ProductType.Description</td>
                     <td>@product.ProductType.Size</td>
                     <td>@product.ProductType.Battery</td>
@@ -196,3 +196,10 @@
     }
 </div>
 
+@{
+    var response = TempData.Get<ResponseModel>("response");
+    if (response != null)
+    {
+        Html.RenderPartial("_ErrorPartial", response);
+    }
+}

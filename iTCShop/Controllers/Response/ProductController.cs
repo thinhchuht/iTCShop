@@ -36,8 +36,9 @@
             try
             {
                 var result = await productDbServices.AddProduct(productRequest);
-                if (result.IsSuccess()) return Redirect("~/AProds");
-                return BadRequest(result);
+                if (!result.IsSuccess()) TempData.Put("response", result);
+                TempData.Keep();
+                return Redirect("~/AProds");
             }
             catch (Exception ex)
             {

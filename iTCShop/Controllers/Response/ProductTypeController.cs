@@ -69,8 +69,9 @@
                                           productTypesRequest.Size, productTypesRequest.Battery, productTypesRequest.Memory, productTypesRequest.Color,
                                           productTypesRequest.RAM);
                 var result = await productTypesServices.AddProductType(product);
-                if (result.IsSuccess()) return RedirectToAction("HomeAdminProductType", "Admin");
-                else return BadRequest(result);
+                if (!result.IsSuccess()) TempData.Put("response", result);
+                TempData.Keep();
+                return RedirectToAction("HomeAdminProductType", "Admin");
             }
             catch (Exception ex)
             {

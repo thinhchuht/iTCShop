@@ -25,7 +25,7 @@
                     <td>@order.ID</td>
                     <td>@order.OrderDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
                     <td>@order.ShipAddress</td>
-                    <td>@order.TotalPay.ToString("C")</td>
+                    <td>@MoneyDTO.Convert(@order.TotalPay)</td>
                     <td>@order.Status</td>
                     <td>@order.PayMethod</td>
                     <td>
@@ -51,7 +51,7 @@
                                         <tr>
                                             <td>@detail.ProductID</td>
                                             <td>@detail.Quantity</td>
-                                            <td>@detail.Price.ToString("C")</td>
+                                            <td>@MoneyDTO.Convert(@detail.Price)</td>
                                         </tr>
                                     }
                                 </tbody>

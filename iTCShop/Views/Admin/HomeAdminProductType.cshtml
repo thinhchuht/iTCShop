@@ -72,7 +72,7 @@
                     <td>@(++i)</td>
                     <td>@productType.ID</td>
                     <td>@productType.Name</td>
-                    <td>@productType.Price.ToString("C0", new CultureInfo("vi-VN"))</td>
+                    <td>@MoneyDTO.Convert(@productType.Price)</td>
                     <td>@productType.Description</td>
                     <td>@productType.Size</td>
                     <td>@productType.Battery</td>
@@ -113,4 +113,10 @@
     Html.RenderPartial("ProductTypePartial", new iTCShop.Models.ProductType());
 }
 
-
+@{
+    var response = TempData.Get<ResponseModel>("response");
+    if (response != null)
+    {
+        Html.RenderPartial("_ErrorPartial", response);
+    }
+}

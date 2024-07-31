@@ -5,7 +5,7 @@
     var formId = ViewData["formId"];
     var formAction = ViewData["formAction"];
     var buttonText = ViewData["buttonText"];
-    var isEdit = ViewData["functionName"].ToString().Contains("Edit")?true: false;
+    var isEdit = ViewData["functionName"].ToString().Contains("Edit") ? true : false;
 }
 
 <div class="modal fade" id="@divId" tabindex="-1" role="dialog" aria-labelledby="editProductModalLabel" aria-hidden="true">
@@ -45,7 +45,12 @@
                     </div>
                     <div class="form-group">
                         <label for="productMemory">Memory</label>
-                        <input type="number" class="form-control" id="productMemory" name="memory" value="@Model?.Memory" required min="1" readonly="@isEdit">
+                        <select class="form-control" id="productMemory" name="memory" required readonly="@isEdit">
+                            <option value="64">64</option>
+                            <option value="128">128</option>
+                            <option value="256">256</option>
+                            <option value="512">512</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="productColor">Color</label>
@@ -55,10 +60,10 @@
                         <label for="productRAM">RAM</label>
                         <input type="number" class="form-control" id="productRAM" name="ram" value="@Model?.RAM" min="1" required>
                     </div>
-               @*       <div class="form-group">
-                         <label for="productPicture">Picture</label>
-                         <input type="text" class="form-control" id="productPicture" name="picture" value="@Model?.Picture" required>
-                     </div> *@
+                    @*       <div class="form-group">
+                    <label for="productPicture">Picture</label>
+                    <input type="text" class="form-control" id="productPicture" name="picture" value="@Model?.Picture" required>
+                    </div> *@
                     <button type="submit" class="btn btn-primary">@buttonText</button>
                 </form>
             </div>

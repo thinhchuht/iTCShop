@@ -23,6 +23,9 @@
         public AuthorizeUser  Auth        { get; set; }
         public List<Order>    Orders      { get; set; }
 
+        public int CompletedOrdersCount => Orders?.Count(o => o.Status == OrderStatus.Completed) ?? 0;
+        public decimal TotalAmountSpent => Orders?.Where(o => o.Status == OrderStatus.Completed).Sum(o => o.TotalPay) ?? 0;
+
         public Customer() {}
 
         public Customer(string name, string email, string userName, string password, string phone, string address, DateTime dateOfBirth, string id = null)

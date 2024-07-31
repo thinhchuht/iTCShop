@@ -59,7 +59,7 @@
                 <td>@order.ID</td>
                 <td>@order.OrderDate</td>
                 <td>@order.ShipAddress</td>
-                <td>@order.TotalPay.ToString("C0", new CultureInfo("vi-VN"))</td>
+                <td>@MoneyDTO.Convert(@order.TotalPay)</td>
                 <td>@order.Status</td>
                 <td>@order.CustomerId</td>
                 <td>@order.PayMethod</td>
@@ -93,8 +93,8 @@
                                     <td>@detail.ProductID</td>
                                     <td>@detail.Product.ProductTypeId</td>
                                     <td>@detail.Quantity</td>
-                                    <td>@detail.Price.ToString("C0", new CultureInfo("vi-VN"))</td>
-                                    <td>@detail.TotalAmount.ToString("C0", new CultureInfo("vi-VN"))</td>
+                                    <td>@MoneyDTO.Convert(@detail.Price)</td>
+                                    <td>@MoneyDTO.Convert(@detail.TotalAmount)</td>
                                 </tr>
                             }
                         </tbody>

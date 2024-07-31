@@ -6,8 +6,10 @@
         {
             try
             {
-                var productType = await baseDbServices.GetById<ProductType>(productRequest.ProductTypeId);
-                var newProduct =  new Product(productRequest.Imei, productType.ID);
+                //var productType = await baseDbServices.GetById<ProductType>(productRequest.ProductTypeId);
+                var products = await GetAllProducts();
+                if (products.Any(p => p.IMEI == productRequest.Imei)) return ResponseModel.FailureResponse("There is already a phone with this IMEI!");
+                var newProduct = new Product(productRequest.Imei, productRequest.ProductTypeId);
                 await baseDbServices.AddAsync(newProduct);
                 return ResponseModel.SuccessResponse();
             }

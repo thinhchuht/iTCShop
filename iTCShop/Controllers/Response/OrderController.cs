@@ -19,16 +19,22 @@
             }
         }
 
-        public async Task<IActionResult> Search(string search, string sort, string status)
+        public async Task<IActionResult> Search(string search, string sort, string status, DateTime? startDate, DateTime? endDate)
         {
             ViewBag.Search = search;
             ViewBag.Sort = sort;
             ViewBag.Status = status;
             var orders = await orderService.GetAllOrders();
             var ordersomerLst = new List<Order>();
+            if (startDate != null && endDate != null)
+            {
+                orders = orders.Where(o => o.OrderDate >= startDate && o.OrderDate <= endDate).ToList();
+                TempData.Put("orders", orders);
+                return RedirectToAction("HomeAdminReport","Admin");
+            };
             if (string.IsNullOrEmpty(search) && string.IsNullOrEmpty(status))
             {
-               
+
                 return View("GetOrdersAdmin", orders);
             }
             else if (string.IsNullOrEmpty(search) && !string.IsNullOrEmpty(status))
@@ -54,7 +60,7 @@
                         return View("GetOrdersAdmin", orders);
                 }
             }
-            return View("GetOrdersAdmin", ordersomerLst); 
+            return View("GetOrdersAdmin", ordersomerLst);
         }
 
         [HttpPost]
@@ -63,16 +69,16 @@
             var orderList = new List<Order>();
             var order = await orderService.GetOrderById(orderId);
             order.Status = (OrderStatus)newStatus;
-           var rs = orderService.UpdateOrder(order);
-            if(rs.IsSuccess())
-            { 
-                foreach(var item in order.OrderDetails)
+            var rs = orderService.UpdateOrder(order);
+            if (rs.IsSuccess())
+            {
+                foreach (var item in order.OrderDetails)
                 {
-                  await productDbServices.UpdateProductStatus(item.ProductID, newStatus);
+                    await productDbServices.UpdateProductStatus(item.ProductID, newStatus);
                 }
             }
             orderList.Add(order);
-            return View("GetOrdersAdmin", orderList);
+            return RedirectToAction("GetAllOrders");
         }
 
         [HttpPost]
@@ -82,10 +88,10 @@
             {
                 if (cartDetails.Count == 0)
                 {
-                    TempData.Put("response",ResponseModel.FailureResponse("You dont have any thing in your cart, buy something first"));
+                    TempData.Put("response", ResponseModel.FailureResponse("You dont have any thing in your cart, buy something first!"));
                     return RedirectToAction("HomePage", "Home");
                 }
-                TempData.Put("cartDetails",cartDetails); 
+                TempData.Put("cartDetails", cartDetails);
                 var customer = HttpContext.Session.GetObjectFromJson<Customer>("user");
                 var order = new Order()
                 {
