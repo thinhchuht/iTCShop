@@ -28,7 +28,7 @@
 <div class="container mt-5">
     <div class="card">
         <div class="card-header bg-primary text-white text-center">
-            <h2>Edit Acoount</h2>
+            <h2>Edit Account</h2>
             <h2> @ViewBag.Fail</h2>
         </div>
         <div class="card-body">
@@ -46,7 +46,7 @@
                         </div>
                         <div class="form-group">
                             <label for="phone">Phone</label>
-                            <input type="text" class="form-control" id="phone" name="Phone" value="@Model.Phone" required>
+                            <input type="text" class="form-control" id="phone" name="Phone" value="@Model.Phone" required pattern="^\d{10}$" title="Has to be 10 number.">
                         </div>
                         <div class="form-group">
                             <label for="address">Address</label>
@@ -65,12 +65,12 @@
                         </div>
                         <div class="form-group">
                             <label for="password">Password</label>
-                            <input type="password" class="form-control" id="password" name="Password" value="@Model.Password" required>
+                            <input type="password" class="form-control" id="password" name="Password" value="@Model.Password" required minlength="6">
                         </div>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-success">Save Changes</button>
-                <a href="@Url.Action("HomePage", "Home")" class="btn btn-secondary">Cancel</a>
+                <a href="~/Customer/GetCustomerInfo" class="btn btn-secondary">Cancel</a>
             </form>
         </div>
     </div>

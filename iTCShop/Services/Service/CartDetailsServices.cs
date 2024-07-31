@@ -13,7 +13,7 @@
             try
             {
                 var checkStock = await productDbServices.IsAvailableCheck(productTypeId);
-                if (!checkStock.IsSuccess()) return ResponseModel.FailureResponse("Out of stocks");
+                if (!checkStock.IsSuccess()) return checkStock;
                 var existCartDetail = await GetCartDetailByProductTypeId(productTypeId, cartId);
                 if (existCartDetail == null)
                 {
@@ -23,6 +23,8 @@
                 else
                 {
                     existCartDetail.Quantity += 1;
+                    checkStock = await productDbServices.IsAvailableCheck(productTypeId, existCartDetail.Quantity);
+                    if (!checkStock.IsSuccess()) return checkStock;
                     iTCShopDbContext.SaveChanges();
                 }
                 return ResponseModel.SuccessResponse();

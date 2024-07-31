@@ -8,7 +8,7 @@
 
         public static ResponseModel SuccessResponse()            => new ResponseModel { Code = 1,  Message = "Success" };
         public static ResponseModel FailureResponse(string mess) => new ResponseModel { Code = 0,  Message = mess };
-        public static ResponseModel ExceptionResponse()          => new ResponseModel { Code = -1, Message = "Exception" };
+        public static ResponseModel ExceptionResponse()          => new ResponseModel { Code = -1, Message = "There is Exception, try again" };
     
     }
 }

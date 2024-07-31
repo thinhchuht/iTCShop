@@ -1,10 +1,17 @@
-﻿@model iTCShop.Controllers.Response.ResponseListsView;
+﻿@using System.Globalization
+@model iTCShop.Controllers.Response.ResponseListsView;
 
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewBag.Title = "Admin Page";
     var i = 0;
     var productTypes = new List<ProductType>();
+    var isTypeID = false;
+    if (ViewBag.Sort == "typeId") isTypeID = true;
+    var isName= false;
+    if (ViewBag.Sort == "name") isName = true;
+    var isImei = false;
+    if (ViewBag.Sort == "imei") isTypeID = true;
 }
 <style>
     body {
@@ -110,11 +117,11 @@
         <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addProductDiv" style="height:50px">Add New Product </button>
         <form action="/Product/Search" method="get" style="display: flex">
             <select name="sort" style="height: 50px">
-                <option value="typeID">Type ID</option>
-                <option value="name">Product Name</option>
-                <option value="imei">IMEI</option>
+                <option value="typeID" selected="@isTypeID">Type ID</option>
+                <option value="name" selected="@isName">Product Name</option>
+                <option value="imei" selected="@isImei">IMEI</option>
             </select>
-            <input type="text" name="search" placeholder="Search..." required />
+            <input type="text" name="search" placeholder="Search..." required value="@ViewBag.Search" />
             <button type="submit">Search</button>
         </form>
     </div>
@@ -124,7 +131,8 @@
                 <th>No.</th>
                 <th>IMEI</th>
                 <th>TypeID</th>
-                <th>Product Name</th>
+                <th>Status</th>
+                <th>Name</th>
                 <th>Price</th>
                 <th>Description</th>
                 <th>Size</th>
@@ -132,7 +140,7 @@
                 <th>Memory</th>
                 <th>Color</th>
                 <th>RAM</th>
-            @*     <th>Picture</th> *@
+                @*     <th>Picture</th> *@
                 <th>Actions</th>
             </tr>
         </thead>
@@ -143,17 +151,18 @@
                     <td>@(++i)</td>
                     <td>@product.IMEI</td>
                     <td> @product.ProductType.ID</td>
+                    <td> @product.Status</td>
                     <td> @product.ProductType.Name</td>
-                    <td>@product.ProductType.Price</td>
+                    <td>@product.ProductType.Price.ToString("C0", new CultureInfo("vi-VN"))</td>
                     <td>@product.ProductType.Description</td>
                     <td>@product.ProductType.Size</td>
                     <td>@product.ProductType.Battery</td>
                     <td>@product.ProductType.Memory</td>
                     <td>@product.ProductType.Color</td>
                     <td>@product.ProductType.RAM</td>
-                   @*   <td>
-                         <img src="@product.ProductType.Picture" alt="Picture" class="product-img" />
-                     </td> *@
+                    @*   <td>
+                <img src="@product.ProductType.Picture" alt="Picture" class="product-img" />
+                </td> *@
                     <td>
                         <div class="action-buttons">
                             <button type="button" class="edit-btn" data-toggle="modal" data-target="#editProductDiv" onclick="setProductId('@product.IMEI','prod')">Edit</button>

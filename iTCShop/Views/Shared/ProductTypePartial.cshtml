@@ -21,15 +21,15 @@
                 <form id="@formId" action="@formAction" method="post">
                     <div class="form-group">
                         <label for="productName">ID</label>
-                        <input type="text" class="form-control" id="productId" name="id" value="" required readonly="@isEdit"}>
+                        <input type="text" class="form-control" id="productId" name="id" value="" required readonly>
                     </div>
                     <div class="form-group">
                         <label for="productName">Name</label>
-                        <input type="text" class="form-control" id="productName" name="name" value="@Model?.Name" required>
+                        <input type="text" class="form-control" id="productName" name="name" value="@Model?.Name" required readonly="@isEdit">
                     </div>
                     <div class="form-group">
                         <label for="productPrice">Price</label>
-                        <input type="number" class="form-control" id="productPrice" name="price" value="@Model?.Price" required>
+                        <input type="number" class="form-control" id="productPrice" name="price" value="$@Model?.Price" required>
                     </div>
                     <div class="form-group">
                         <label for="productDescription">Description</label>
@@ -37,28 +37,28 @@
                     </div>
                     <div class="form-group">
                         <label for="productSize">Size</label>
-                        <input type="number" class="form-control" id="productSize" name="size" value="@Model?.Size" required>
+                        <input type="number" step="0.01" class="form-control" id="productSize" name="size" value="@Model?.Size" required>
                     </div>
                     <div class="form-group">
                         <label for="productBattery">Battery</label>
-                        <input type="number" class="form-control" id="productBattery" name="battery" value="@Model?.Battery" required>
+                        <input type="number" class="form-control" id="productBattery" name="battery" value="@Model?.Battery" required min="1">
                     </div>
                     <div class="form-group">
                         <label for="productMemory">Memory</label>
-                        <input type="number" class="form-control" id="productMemory" name="memory" value="@Model?.Memory" required>
+                        <input type="number" class="form-control" id="productMemory" name="memory" value="@Model?.Memory" required min="1" readonly="@isEdit">
                     </div>
                     <div class="form-group">
                         <label for="productColor">Color</label>
-                        <input type="text" class="form-control" id="productColor" name="color" value="@Model?.Color" required>
+                        <input type="text" class="form-control" id="productColor" name="color" value="@Model?.Color" required readonly="@isEdit">
                     </div>
                     <div class="form-group">
                         <label for="productRAM">RAM</label>
-                        <input type="number" class="form-control" id="productRAM" name="ram" value="@Model?.RAM" required>
+                        <input type="number" class="form-control" id="productRAM" name="ram" value="@Model?.RAM" min="1" required>
                     </div>
-                    <div class="form-group">
-                        <label for="productPicture">Picture</label>
-                        <input type="text" class="form-control" id="productPicture" name="picture" value="@Model?.Picture" required>
-                    </div>
+               @*       <div class="form-group">
+                         <label for="productPicture">Picture</label>
+                         <input type="text" class="form-control" id="productPicture" name="picture" value="@Model?.Picture" required>
+                     </div> *@
                     <button type="submit" class="btn btn-primary">@buttonText</button>
                 </form>
             </div>

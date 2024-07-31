@@ -1,6 +1,23 @@
-﻿@model List<ProductType>
+﻿@using iTCShop.Extensions
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@model List<ProductType>
 @{
+    var user = SessionValueConverter.GetObjectFromJson<Customer>(HttpContextAccessor.HttpContext.Session, "user");
+    var admin = SessionValueConverter.GetObjectFromJson<Admin>(HttpContextAccessor.HttpContext.Session, "admin");
+    if (user != null) Layout = "~/Views/Shared/_Layout.cshtml";
+    if (admin != null) Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewBag.Title = "Home Page";
+    var az = false;
+    if (ViewBag.Sort == "nameAZ") az = true;
+    var za = false;
+    if (ViewBag.Sort == "nameZA") za = true;
+    var desc = false;
+    if (ViewBag.Sort == "priceDes") desc = true;
+    var acs = false;
+    if (ViewBag.Sort == "priceAcs") acs = true;
+    var response = TempData.Get<ResponseModel>("response");
+
+
 }
 <link rel="stylesheet" href="~/css/Site.css">
 <div id="carouselExampleInterval" class="carousel slide center" data-bs-ride="carousel">
@@ -28,15 +45,14 @@
 <div class="filter center">
     <h2 id="title">IPHONE</h2>
     <form action="/ProductType/Search" method="get">
-        <!-- Đường dẫn đến action tìm kiếm -->
-        <input type="text" id="search" name="search" placeholder="Tìm kiếm">
+        <input type="text" id="search" name="search" placeholder="Tìm kiếm" value="@ViewBag.Search">
         <select name="sort" id="arrange">
-            <option value="nameAZ">Theo tên A - Z</option>
-            <option value="nameZA">Theo tên Z - A</option>
-            <option value="priceDes">Theo giá giảm dần</option>
-            <option value="priceAcs">Theo giá tăng dần</option>
+            <option value="nameAZ" selected="@az">Theo tên A - Z</option>
+            <option value="nameZA" selected="@za">Theo tên Z - A</option>
+            <option value="priceDes" selected="@desc">Theo giá giảm dần</option>
+            <option value="priceAcs" selected="@acs">Theo giá tăng dần</option>
         </select>
-        <button type="submit" class="btn btn-primary">Tìm kiếm</button> <!-- Nút tìm kiếm -->
+        <button type="submit" class="btn btn-primary">Tìm kiếm</button> 
     </form>
 </div>
 
@@ -45,12 +61,19 @@
         foreach (var item in Model)
         {
             <div class="product" id="@item.ID">
-                <img src="~/asset/IP.jpg" alt="">
+                <img src="~/asset/@item.Picture" alt="" style="height:300px;width:300px; border-radius:10px">
+                <p style="font-size: larger; font-weight: bold">@item.Name</p>
                 <del>@(item.Price + 5000)</del>
-                <p>@item.Price</p>
-                <p>@item.Name</p>
-                <i class="fa-solid fa-plus" product-type-id="@item.ID"></i>
+                <p style="color: red; font-size: large; font-weight: bold">$ @item.Price</p>
+                <p>@item.Memory GB @item.Color</p>
+                <i class="fa-solid fa-plus" style="color:red; font-size: large; border:1px solid red; padding-top: 5px; margin-bottom: 8px;" product-type-id="@item.ID"></i>
             </div>
         }
     }
 </div>
+@{
+    if (response != null)
+    {
+        Html.RenderPartial("_ErrorPartial", response);
+    }
+}

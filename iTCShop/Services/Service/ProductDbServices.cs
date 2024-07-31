@@ -17,6 +17,14 @@
             }
         }
 
+        public async Task<ResponseModel> AddProductToOrder(string imei)
+        {
+            var product = await GetProductByImei(imei);
+            product.Status = OrderStatus.Pending;
+            iTCShopDbContext.Update(product);
+            return ResponseModel.SuccessResponse();
+        }
+
         [HttpPost]
         public async Task<ResponseModel> DeleteProduct(string imei)
         {
@@ -58,15 +66,29 @@
             return await iTCShopDbContext.Products.Include(p=>p.ProductType).Where(p => p.ProductTypeId.Equals(productTypeId)).ToListAsync();
         }
 
-
-
-        public async Task<ResponseModel> IsAvailableCheck(string productTypeId)
+        public async Task<ResponseModel> IsAvailableCheck(string productTypeId, int quantity = 0)
         {
-            var product = await GetProductsByProductType(productTypeId);
-            if (product.Count == 0) return ResponseModel.FailureResponse("Out of stocks");
+            var products = await  iTCShopDbContext.Products.Include(p => p.ProductType).Where(p => p.ProductTypeId.Equals(productTypeId) && p.Status.Equals(OrderStatus.OnStock)).ToListAsync();
+            if (products.Count == 0) return ResponseModel.FailureResponse("Out of stocks");
+            if(products.Count < quantity) return ResponseModel.FailureResponse("Out of stocks");
             else return ResponseModel.SuccessResponse();
         }
 
+        public async Task<ResponseModel> UpdateProductStatus(string imei, int newStatus)
+        {
+            try
+            {
+                var product = await GetProductByImei(imei);
+                product.Status = (OrderStatus)newStatus;
+                iTCShopDbContext.Update(product);
+               await iTCShopDbContext.SaveChangesAsync();
+                return ResponseModel.SuccessResponse();
+            }
+            catch 
+            {
+                return ResponseModel.FailureResponse("Failed to update status");
+            }
+        }
         public async Task<ResponseModel> UpdateProduct(ProductRequest productRequest)
         {
             try

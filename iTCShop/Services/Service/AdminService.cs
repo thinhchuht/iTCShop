@@ -1,6 +1,4 @@
-﻿
-
-namespace iTCShop.Services.Service
+﻿namespace iTCShop.Services.Service
 {
     public class AdminService(iTCShopDbContext iTCShopDbContext, IBaseDbServices baseDbServices) : IAdminServices
     {

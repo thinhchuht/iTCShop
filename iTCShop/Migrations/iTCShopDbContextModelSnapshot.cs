@@ -110,6 +110,9 @@ namespace iTCShop.Migrations
                     b.Property<string>("CartId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
@@ -124,6 +127,9 @@ namespace iTCShop.Migrations
 
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(450)");
@@ -143,29 +149,6 @@ namespace iTCShop.Migrations
                         .HasFilter("[UserName] IS NOT NULL");
 
                     b.ToTable("Customers");
-                });
-
-            modelBuilder.Entity("iTCShop.Models.Inventory", b =>
-                {
-                    b.Property<string>("ID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProductIMEI")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SupplierID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("ProductIMEI");
-
-                    b.HasIndex("SupplierID");
-
-                    b.ToTable("Inventories");
                 });
 
             modelBuilder.Entity("iTCShop.Models.Order", b =>
@@ -236,6 +219,9 @@ namespace iTCShop.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.HasKey("IMEI");
 
                     b.HasIndex("ProductTypeId");
@@ -280,86 +266,6 @@ namespace iTCShop.Migrations
                     b.ToTable("ProductTypes");
                 });
 
-            modelBuilder.Entity("iTCShop.Models.StockIn", b =>
-                {
-                    b.Property<string>("ID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<decimal>("PriceIn")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("ProductID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SupplierID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("TransInDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("ProductID");
-
-                    b.HasIndex("SupplierID");
-
-                    b.ToTable("StockIns");
-                });
-
-            modelBuilder.Entity("iTCShop.Models.StockOut", b =>
-                {
-                    b.Property<string>("ID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<decimal>("PriceOut")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("ProductID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SupplierID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("TransOutDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("ProductID");
-
-                    b.HasIndex("SupplierID");
-
-                    b.ToTable("StockOuts");
-                });
-
-            modelBuilder.Entity("iTCShop.Models.Supplier", b =>
-                {
-                    b.Property<string>("ID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Suppliers");
-                });
-
             modelBuilder.Entity("iTCShop.Models.Admin", b =>
                 {
                     b.HasOne("iTCShop.Models.AuthorizeUser", "Auth")
@@ -401,21 +307,6 @@ namespace iTCShop.Migrations
                     b.Navigation("Cart");
                 });
 
-            modelBuilder.Entity("iTCShop.Models.Inventory", b =>
-                {
-                    b.HasOne("iTCShop.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductIMEI");
-
-                    b.HasOne("iTCShop.Models.Supplier", "Supplier")
-                        .WithMany()
-                        .HasForeignKey("SupplierID");
-
-                    b.Navigation("Product");
-
-                    b.Navigation("Supplier");
-                });
-
             modelBuilder.Entity("iTCShop.Models.Order", b =>
                 {
                     b.HasOne("iTCShop.Models.Customer", "Customer")
@@ -427,13 +318,15 @@ namespace iTCShop.Migrations
 
             modelBuilder.Entity("iTCShop.Models.OrderDetail", b =>
                 {
-                    b.HasOne("iTCShop.Models.Order", null)
+                    b.HasOne("iTCShop.Models.Order", "Order")
                         .WithMany("OrderDetails")
                         .HasForeignKey("OrderId");
 
                     b.HasOne("iTCShop.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductID");
+
+                    b.Navigation("Order");
 
                     b.Navigation("Product");
                 });
@@ -447,36 +340,6 @@ namespace iTCShop.Migrations
                         .IsRequired();
 
                     b.Navigation("ProductType");
-                });
-
-            modelBuilder.Entity("iTCShop.Models.StockIn", b =>
-                {
-                    b.HasOne("iTCShop.Models.ProductType", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductID");
-
-                    b.HasOne("iTCShop.Models.Supplier", "Supplier")
-                        .WithMany()
-                        .HasForeignKey("SupplierID");
-
-                    b.Navigation("Product");
-
-                    b.Navigation("Supplier");
-                });
-
-            modelBuilder.Entity("iTCShop.Models.StockOut", b =>
-                {
-                    b.HasOne("iTCShop.Models.ProductType", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductID");
-
-                    b.HasOne("iTCShop.Models.Supplier", "Supplier")
-                        .WithMany()
-                        .HasForeignKey("SupplierID");
-
-                    b.Navigation("Product");
-
-                    b.Navigation("Supplier");
                 });
 
             modelBuilder.Entity("iTCShop.Models.Cart", b =>

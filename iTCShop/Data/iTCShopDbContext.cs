@@ -12,10 +12,6 @@ namespace iTCShop.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
-        public DbSet<Inventory> Inventories { get; set; }
-        public DbSet<StockIn> StockIns { get; set; }
-        public DbSet<StockOut> StockOuts { get; set; }
-        public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartDetails> CartDetails { get; set; }
 
@@ -26,6 +22,9 @@ namespace iTCShop.Data
 
             modelBuilder.Entity<Product>()
                 .HasKey(p => p.IMEI);
+            modelBuilder.Entity<Product>()
+                .Property(o => o.Status)
+                .HasConversion<int>();
 
             modelBuilder.Entity<Customer>()
                 .HasIndex(c => c.Email).IsUnique();
@@ -44,6 +43,11 @@ namespace iTCShop.Data
             modelBuilder.Entity<Order>()
                 .Property(o => o.PayMethod)
                 .HasConversion<int>();
+
+            modelBuilder.Entity<Customer>()
+           .Property(c => c.Status)
+           .HasConversion<int>();
         }
+     
     }
 }

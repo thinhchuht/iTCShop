@@ -25,9 +25,39 @@
                     <td>@order.ID</td>
                     <td>@order.OrderDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
                     <td>@order.ShipAddress</td>
-                    <td>@order.TotalPay</td>
+                    <td>@order.TotalPay.ToString("C")</td>
                     <td>@order.Status</td>
                     <td>@order.PayMethod</td>
+                    <td>
+                        <button class="btn btn-info btn-sm" data-bs-toggle="collapse" data-bs-target="#details-@order.ID" aria-expanded="false" aria-controls="details-@order.ID">
+                           Details
+                        </button>
+                    </td>
+                </tr>
+                <tr class="collapse" id="details-@order.ID">
+                    <td colspan="7">
+                        <div class="p-3">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Product ID</th>
+                                        <th>Quantity</th>
+                                        <th>Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var detail in order.OrderDetails)
+                                    {
+                                        <tr>
+                                            <td>@detail.ProductID</td>
+                                            <td>@detail.Quantity</td>
+                                            <td>@detail.Price.ToString("C")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </td>
                 </tr>
             }
         </tbody>

@@ -1,7 +1,6 @@
-﻿
-namespace iTCShop.Services.Service
+﻿namespace iTCShop.Services.Service
 {
-    public class CartServices(IBaseDbServices baseDbServices, iTCShopDbContext iTCShopDbContext, ICartDetailsServices cartDetailsServices) : ICartService
+    public class CartServices(iTCShopDbContext iTCShopDbContext, ICartDetailsServices cartDetailsServices) : ICartService
     {
         public async Task<Cart> GetCartById(string id)
         {

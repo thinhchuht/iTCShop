@@ -1,4 +1,4 @@
-﻿@model iTCShop.Controllers.Request.CustomerRequest;
+﻿@model iTCShop.Constants.ResponseModel;
 
 @{
     ViewBag.Title = "Resgister";
@@ -6,11 +6,11 @@
 }
 
 <div class="container mt-5">
-    <h2>Đăng ký tài khoản</h2>
-    <h3>@ViewBag.RegRs</h3>
+    <h2>Register</h2>
+    <a href="~/Login/Login">@ViewBag.RegRs</a>
     <form action="/Customer/RegisterCustomer" method="post">
         <div class="mb-3">
-            <label for="Name" class="form-label">Tên</label>
+            <label for="Name" class="form-label">Name</label>
             <input type="text" class="form-control" id="Name" name="Name" required>
         </div>
 
@@ -24,26 +24,28 @@
         </div>
 
         <div class="mb-3">
-            <label for="Password" class="form-label">Mật khẩu</label>
-            <input type="password" class="form-control" id="Password" name="Password" required>
+            <label for="Password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="Password" name="Password" required minlength="6">
         </div>
 
         <div class="mb-3">
-            <label for="Phone" class="form-label">Số điện thoại</label>
-            <input type="text" class="form-control" id="Phone" name="Phone">
+            <label for="Phone" class="form-label">Phone Number</label>
+            <input type="text" class="form-control" id="Phone" name="Phone" pattern="^\d{10}$" title="Has to be 10 number.">
         </div>
 
         <div class="mb-3">
-            <label for="Address" class="form-label">Địa chỉ</label>
-            <input type="text" class="form-control" id="Address" name="Address">
+            <label for="Address" class="form-label">Address</label>
+            <input type="text" class="form-control" id="Address" name="Address" required >
         </div>
 
         <div class="mb-3">
-            <label for="DateOfBirth" class="form-label">Ngày sinh</label>
+            <label for="DateOfBirth" class="form-label">Date of birth</label>
             <input type="date" class="form-control" id="DateOfBirth" name="DateOfBirth" required>
         </div>
 
-        <button type="submit" class="btn btn-primary">Đăng ký</button>
+        <button type="submit" class="btn btn-primary">Register</button>
     </form>
 </div>
-
+@{
+    Html.RenderPartial("_ErrorPartial", Model);
+};

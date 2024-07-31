@@ -2,9 +2,10 @@
 {
     public enum OrderStatus
     {
-        Pending = 1,
+        OnStock    = 0,
+        Pending    = 1,
         InProgress = 2,
-        Completed = 3
+        Completed  = 3
     }
 
     public enum OrderPayMethod
@@ -12,6 +13,7 @@
         BankTransfer   = 1,   
         CashOnDelivery = 2
     }
+
     public class Order
     {
         public string              ID           { get; set; }
@@ -26,21 +28,9 @@
 
         public Order()
         {
-            ID = Guid.NewGuid().ToString();
+            ID        = Guid.NewGuid().ToString();
             OrderDate = DateTime.Now;
-            Status = OrderStatus.Pending;
-        }
-        public Order(string shipAddress, decimal totalPay, int status, int payMethod, string customerId )
-        {
-            ID          = Guid.NewGuid().ToString();
-            OrderDate   = DateTime.Now;
-            ShipAddress = shipAddress;
-            TotalPay    = totalPay;
-            Status      = (OrderStatus)status;
-            PayMethod   = (OrderPayMethod)payMethod;
-            CustomerId  = customerId;
+            Status    = OrderStatus.Pending;
         }
     }
-
-   
 }

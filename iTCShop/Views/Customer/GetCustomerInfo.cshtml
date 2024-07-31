@@ -13,7 +13,6 @@
             <h2>Information</h2>
         </div>
         <div class="card-body">
-            <h5 class="card-title">Basic Information</h5>
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="name"><strong>Name:</strong></label>
@@ -21,32 +20,82 @@
                 </div>
                 <div class="col-md-6">
                     <label for="email"><strong>Email:</strong></label>
-                    <p id="email">@Model.Email</p>
+                    <p id="email">
+                        @{
+                            string email = Model.Email;
+                            string maskedEmail = string.Empty;
+
+                            if (email.Length > 2)
+                            {
+                                maskedEmail += email[0];
+                                int atIndex = email.IndexOf('@');
+
+                                if (atIndex > 0)
+                                {
+                                    for (int i = 1; i < atIndex; i++)
+                                    {
+                                        maskedEmail += '*';
+                                    }
+                                    maskedEmail += email[atIndex];
+
+                                    for (int i = atIndex + 1; i < email.Length - 1; i++)
+                                    {
+                                        maskedEmail += '*';
+                                    }
+                                    maskedEmail += email[email.Length - 1];
+                                }
+                            }
+                            else
+                            {
+                                maskedEmail = email;
+                            }
+                        }
+                        @maskedEmail
+                    </p>
                 </div>
             </div>
             <div class="row mb-3">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <label for="username"><strong>Username:</strong></label>
                     <p id="username">@Model.UserName</p>
                 </div>
-                <div class="col-md-6">
-                    <label for="phone"><strong>Phone:</strong></label>
-                    <p id="phone">@Model.Phone</p>
+                <div class="col-md-4">
+                    <label for="passWord"><strong>Password:</strong></label>
+                    <p id="password">
+                        @{
+                            string password = string.Empty;
+                            for (int i = 0; i < Model.Password.Length; i++)
+                            {
+                                password += '*';
+                            }
+                        }
+                        @password
+
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <label for="createDate"><strong>CreateDate:</strong></label>
+                    <p id="address">@Model.CreateDate</p>
                 </div>
             </div>
             <div class="row mb-3">
-                <div class="col-md-6">
-                    <label for="address"><strong>Address:</strong></label>
-                    <p id="address">@Model.Address</p>
+                <div class="col-md-4">
+                    <label for="address" class="mb-1"><strong>Address:</strong></label>
+                    <p id="address" class="mt-1">@Model.Address</p>
                 </div>
-                <div class="col-md-6">
-                    <label for="dob"><strong>Date of Birth:</strong></label>
-                    <p id="dob">@Model.DateOfBirth.ToString("dd/MM/yyyy")</p>
+                <div class="col-md-4">
+                    <label for="phone" class="mb-1"><strong>Phone:</strong></label>
+                    <p id="phone" class="mt-1">@Model.Phone</p>
+                </div>
+                <div class="col-md-4">
+                    <label for="dob" class="mb-1"><strong>Date of Birth:</strong></label>
+                    <p id="dob" class="mt-1">@Model.DateOfBirth.ToString("dd/MM/yyyy")</p>
                 </div>
             </div>
-            <div class="mt-4 text-center">
-                <a href="/Customer/Edit" class="btn btn-warning">Edit Profile</a>
-            </div>
+
+        </div>
+        <div class="mt-4 text-center" style="margin-bottom: 10px">
+            <a href="/Customer/Edit" class="btn btn-warning">Edit Profile</a>
         </div>
     </div>
 </div>

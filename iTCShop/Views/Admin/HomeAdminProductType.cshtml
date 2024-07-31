@@ -3,6 +3,7 @@
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewBag.Title = "Product Type";
+    var i = 0;
 }
 
 <style>
@@ -50,6 +51,7 @@
     <table class="table custom-table">
         <thead>
             <tr>
+                <th>No.</th>
                 <th>ID</th>
                 <th>Name</th>
                 <th>Price</th>
@@ -67,19 +69,20 @@
             @foreach (var productType in Model)
             {
                 <tr class="custom-row">
+                    <td>@(++i)</td>
                     <td>@productType.ID</td>
                     <td>@productType.Name</td>
-                    <td>@productType.Price.ToString("C")</td>
+                    <td>@productType.Price.ToString("C0", new CultureInfo("vi-VN"))</td>
                     <td>@productType.Description</td>
                     <td>@productType.Size</td>
                     <td>@productType.Battery</td>
                     <td>@productType.Memory</td>
                     <td>@productType.Color</td>
                     <td>@productType.RAM</td>
-                    <td><img src="@productType.Picture" alt="Product Image" style="width: 50px; height: auto;"></td>
+                    <td style="text-align:center"><img src="~/asset/@productType.Picture" alt="Product Image" style="width: 50px; height: 50px;"></td>
                     <td>
                         <div class="action-buttons">
-                            <button type="button" class="btn btn-warning btn-sm edit-btn" data-toggle="modal" data-target="#editProductDiv" onclick="setProductId('@productType.ID','type')">Edit</button>
+                            <button type="button" class="btn btn-warning btn-sm edit-btn" data-toggle="modal" data-target="#editProductDiv" onclick="setProductId('@productType.ID','type','@productType.Name','@productType.Memory','@productType.Color')">Edit</button>
                             <form action="/ProductType/DeleteProductType" method="post" style="display:inline;">
                                 <input type="hidden" name="id" value="@productType.ID" />
                                 <button type="submit" class="btn btn-danger btn-sm">Delete</button>

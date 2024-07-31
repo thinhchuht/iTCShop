@@ -1,4 +1,6 @@
-﻿namespace iTCShop.Models
+﻿using System.Text.RegularExpressions;
+
+namespace iTCShop.Models
 {
     public class ProductType
     {
@@ -15,9 +17,9 @@
         
 
         public ProductType() { }
-        public ProductType(string id, string name, decimal price, string description, decimal size, int battery, int memory, string color, int rAM, string picture)
+        public ProductType(string name, decimal price, string description, decimal size, int battery, int memory, string color, int rAM)
         {
-            ID          = id;
+            ID          = string.Concat(Regex.Matches(name, @"\b(\d+|\w)")) + memory + string.Concat(Regex.Matches(color, @"\b(\d+|\w)"));
             Name        = name;
             Price       = price;
             Description = description;
@@ -26,7 +28,7 @@
             Memory      = memory;
             Color       = color;
             RAM         = rAM;
-            Picture     = picture;
+            Picture     = $"{string.Concat(Regex.Matches(name, @"\b(\d+|\w)")).ToLower()}{string.Concat(Regex.Matches(color, @"\b(\d+|\w)")).ToLower()}.jpg";
         }
     }
 }

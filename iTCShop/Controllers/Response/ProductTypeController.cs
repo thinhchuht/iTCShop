@@ -1,8 +1,5 @@
-﻿using Newtonsoft.Json;
-
-namespace iTCShop.Controllers.Response
+﻿namespace iTCShop.Controllers.Response
 {
-
     public class ProductTypeController(IProductsTypeServices productTypesServices) : Controller
     {
         public async Task<IActionResult> ProductPartial()
@@ -10,7 +7,6 @@ namespace iTCShop.Controllers.Response
             var productTypes = await productTypesServices.GetAllProductTypes();
             return PartialView(productTypes);
         }
-
      
         public async Task<IActionResult> GetProductTypeById(string id)
         {
@@ -35,14 +31,14 @@ namespace iTCShop.Controllers.Response
                 {
                     case "typeID":
                         productTypes = productTypes.Where(p => p.Name.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
-                        TempData["productTypes"] = JsonConvert.SerializeObject(productTypes);
+                        TempData.Put("productTypes",productTypes);
+                        
                         return RedirectToAction("HomeAdminProductType", "Admin");
-                    case "name":
+                    default :
                         productTypes = productTypes.Where(p => p.Name.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
                         break;
                 }
             }
-
             switch (sort)
             {
                 case "nameAZ":
@@ -58,17 +54,20 @@ namespace iTCShop.Controllers.Response
                     productTypes = productTypes.OrderBy(p => p.Price).ToList();
                     break;
             }
-            TempData["productTypes"] = JsonConvert.SerializeObject(productTypes);
+            TempData.Put("productTypes", productTypes);
+            TempData["Search"] = search;
+            TempData["Sort"] = sort;
             return RedirectToAction("HomePage", "Home");
         }
+
         [HttpPost]
         public async Task<IActionResult> AddProductType(ProductTypesRequest productTypesRequest)
         {
             try
             {
-                var product = new ProductType(productTypesRequest.ID, productTypesRequest.Name, productTypesRequest.Price, productTypesRequest.Description,
+                var product = new ProductType(productTypesRequest.Name, productTypesRequest.Price, productTypesRequest.Description,
                                           productTypesRequest.Size, productTypesRequest.Battery, productTypesRequest.Memory, productTypesRequest.Color,
-                                          productTypesRequest.RAM, productTypesRequest.Picture);
+                                          productTypesRequest.RAM);
                 var result = await productTypesServices.AddProductType(product);
                 if (result.IsSuccess()) return RedirectToAction("HomeAdminProductType", "Admin");
                 else return BadRequest(result);
@@ -99,8 +98,8 @@ namespace iTCShop.Controllers.Response
         {
             try
             {
-                var newProduct = new ProductType(productTypesRequest.ID, productTypesRequest.Name, productTypesRequest.Price, productTypesRequest.Description, productTypesRequest.Size,
-                                         productTypesRequest.Battery, productTypesRequest.Memory, productTypesRequest.Color, productTypesRequest.RAM, productTypesRequest.Picture);
+                var newProduct = new ProductType(productTypesRequest.Name, productTypesRequest.Price, productTypesRequest.Description, productTypesRequest.Size,
+                                         productTypesRequest.Battery, productTypesRequest.Memory, productTypesRequest.Color, productTypesRequest.RAM);
                 var result = await productTypesServices.UpdateProductType(newProduct);
                 if (result.IsSuccess()) return RedirectToAction("HomeAdminProductType", "Admin");
                 else return BadRequest(result);

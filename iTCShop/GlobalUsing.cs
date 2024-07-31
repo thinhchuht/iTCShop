@@ -5,5 +5,10 @@ global using Microsoft.EntityFrameworkCore;
 global using iTCShop.Data;
 global using iTCShop.Services.Interfaces;
 global using Microsoft.AspNetCore.Mvc;
+global using System.Globalization;  
+global using iTCShop.Extensions;
+//global using System.Text.Json;
+global using Newtonsoft.Json;
+
 
 
