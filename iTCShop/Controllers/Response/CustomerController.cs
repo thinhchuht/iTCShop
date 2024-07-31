@@ -1,7 +1,9 @@
-﻿namespace iTCShop.Controllers.Response
+﻿using iTCShop.Extensions;
+
+namespace iTCShop.Controllers.Response
 {
 
-    public class CustomerController(ICustomerServices customerServices, ICartService cartService) : Controller
+    public class CustomerController(ICustomerServices customerServices, ICartDetailsServices cartDetailsServices) : Controller
     {
         //public async Task<IActionResult> GetAllCustomers()
         //{
@@ -19,24 +21,19 @@
             try
             {
                 var customer = new Customer(customerRequest.Name, customerRequest.Email, customerRequest.UserName, customerRequest.Password, customerRequest.Phone, customerRequest.Address, customerRequest.DateOfBirth);
-                cartService.CreateCart(customer.ID);
+                var response = await cartDetailsServices.CreateCart(customer.ID);
+                if (!response.IsSuccess()) return View("RegisterCustomer", response);
                 var rs = await customerServices.AddCustomer(customer);
-                if (rs.IsSuccess())
-                {
-                    ViewBag.RegRs = "Register sucessfully. Go to login.";
-                    ViewBag.isReg = true;
-                    return View("RegisterCustomer",rs);
-                }
-                else
-                {
-                    return View("RegisterCustomer",rs);
-                }
+                ViewBag.RegRs = "Register sucessfully. Go to login.";
+                ViewBag.isReg = true;
+                return View("RegisterCustomer", rs);
             }
             catch
             {
                 return View();
             }
         }
+
         public async Task<IActionResult> UpdateStatus(string id)
         {
             var customer = await customerServices.GetCustomerById(id);
@@ -85,6 +82,7 @@
             TempData["search"] = search;
             return RedirectToAction("HomeAdminCustomers", "Admin"); ;
         }
+
         [HttpPost]
         public async Task<IActionResult> Edit(Customer updatedCustomer)
         {

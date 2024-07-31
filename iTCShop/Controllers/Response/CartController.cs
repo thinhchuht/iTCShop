@@ -1,6 +1,8 @@
-﻿namespace iTCShop.Controllers.Response
+﻿using iTCShop.Extensions;
+
+namespace iTCShop.Controllers.Response
 {
-    public class CartController(ICartService cartService, ICartDetailsServices cartDetailsServices) : Controller
+    public class CartController(ICartDetailsServices cartDetailsServices) : Controller
     {
         public async Task<IActionResult> CustomerCart()
         {
@@ -26,7 +28,7 @@
             }
             else
             {
-                var response = await cartService.AddToCart(customer.ID, productTypeId);
+                var response = await cartDetailsServices.AddCartDetail(customer.ID, productTypeId);
                 return Json(response);
             }
         }
@@ -37,12 +39,13 @@
             if (rs.IsSuccess()) return RedirectToAction("CustomerCart");
             return BadRequest(rs);
         }
+
         [HttpPost]
         public async Task<IActionResult> AddCartDetails(string productTypeId, string cartId) 
         {
             var rs = await cartDetailsServices.AddCartDetail(productTypeId, cartId);
-            if (rs.IsSuccess()) return RedirectToAction("CustomerCart");
-            return BadRequest(rs);
+            if (!rs.IsSuccess()) TempData.Put("response",rs);
+            return RedirectToAction("CustomerCart");
         }
     }
 }

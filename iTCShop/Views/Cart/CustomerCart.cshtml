@@ -44,7 +44,7 @@
                 <td>
                     <form action="/Cart/AddCartDetails" method="post">
                         <input type="hidden" name="productTypeID" value="@item.ProductTypeID" />
-                        <input type="hidden" name="cartID" value="@item.CartID" />
+                        <input type="hidden" name="cartID" value="@item.ID" />
                         <button type="submit" class="btn btn-primary" id="@item.ID">Add</button>
                     </form>
                 </td>
@@ -67,3 +67,10 @@
         <input type="hidden" name="cartDetails[@index].Price" value="@item.ProductType.Price" />
     }
 </form>
+@{
+    var response = TempData.Get<ResponseModel>("response");
+    if (response != null)
+    {
+        Html.RenderPartial("_ErrorPartial", response);
+    }
+}

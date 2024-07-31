@@ -70,9 +70,9 @@
 
         public async Task<ResponseModel> IsAvailableCheck(string productTypeId, int quantity = 0)
         {
-            var products = await  iTCShopDbContext.Products.Include(p => p.ProductType).Where(p => p.ProductTypeId.Equals(productTypeId) && p.Status.Equals(OrderStatus.OnStock)).ToListAsync();
+            var products = await iTCShopDbContext.Products.Include(p => p.ProductType).Where(p => p.ProductTypeId.Equals(productTypeId) && p.Status.Equals(OrderStatus.OnStock)).ToListAsync();
             if (products.Count == 0) return ResponseModel.FailureResponse("Out of stocks");
-            if(products.Count < quantity) return ResponseModel.FailureResponse("Out of stocks");
+            if (products.Count < quantity) return ResponseModel.FailureResponse("Out of stocks");
             else return ResponseModel.SuccessResponse();
         }
 

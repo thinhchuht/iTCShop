@@ -17,14 +17,11 @@
         public DateTime       DateOfBirth { get; set; }
         public int            AuthId      { get; set; }
         public CustomerStatus Status      { get; set; }
-        public string         CartId      { get; set; }
+        public string         CartDetailId      { get; set; }
         public DateTime       CreateDate  { get; set; }
-        public Cart           Cart        { get; set; }
+        public List<CartDetails> CartDetail        { get; set; }
         public AuthorizeUser  Auth        { get; set; }
         public List<Order>    Orders      { get; set; }
-
-        public int CompletedOrdersCount => Orders?.Count(o => o.Status == OrderStatus.Completed) ?? 0;
-        public decimal TotalAmountSpent => Orders?.Where(o => o.Status == OrderStatus.Completed).Sum(o => o.TotalPay) ?? 0;
 
         public Customer() {}
 
@@ -39,7 +36,7 @@
             Address     = address;
             DateOfBirth = dateOfBirth;
             AuthId      = 2;
-            CartId      = ID;
+            CartDetailId      = ID;
             Status      = CustomerStatus.Available;
             CreateDate  = DateTime.Now;
         }

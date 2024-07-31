@@ -5,10 +5,28 @@
 
         public async Task<CartDetails> GetCartDetailByProductTypeId(string productTypeId, string cartId)
         {
-            return await iTCShopDbContext.CartDetails.Include(c => c.ProductType).FirstOrDefaultAsync(c => c.ProductTypeID.Equals(productTypeId) && c.CartID.Equals(cartId));
+            return await iTCShopDbContext.CartDetails.Include(c => c.ProductType).FirstOrDefaultAsync(c => c.ProductTypeID.Equals(productTypeId) && c.ID.Equals(cartId));
         }
 
-        public async Task<ResponseModel> AddCartDetail(string productTypeId, string cartId)
+        //public async Task<CartDetails> GetByID(string id)
+        //{
+        //    return await baseDbServices.GetById<CartDetails>(id);
+        //}
+        public async Task<ResponseModel> CreateCart(string id)
+        {
+            try
+            {
+                var cartDetail = new CartDetails(id);
+                await baseDbServices.AddAsync(cartDetail);
+                return ResponseModel.SuccessResponse();
+            }
+            catch
+            {
+                return ResponseModel.FailureResponse("Create cart failed");
+            }
+        }
+
+        public async Task<ResponseModel> AddCartDetail(string cartId, string productTypeId)
         {
             try
             {
@@ -17,16 +35,17 @@
                 var existCartDetail = await GetCartDetailByProductTypeId(productTypeId, cartId);
                 if (existCartDetail == null)
                 {
-                    var cartDetail = new CartDetails(productTypeId, cartId);
-                    await baseDbServices.AddAsync(cartDetail);
+                    var cartDetail =  new CartDetails(cartId ,productTypeId);
+                    iTCShopDbContext.Update(cartDetail);
+                  
                 }
                 else
                 {
                     existCartDetail.Quantity += 1;
                     checkStock = await productDbServices.IsAvailableCheck(productTypeId, existCartDetail.Quantity);
                     if (!checkStock.IsSuccess()) return checkStock;
-                    iTCShopDbContext.SaveChanges();
                 }
+                iTCShopDbContext.SaveChanges();
                 return ResponseModel.SuccessResponse();
             }
             catch (Exception ex)
@@ -55,7 +74,7 @@
         } 
         public Task<List<CartDetails>> GetAllByCartId(string id)
         {
-            return  iTCShopDbContext.CartDetails.Include(c => c.ProductType).Where(c => c.CartID.Equals(id)).ToListAsync();
+            return  iTCShopDbContext.CartDetails.Include(c => c.ProductType).Where(c => c.ID.Equals(id)).ToListAsync();
         }
 
         public async Task<ResponseModel> UpdateDropQuantity(string id)
