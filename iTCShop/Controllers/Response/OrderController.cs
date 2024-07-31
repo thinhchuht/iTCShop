@@ -1,7 +1,4 @@
-﻿using iTCShop.Extensions;
-using Newtonsoft.Json;
-
-namespace iTCShop.Controllers.Response
+﻿namespace iTCShop.Controllers.Response
 {
     public class OrderController(IOrderService orderService, IOrderDetailServices orderDetailServices, IProductDbServices productDbServices, ICartDetailsServices cartDetailsServices) : Controller
     {
@@ -77,13 +74,18 @@ namespace iTCShop.Controllers.Response
             orderList.Add(order);
             return View("GetOrdersAdmin", orderList);
         }
+
         [HttpPost]
         public IActionResult Order(List<CartDetailsRequest> cartDetails, decimal total)
         {
             try
             {
-                if (cartDetails.Count == 0) return RedirectToAction("HomePage", "Home");
-                TempData["cartDetails"] = JsonConvert.SerializeObject(cartDetails); 
+                if (cartDetails.Count == 0)
+                {
+                    TempData.Put("response",ResponseModel.FailureResponse("You dont have any thing in your cart, buy something first"));
+                    return RedirectToAction("HomePage", "Home");
+                }
+                TempData.Put("cartDetails",cartDetails); 
                 var customer = HttpContext.Session.GetObjectFromJson<Customer>("user");
                 var order = new Order()
                 {
@@ -99,7 +101,6 @@ namespace iTCShop.Controllers.Response
             }
         }
 
-
         [HttpPost]
         public async Task<IActionResult> GetAllOrders(int payMethod, string shipAddress, string customerId, decimal totalPay)
         {
@@ -113,7 +114,7 @@ namespace iTCShop.Controllers.Response
                     ShipAddress = shipAddress,
                 };
                 await orderService.AddOrder(order);
-                var cartDetails = JsonConvert.DeserializeObject<List<CartDetailsRequest>>(TempData.Peek("cartDetails").ToString());
+                var cartDetails = TempData.Peek<List<CartDetailsRequest>>("cartDetails");
                 foreach (var item in cartDetails)
                 {
                     var allProducts = await productDbServices.GetProductsByProductType(item.ProductTypeID);
@@ -134,6 +135,5 @@ namespace iTCShop.Controllers.Response
                 return BadRequest(ex.Message);
             }
         }
-
     }
 }

@@ -11,7 +11,7 @@
             list.ProductTypes.AddRange(productTypes);
             var products = new List<Product>();
             if (TempData["products"] == null) products = await productDbServices.GetAllProducts();
-            else products = JsonConvert.DeserializeObject<List<Product>>(TempData["products"].ToString());
+            else products = TempData.Get<List<Product>>("products");
             list.Products.AddRange(products);
             ViewBag.Search = TempData["Search"];
             ViewBag.Sort = TempData["Sort"];
@@ -23,7 +23,7 @@
         {
             var productTypes = new List<ProductType>();
             if (TempData["productTypes"] == null) productTypes = await productsTypeServices.GetAllProductTypes();
-            else productTypes = JsonConvert.DeserializeObject<List<ProductType>>(TempData["productTypes"].ToString());
+            else productTypes = TempData.Get<List<ProductType>>("productTypes");
             return View(productTypes);
         }
 
@@ -32,7 +32,7 @@
         {
             var customers = new List<Customer>();
             if (TempData["customers"] == null) customers = await customerServices.GetAll();
-            else customers = JsonConvert.DeserializeObject<List<Customer>>(TempData["customers"].ToString());
+            else customers = TempData.Get<List<Customer>>("customers");
             ViewBag.Sort = TempData["sort"];
             ViewBag.Search = TempData["search"];
             return View(customers);

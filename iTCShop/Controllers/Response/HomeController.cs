@@ -7,7 +7,7 @@
         {
             var productTypes = new List<ProductType>();
             if (TempData["productTypes"] == null) productTypes = await productsTypeServices.GetAllProductTypes();
-            else productTypes = JsonConvert.DeserializeObject<List<ProductType>>(TempData["productTypes"].ToString());
+            else productTypes = TempData.Get<List<ProductType>>("productTypes");
             ViewBag.Sort = TempData["sort"];
             ViewBag.Search = TempData["search"];
             return View(productTypes);

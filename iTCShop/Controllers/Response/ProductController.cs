@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace iTCShop.Controllers.Response
+﻿namespace iTCShop.Controllers.Response
 {
     public class ProductController(IProductDbServices productDbServices, IOrderDetailServices orderDetailServices) : Controller
     {
@@ -95,7 +93,7 @@ namespace iTCShop.Controllers.Response
                         break;
                 }
             }
-            TempData["products"] = JsonConvert.SerializeObject(products);
+            TempData.Put("products", products);
             TempData["Search"] = search;
             TempData["Sort"] = sort;
             return RedirectToAction("HomeAdmin", "Admin");

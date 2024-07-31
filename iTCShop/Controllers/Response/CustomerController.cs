@@ -46,7 +46,7 @@
             if (rs.IsSuccess())
             {
                 var customers = await customerServices.GetAll();
-                TempData["customers"] = JsonConvert.SerializeObject(customers);
+                TempData.Put("customers", customers);
                 return RedirectToAction("HomeAdminCustomers", "Admin");
             }
             return BadRequest(rs);
@@ -80,7 +80,7 @@
                     customerLst = customers.Where(p => p.UserName.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
                     break;
             }
-            TempData["customers"] = JsonConvert.SerializeObject(customerLst);
+            TempData.Put("customers", customerLst);
             TempData["sort"] = sort;
             TempData["search"] = search;
             return RedirectToAction("HomeAdminCustomers", "Admin"); ;

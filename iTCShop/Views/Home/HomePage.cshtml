@@ -15,6 +15,9 @@
     if (ViewBag.Sort == "priceDes") desc = true;
     var acs = false;
     if (ViewBag.Sort == "priceAcs") acs = true;
+    var response = TempData.Get<ResponseModel>("response");
+
+
 }
 <link rel="stylesheet" href="~/css/Site.css">
 <div id="carouselExampleInterval" class="carousel slide center" data-bs-ride="carousel">
@@ -58,7 +61,7 @@
         foreach (var item in Model)
         {
             <div class="product" id="@item.ID">
-                <img src="~/asset/IP.jpg" alt="">
+                <img src="~/asset/@item.Picture" alt="" style="height:300px;width:300px; border-radius:10px">
                 <p style="font-size: larger; font-weight: bold">@item.Name</p>
                 <del>@(item.Price + 5000)</del>
                 <p style="color: red; font-size: large; font-weight: bold">$ @item.Price</p>
@@ -68,3 +71,9 @@
         }
     }
 </div>
+@{
+    if (response != null)
+    {
+        Html.RenderPartial("_ErrorPartial", response);
+    }
+}

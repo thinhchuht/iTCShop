@@ -12,7 +12,5 @@
         Task<ResponseModel> DeleteProductByProductTypeID(string productTypeId);
         Task<ResponseModel> AddProductToOrder(string imei);
         Task<ResponseModel> UpdateProductStatus(string imei, int newStatus);
-
-
     }
 }
