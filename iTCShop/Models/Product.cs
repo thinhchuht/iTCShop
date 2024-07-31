@@ -5,16 +5,17 @@ namespace iTCShop.Models
     public class Product
     {
         public Product() {}
+
         public Product(string iMEI , string productTypeId)
         {
-            IMEI = iMEI;
+            IMEI          = iMEI;
             ProductTypeId = productTypeId;
         }
 
-        public string IMEI { get; set; }
+        public string      IMEI          { get; set; }
         [Required]
-        public string ProductTypeId { get; set; }
-        public OrderStatus Status { get; set; }
-        public ProductType ProductType { get; set; }
+        public string      ProductTypeId { get; set; }
+        public OrderStatus Status        { get; set; }
+        public ProductType ProductType   { get; set; }
     }
 }

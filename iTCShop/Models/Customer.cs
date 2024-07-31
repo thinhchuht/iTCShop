@@ -3,7 +3,7 @@
     public enum CustomerStatus
     {
         Available = 1,
-        Banned = 0
+        Banned    = 0
     }
     public class Customer
     {
@@ -22,10 +22,8 @@
         public Cart           Cart        { get; set; }
         public AuthorizeUser  Auth        { get; set; }
         public List<Order>    Orders      { get; set; }
-        public Customer()
-        {
-            
-        }
+
+        public Customer() {}
 
         public Customer(string name, string email, string userName, string password, string phone, string address, DateTime dateOfBirth, string id = null)
         {

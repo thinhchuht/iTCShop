@@ -7,12 +7,13 @@
         public string        Password  { get; set; }
         public int           AuthID    { get; set; }
         public AuthorizeUser Auth      { get; set; }
+
         public Admin(string  userName, string password)
         {
             ID = Guid.NewGuid().ToString();
             UserName = userName;
             Password = password;
-            AuthID = 1;
+            AuthID   = 1;
         }
     }
 }

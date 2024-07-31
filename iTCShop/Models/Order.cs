@@ -13,6 +13,7 @@
         BankTransfer   = 1,   
         CashOnDelivery = 2
     }
+
     public class Order
     {
         public string              ID           { get; set; }

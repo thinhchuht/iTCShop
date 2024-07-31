@@ -67,7 +67,7 @@
             {
                 var product = new ProductType(productTypesRequest.Name, productTypesRequest.Price, productTypesRequest.Description,
                                           productTypesRequest.Size, productTypesRequest.Battery, productTypesRequest.Memory, productTypesRequest.Color,
-                                          productTypesRequest.RAM, productTypesRequest.Picture);
+                                          productTypesRequest.RAM);
                 var result = await productTypesServices.AddProductType(product);
                 if (result.IsSuccess()) return RedirectToAction("HomeAdminProductType", "Admin");
                 else return BadRequest(result);
@@ -99,7 +99,7 @@
             try
             {
                 var newProduct = new ProductType(productTypesRequest.Name, productTypesRequest.Price, productTypesRequest.Description, productTypesRequest.Size,
-                                         productTypesRequest.Battery, productTypesRequest.Memory, productTypesRequest.Color, productTypesRequest.RAM, productTypesRequest.Picture);
+                                         productTypesRequest.Battery, productTypesRequest.Memory, productTypesRequest.Color, productTypesRequest.RAM);
                 var result = await productTypesServices.UpdateProductType(newProduct);
                 if (result.IsSuccess()) return RedirectToAction("HomeAdminProductType", "Admin");
                 else return BadRequest(result);

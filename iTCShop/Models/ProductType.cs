@@ -17,7 +17,7 @@ namespace iTCShop.Models
         
 
         public ProductType() { }
-        public ProductType(string name, decimal price, string description, decimal size, int battery, int memory, string color, int rAM, string picture)
+        public ProductType(string name, decimal price, string description, decimal size, int battery, int memory, string color, int rAM)
         {
             ID          = string.Concat(Regex.Matches(name, @"\b(\d+|\w)")) + memory + string.Concat(Regex.Matches(color, @"\b(\d+|\w)"));
             Name        = name;

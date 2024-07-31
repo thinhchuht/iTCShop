@@ -42,9 +42,25 @@
         public async Task<IActionResult> HomeAdminRevenue()
         {
             var orders = await orderService.GetAllCompletedOrders();
+            var mostSoldProductType = orders
+              .SelectMany(o => o.OrderDetails)
+              .GroupBy(od => od.Product.ProductTypeId)
+              .Select(g => new
+              {
+                  ProductTypeId = g.Key,
+                  TotalQuantity = g.Sum(od => od.Quantity)
+              })
+              .OrderByDescending(x => x.TotalQuantity);
+
+            TempData.Put<dynamic>("mostSold", mostSoldProductType);
             ViewBag.Sort = TempData["sort"];
             ViewBag.Search = TempData["search"];
             return View(orders);
+        }
+
+        public IActionResult HomeAdminReports()
+        {
+            return View();
         }
     }
 
@@ -52,6 +68,7 @@
     {
         public List<Product> Products { get; set; }
         public List<ProductType> ProductTypes { get; set; }
+
         public ResponseListsView()
         {
             Products = new List<Product>();

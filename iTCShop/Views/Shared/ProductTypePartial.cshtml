@@ -41,11 +41,11 @@
                     </div>
                     <div class="form-group">
                         <label for="productBattery">Battery</label>
-                        <input type="number" class="form-control" id="productBattery" name="battery" value="@Model?.Battery" required>
+                        <input type="number" class="form-control" id="productBattery" name="battery" value="@Model?.Battery" required min="1">
                     </div>
                     <div class="form-group">
                         <label for="productMemory">Memory</label>
-                        <input type="number" class="form-control" id="productMemory" name="memory" value="@Model?.Memory" required readonly="@isEdit">
+                        <input type="number" class="form-control" id="productMemory" name="memory" value="@Model?.Memory" required min="1" readonly="@isEdit">
                     </div>
                     <div class="form-group">
                         <label for="productColor">Color</label>
@@ -53,7 +53,7 @@
                     </div>
                     <div class="form-group">
                         <label for="productRAM">RAM</label>
-                        <input type="number" class="form-control" id="productRAM" name="ram" value="@Model?.RAM" required>
+                        <input type="number" class="form-control" id="productRAM" name="ram" value="@Model?.RAM" min="1" required>
                     </div>
                @*       <div class="form-group">
                          <label for="productPicture">Picture</label>
