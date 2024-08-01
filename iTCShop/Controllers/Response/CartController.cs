@@ -1,6 +1,4 @@
-﻿using iTCShop.Extensions;
-
-namespace iTCShop.Controllers.Response
+﻿namespace iTCShop.Controllers.Response
 {
     public class CartController(ICartDetailsServices cartDetailsServices) : Controller
     {
@@ -16,7 +14,6 @@ namespace iTCShop.Controllers.Response
                 var cartDetails = await cartDetailsServices.GetAllByCartId(customer.ID);
                 return View(cartDetails);
             }
-
         }
 
         public async Task<IActionResult> AddCart([FromBody] string productTypeId)
@@ -32,6 +29,7 @@ namespace iTCShop.Controllers.Response
                 return Json(response);
             }
         }
+
         [HttpPost]
         public async Task<IActionResult> DropCartDetails(string id)
         {

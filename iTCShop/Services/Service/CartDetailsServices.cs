@@ -1,11 +1,11 @@
 ﻿namespace iTCShop.Services.Service
 {
-    public class CartDetailsServices(IBaseDbServices baseDbServices, IProductDbServices productDbServices, iTCShopDbContext iTCShopDbContext) : ICartDetailsServices
+    public class CartDetailsServices(IBaseDbServices baseDbServices, IProductDbServices productDbServices, IProductsTypeServices productsTypeServices,  iTCShopDbContext iTCShopDbContext) : ICartDetailsServices
     {
 
         public async Task<CartDetails> GetCartDetailByProductTypeId(string productTypeId, string cartId)
         {
-            return await iTCShopDbContext.CartDetails.Include(c => c.ProductType).FirstOrDefaultAsync(c => c.ProductTypeID.Equals(productTypeId) && c.ID.Equals(cartId));
+            return await iTCShopDbContext.CartDetails.Include(c => c.ProductTypes).FirstOrDefaultAsync(c => c.ProductTypeID.Equals(productTypeId) && c.ID.Equals(cartId));
         }
 
         //public async Task<CartDetails> GetByID(string id)
@@ -36,8 +36,8 @@
                 if (existCartDetail == null)
                 {
                     var cartDetail =  new CartDetails(cartId ,productTypeId);
+                    cartDetail.ProductTypes.Add(await productsTypeServices.GetProductTypeById(productTypeId));
                     iTCShopDbContext.Update(cartDetail);
-                  
                 }
                 else
                 {
@@ -72,9 +72,9 @@
         {
             return await baseDbServices.GetById<CartDetails>(id);
         } 
-        public Task<List<CartDetails>> GetAllByCartId(string id)
+        public Task<CartDetails> GetAllByCartId(string id)
         {
-            return  iTCShopDbContext.CartDetails.Include(c => c.ProductType).Where(c => c.ID.Equals(id)).ToListAsync();
+            return iTCShopDbContext.CartDetails.Include(c => c.ProductTypes).FirstOrDefaultAsync(c=>c.ID.Equals(id));
         }
 
         public async Task<ResponseModel> UpdateDropQuantity(string id)
@@ -102,10 +102,11 @@
             try
             {
                 var cartDetails = await GetAllByCartId(id);
-                foreach (var cartDetail in cartDetails)
-                {
-                    await DeleteCartDetail(cartDetail.ID);
-                }
+                //foreach (var productType in cartDetails.ProductTypes)
+                //{
+                //    await DeleteCartDetail(productType.ID);
+                //}
+                cartDetails.ProductTypes.Clear();
                 return ResponseModel.SuccessResponse();
             }
             catch (Exception ex)
