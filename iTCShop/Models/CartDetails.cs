@@ -6,7 +6,7 @@
         public int               Quantity      { get; set; }
         public string            ProductTypeID { get; set; }
         public string            CustomerID    { get; set; }
-        public List<ProductType> ProductTypes  { get; set; }
+        public ProductType ProductType { get; set; }
 
         public CartDetails() { }
         public CartDetails(string id) 
@@ -16,7 +16,7 @@
         }
         public CartDetails(string id, string productTypeId)
         {
-            ID            = id;
+            ID            = Guid.NewGuid().ToString();
             Quantity      = 1;
             ProductTypeID = productTypeId;
             CustomerID    = id;

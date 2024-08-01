@@ -3,6 +3,7 @@
     public interface IProductDbServices
     {
         Task<List<Product>> GetAllProducts();
+        Task<List<Product>> GetOnStockProductsByProductType(string productTypeId);
         Task<List<Product>> GetProductsByProductType(string productTypeId);
         Task<Product>       GetProductByImei(string imei);
         Task<ResponseModel> AddProduct(ProductRequest productRequest);

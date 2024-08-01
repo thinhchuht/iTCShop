@@ -21,8 +21,8 @@ namespace iTCShop.Controllers.Response
             try
             {
                 var customer = new Customer(customerRequest.Name, customerRequest.Email, customerRequest.UserName, customerRequest.Password, customerRequest.Phone, customerRequest.Address, customerRequest.DateOfBirth);
-                var response = await cartDetailsServices.CreateCart(customer.ID);
-                if (!response.IsSuccess()) return View("RegisterCustomer", response);
+                //var response = await cartDetailsServices.CreateCart(customer.ID);
+                //if (!response.IsSuccess()) return View("RegisterCustomer", response);
                 var rs = await customerServices.AddCustomer(customer);
                 ViewBag.RegRs = "Register sucessfully. Go to login.";
                 ViewBag.isReg = true;

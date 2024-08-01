@@ -24,6 +24,7 @@
             var product = await GetProductByImei(imei);
             product.Status = OrderStatus.Pending;
             iTCShopDbContext.Update(product);
+            iTCShopDbContext.SaveChanges();
             return ResponseModel.SuccessResponse();
         }
 
@@ -108,6 +109,11 @@
             {
                 return ResponseModel.FailureResponse(ex.ToString());
             }
+        }
+
+        public async Task<List<Product>> GetOnStockProductsByProductType(string productTypeId)
+        {
+            return await iTCShopDbContext.Products.Include(p=>p.ProductType).Where(p=>p.Status.Equals(OrderStatus.OnStock) && p.ProductTypeId.Equals(productTypeId)).ToListAsync();
         }
     }
 }

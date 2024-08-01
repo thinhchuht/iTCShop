@@ -25,7 +25,7 @@
             }
             else
             {
-                var response = await cartDetailsServices.AddCartDetail(customer.ID, productTypeId);
+                var response = await cartDetailsServices.AddCartDetail(productTypeId, customer.ID);
                 return Json(response);
             }
         }
@@ -43,6 +43,7 @@
         {
             var rs = await cartDetailsServices.AddCartDetail(productTypeId, cartId);
             if (!rs.IsSuccess()) TempData.Put("response",rs);
+            TempData.Keep();
             return RedirectToAction("CustomerCart");
         }
     }

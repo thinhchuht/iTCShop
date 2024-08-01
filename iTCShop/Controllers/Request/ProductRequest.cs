@@ -4,6 +4,5 @@
     {
         public string Imei          { get; set; }
         public string ProductTypeId { get; set; }
-
     }
 }

@@ -1,11 +1,11 @@
 ﻿namespace iTCShop.Services.Service
 {
-    public class CartDetailsServices(IBaseDbServices baseDbServices, IProductDbServices productDbServices, IProductsTypeServices productsTypeServices,  iTCShopDbContext iTCShopDbContext) : ICartDetailsServices
+    public class CartDetailsServices(IBaseDbServices baseDbServices, IProductDbServices productDbServices, IProductsTypeServices productsTypeServices, iTCShopDbContext iTCShopDbContext) : ICartDetailsServices
     {
 
-        public async Task<CartDetails> GetCartDetailByProductTypeId(string productTypeId, string cartId)
+        public async Task<CartDetails> GetCartDetailByProductTypeId(string productTypeId)
         {
-            return await iTCShopDbContext.CartDetails.Include(c => c.ProductTypes).FirstOrDefaultAsync(c => c.ProductTypeID.Equals(productTypeId) && c.ID.Equals(cartId));
+            return await iTCShopDbContext.CartDetails.FirstOrDefaultAsync(c => c.ProductTypeID.Equals(productTypeId));
         }
 
         //public async Task<CartDetails> GetByID(string id)
@@ -26,18 +26,17 @@
             }
         }
 
-        public async Task<ResponseModel> AddCartDetail(string cartId, string productTypeId)
+        public async Task<ResponseModel> AddCartDetail( string productTypeId, string customerId)
         {
             try
             {
                 var checkStock = await productDbServices.IsAvailableCheck(productTypeId);
                 if (!checkStock.IsSuccess()) return checkStock;
-                var existCartDetail = await GetCartDetailByProductTypeId(productTypeId, cartId);
+                var existCartDetail = await GetCartDetailByProductTypeId(productTypeId);
                 if (existCartDetail == null)
                 {
-                    var cartDetail =  new CartDetails(cartId ,productTypeId);
-                    cartDetail.ProductTypes.Add(await productsTypeServices.GetProductTypeById(productTypeId));
-                    iTCShopDbContext.Update(cartDetail);
+                    var cartDetail = new CartDetails(customerId, productTypeId);
+                    await baseDbServices.AddAsync(cartDetail);
                 }
                 else
                 {
@@ -71,10 +70,10 @@
         public async Task<CartDetails> GetById(string id)
         {
             return await baseDbServices.GetById<CartDetails>(id);
-        } 
-        public Task<CartDetails> GetAllByCartId(string id)
+        }
+        public async Task<List<CartDetails>> GetAllByCartId(string customersID)
         {
-            return iTCShopDbContext.CartDetails.Include(c => c.ProductTypes).FirstOrDefaultAsync(c=>c.ID.Equals(id));
+            return await iTCShopDbContext.CartDetails.Include(c => c.ProductType).Where(c => c.CustomerID.Equals(customersID)).ToListAsync();
         }
 
         public async Task<ResponseModel> UpdateDropQuantity(string id)
@@ -91,7 +90,7 @@
                 }
                 return ResponseModel.SuccessResponse();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return ResponseModel.FailureResponse(ex.ToString());
             }
@@ -102,18 +101,22 @@
             try
             {
                 var cartDetails = await GetAllByCartId(id);
-                //foreach (var productType in cartDetails.ProductTypes)
-                //{
-                //    await DeleteCartDetail(productType.ID);
-                //}
-                cartDetails.ProductTypes.Clear();
+                foreach (var cartDetail in cartDetails)
+                {
+                    await baseDbServices.DeleteAsync<CartDetails>(cartDetail.ID);
+                }
                 return ResponseModel.SuccessResponse();
             }
             catch (Exception ex)
             {
                 return ResponseModel.FailureResponse(ex.ToString());
             }
-          
+
+        }
+
+        public Task<CartDetails> GetCartDetailByProductTypeId(string productTypeId, string cartId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

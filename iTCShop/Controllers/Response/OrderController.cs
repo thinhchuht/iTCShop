@@ -123,7 +123,7 @@
                 var cartDetails = TempData.Peek<List<CartDetailsRequest>>("cartDetails");
                 foreach (var item in cartDetails)
                 {
-                    var allProducts = await productDbServices.GetProductsByProductType(item.ProductTypeID);
+                    var allProducts = await productDbServices.GetOnStockProductsByProductType(item.ProductTypeID);
                     var products = allProducts.Take(item.Quantity).ToList();
                     foreach (var p in products)
                     {
