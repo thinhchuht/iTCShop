@@ -5,6 +5,12 @@
 
         public IActionResult Login()
         {
+            if (HttpContext.Session.GetCustomer() != null)
+            {
+                HttpContext.Session.Clear();
+                TempData.PutResponse(ResponseModel.FailureResponse("You have been logged out of the current account."));
+
+            }
             return View();
         }
 
@@ -54,7 +60,7 @@
 
         public IActionResult SessionInfo()
         {
-            var user = HttpContext.Session.GetObjectFromJson<Customer>("user");
+            var user = HttpContext.Session.GetCustomer;
             return View(user);
         }
     }

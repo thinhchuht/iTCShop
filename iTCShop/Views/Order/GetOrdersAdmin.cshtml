@@ -11,6 +11,12 @@
     if (ViewBag.Sort == "ID") isOrder = true;
     var isCust = false;
     if (ViewBag.Sort == "customerID") isCust = true;
+    var is1 = false;
+    if (ViewBag.Status == "Pending") is1 = true;
+     var is2 = false;
+    if (ViewBag.Status == "InProgress") is2 = true;
+    var is3 = false;
+    if (ViewBag.Status == "Completed") is3 = true;
 }
 
 
@@ -22,7 +28,8 @@
             @{
                 for (int i = 1; i < orderStatuses.ToList().Count; i++)
                 {
-                    <option value="@orderStatuses.ToList()[i]">@orderStatuses.ToList()[i]</option>
+                    <option value="@orderStatuses.ToList()[i]" selected="@($"is{i}")">@orderStatuses.ToList()[i]</option>
+                   
                 }
             }
         </select>

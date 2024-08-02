@@ -36,9 +36,16 @@
             <input type="password" class="form-control" id="Password" name="Password" required minlength="6">
         </div>
 
-        <div class="mb-3">
+    @*     <div class="mb-3">
             <label for="Phone" class="form-label">Phone Number</label>
-            (+84)<input type="text" class="form-control" id="Phone" name="Phone" pattern="^\d{9}$" title="Has to be 9 number.">
+            <br />
+            <span class="input-group-text" id="basic-addon3"> </span>
+            <input type="text" class="form-control" id="Phone" name="Phone" pattern="^\d{9}$" title="Has to be last 9 number." aria-describedby="basic-addon3">
+        </div> *@
+        <label for="Phone" class="form-label">Phone Number</label> 
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">(+84)</span>
+            <input type="text" class="form-control" placeholder="Last 9 number" name="Phone" aria-label="" aria-describedby="basic-addon1" pattern="^\d{9}$" title="Has to be last 9 number.">
         </div>
 
         <div class="mb-3">

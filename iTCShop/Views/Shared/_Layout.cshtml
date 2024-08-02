@@ -1,7 +1,7 @@
 ﻿@using iTCShop.Extensions
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @{
-    var user = SessionValueConverter.GetObjectFromJson<Customer>(HttpContextAccessor.HttpContext.Session, "user");
+    var user = HttpContextAccessor.HttpContext.Session.GetCustomer();
 
     if (user == null)
     {

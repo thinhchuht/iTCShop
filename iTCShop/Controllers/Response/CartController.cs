@@ -4,7 +4,7 @@
     {
         public async Task<IActionResult> CustomerCart()
         {
-            var customer = HttpContext.Session.GetObjectFromJson<Customer>("user");
+            var customer = HttpContext.Session.GetCustomer();
             if (customer == null)
             {
                 return RedirectToAction("Login", "Login");
@@ -18,7 +18,7 @@
 
         public async Task<IActionResult> AddCart([FromBody] string productTypeId)
         {
-            var customer = HttpContext.Session.GetObjectFromJson<Customer>("user");
+            var customer = HttpContext.Session.GetCustomer();
             if (customer == null)
             {
                 return RedirectToAction("Login", "Login");

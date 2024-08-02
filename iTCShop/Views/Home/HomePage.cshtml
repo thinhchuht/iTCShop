@@ -2,8 +2,8 @@
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @model List<ProductType>
 @{
-    var user = SessionValueConverter.GetObjectFromJson<Customer>(HttpContextAccessor.HttpContext.Session, "user");
-    var admin = SessionValueConverter.GetObjectFromJson<Admin>(HttpContextAccessor.HttpContext.Session, "admin");
+    var user = HttpContextAccessor.HttpContext.Session.GetCustomer();
+    var admin = HttpContextAccessor.HttpContext.Session.GetAdmin();
     if (user != null) Layout = "~/Views/Shared/_Layout.cshtml";
     if (admin != null) Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewBag.Title = "Home Page";

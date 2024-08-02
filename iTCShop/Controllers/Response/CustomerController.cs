@@ -10,6 +10,12 @@
         //}
         public ActionResult RegisterCustomer()
         {
+            if (HttpContext.Session.GetCustomer() != null)
+            {
+                HttpContext.Session.Clear();
+                TempData.PutResponse(ResponseModel.FailureResponse("You have been logged out of the current account."));
+
+            }
             return View();
         }
 
@@ -19,8 +25,6 @@
             try
             {
                 var customer = new Customer(customerRequest.Name, customerRequest.Email, customerRequest.UserName, customerRequest.Password, "0"+customerRequest.Phone, customerRequest.Address, customerRequest.DateOfBirth);
-                //var response = await cartDetailsServices.CreateCart(customer.ID);
-                //if (!response.IsSuccess()) return View("RegisterCustomer", response);
                 var rs = await customerServices.AddCustomer(customer);
                 ViewBag.RegRs = "Register sucessfully. Go to login.";
                 ViewBag.isReg = true;
@@ -29,6 +33,7 @@
             }
             catch
             {
+                TempData.PutResponse(ResponseModel.ExceptionResponse());
                 return View();
             }
         }
@@ -39,24 +44,21 @@
             if (customer.Status == CustomerStatus.Available) customer.Status = CustomerStatus.Banned;
             else customer.Status = CustomerStatus.Available;
             var rs = customerServices.UpdateCustomer(customer);
-            if (rs.IsSuccess())
-            {
-                var customers = await customerServices.GetAll();
-                TempData.Put("customers", customers);
-                return RedirectToAction("HomeAdminCustomers", "Admin");
-            }
-            return BadRequest(rs);
+            if (!rs.IsSuccess()) TempData.PutResponse(rs);
+            var customers = await customerServices.GetAll();
+            TempData.Put("customers", customers);
+            return RedirectToAction("HomeAdminCustomers", "Admin");
         }
         public ActionResult GetCustomerInfo()
         {
-            var customer = HttpContext.Session.GetObjectFromJson<Customer>("user");
+            var customer = HttpContext.Session.GetCustomer();
             if (customer == null) return RedirectToAction("Login", "Login");
             else return View(customer);
         }
 
         public async Task<IActionResult> Edit()
         {
-            var customer = await customerServices.GetCustomerById(HttpContext.Session.GetObjectFromJson<Customer>("user").ID);
+            var customer = await customerServices.GetCustomerById(HttpContext.Session.GetCustomer().ID);
             return View(customer);
         }
 
@@ -68,6 +70,7 @@
             {
                 "ID" => customers.Where(p => p.ID.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList(),
                 "Name" => customers.Where(p => p.Name.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList(),
+                "Phone" => customers.Where(p => p.Phone.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList(),
                 _ => customers.Where(p => p.UserName.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList(),
             };
             TempData.Put("customers", customerLst);
@@ -79,12 +82,12 @@
         [HttpPost]
         public async Task<IActionResult> Edit(Customer updatedCustomer)
         {
-            var customer = await customerServices.GetCustomerById(HttpContext.Session.GetObjectFromJson<Customer>("user").ID);
-            customer.Name = updatedCustomer.Name;
-            customer.Email = updatedCustomer.Email;
-            customer.Password = updatedCustomer.Password;
-            customer.Phone = "0"+updatedCustomer.Phone;
-            customer.Address = updatedCustomer.Address;
+            var customer         = await customerServices.GetCustomerById(HttpContext.Session.GetCustomer().ID);
+            customer.Name        = updatedCustomer.Name;
+            customer.Email       = updatedCustomer.Email;
+            customer.Password    = updatedCustomer.Password;
+            customer.Phone       = "0"+updatedCustomer.Phone;
+            customer.Address     = updatedCustomer.Address;
             customer.DateOfBirth = updatedCustomer.DateOfBirth;
 
             var rs = customerServices.UpdateCustomer(customer);
