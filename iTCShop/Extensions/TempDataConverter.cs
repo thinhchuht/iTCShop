@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System.Runtime.CompilerServices;
 
 namespace iTCShop.Extensions
 {
@@ -19,6 +20,11 @@ namespace iTCShop.Extensions
         {
             var value = tempData.Peek(key);
             return value == null ? default : JsonConvert.DeserializeObject<T>((string)value);
+        }
+
+        public static void PutResponse(this ITempDataDictionary tempData, ResponseModel rs)
+        {
+            tempData.Put("response", rs);
         }
     }
 }

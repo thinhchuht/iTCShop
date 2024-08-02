@@ -7,5 +7,6 @@
         Task<ResponseModel> AddCustomer(Customer customer);
         Task<Customer> CheckCustomerAccount(string userName, string password);
         ResponseModel UpdateCustomer(Customer customer);
+        Task<ResponseModel> UpdateForgetPassword(string userName, string email, string newPassword);
     }
 }

@@ -42,7 +42,7 @@
         public async Task<IActionResult> AddCartDetails(string productTypeId, string cartId) 
         {
             var rs = await cartDetailsServices.AddCartDetail(productTypeId, cartId);
-            if (!rs.IsSuccess()) TempData.Put("response",rs);
+            if (!rs.IsSuccess()) TempData.PutResponse(rs);
             TempData.Keep();
             return RedirectToAction("CustomerCart");
         }
