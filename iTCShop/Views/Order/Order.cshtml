@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Order";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var token = ViewBag.OrderToken;
 }
 
 <style>
@@ -18,7 +19,7 @@
 <div class="container mt-5">
     <div class="form-container">
         <h2 class="text-center">Order Form</h2>
-        <form action="/Order/GetAllOrders" method="post">
+        <form id="orderForm" action="/Order/GetAllOrders" method="post">
             <div class="form-group">
                 <label for="orderDate">OrderDate</label>
                 <input type="datetime-local" class="form-control" id="orderDate" name="orderDate" value="@Model.OrderDate.ToString("yyyy-MM-dd HH:mm:ss")" readonly>
@@ -37,6 +38,7 @@
                     <option value="@((int)method)">@method.ToString()</option>
                 }
             </select>
+            <input type="hidden" name="orderToken" value="@token" />
             <input type="hidden" class="form-control" value="@Model.CustomerId" name="customerId">
             <button type="submit" class="btn btn-primary">Submit Order</button>
         </form>

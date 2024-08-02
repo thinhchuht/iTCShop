@@ -1,9 +1,7 @@
-﻿using iTCShop.Extensions;
-
-namespace iTCShop.Controllers.Response
+﻿namespace iTCShop.Controllers.Response
 {
 
-    public class CustomerController(ICustomerServices customerServices, ICartDetailsServices cartDetailsServices) : Controller
+    public class CustomerController(ICustomerServices customerServices) : Controller
     {
         //public async Task<IActionResult> GetAllCustomers()
         //{

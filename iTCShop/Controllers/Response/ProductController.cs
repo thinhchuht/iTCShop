@@ -1,6 +1,6 @@
 ﻿namespace iTCShop.Controllers.Response
 {
-    public class ProductController(IProductDbServices productDbServices, IOrderDetailServices orderDetailServices) : Controller
+    public class ProductController(IProductDbServices productDbServices) : Controller
     {
         [HttpGet("get-all-products")]
         public async Task<IActionResult> GetAllProducts()

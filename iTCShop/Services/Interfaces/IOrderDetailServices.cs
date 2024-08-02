@@ -3,6 +3,6 @@
     public interface IOrderDetailServices
     {
         Task<ResponseModel> AddOrderDetail(OrderDetail orderDetail);
-        Task<ResponseModel> DeleteOrderDetail(string id);
+        //Task<ResponseModel> DeleteOrderDetail(string id);
     }
 }

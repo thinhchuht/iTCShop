@@ -1,30 +1,30 @@
 ﻿namespace iTCShop.Services.Service
 {
-    public class CartDetailsServices(IBaseDbServices baseDbServices, IProductDbServices productDbServices, IProductsTypeServices productsTypeServices, iTCShopDbContext iTCShopDbContext) : ICartDetailsServices
+    public class CartDetailsServices(IBaseDbServices baseDbServices, IProductDbServices productDbServices, iTCShopDbContext iTCShopDbContext) : ICartDetailsServices
     {
 
-        public async Task<CartDetails> GetCartDetailByProductTypeId(string productTypeId)
-        {
-            return await iTCShopDbContext.CartDetails.FirstOrDefaultAsync(c => c.ProductTypeID.Equals(productTypeId));
-        }
+        //public async Task<CartDetails> GetCartDetailByProductTypeId(string productTypeId)
+        //{
+        //    return await iTCShopDbContext.CartDetails.FirstOrDefaultAsync(c => c.ProductTypeID.Equals(productTypeId));
+        //}
 
         //public async Task<CartDetails> GetByID(string id)
         //{
         //    return await baseDbServices.GetById<CartDetails>(id);
         //}
-        public async Task<ResponseModel> CreateCart(string id)
-        {
-            try
-            {
-                var cartDetail = new CartDetails(id);
-                await baseDbServices.AddAsync(cartDetail);
-                return ResponseModel.SuccessResponse();
-            }
-            catch
-            {
-                return ResponseModel.FailureResponse("Create cart failed");
-            }
-        }
+        //public async Task<ResponseModel> CreateCart(string id)
+        //{
+        //    try
+        //    {
+        //        var cartDetail = new CartDetails(id);
+        //        await baseDbServices.AddAsync(cartDetail);
+        //        return ResponseModel.SuccessResponse();
+        //    }
+        //    catch
+        //    {
+        //        return ResponseModel.FailureResponse("Create cart failed");
+        //    }
+        //}
 
         public async Task<ResponseModel> AddCartDetail( string productTypeId, string customerId)
         {
@@ -32,7 +32,7 @@
             {
                 var checkStock = await productDbServices.IsAvailableCheck(productTypeId);
                 if (!checkStock.IsSuccess()) return checkStock;
-                var existCartDetail = await GetCartDetailByProductTypeId(productTypeId);
+                var existCartDetail = await GetCartDetailByTypeAndCustId(productTypeId, customerId);
                 if (existCartDetail == null)
                 {
                     var cartDetail = new CartDetails(customerId, productTypeId);
@@ -114,9 +114,9 @@
 
         }
 
-        public Task<CartDetails> GetCartDetailByProductTypeId(string productTypeId, string cartId)
+        public async Task<CartDetails> GetCartDetailByTypeAndCustId(string productTypeId, string customerId)
         {
-            throw new NotImplementedException();
+            return await iTCShopDbContext.CartDetails.Include(c => c.ProductType).FirstOrDefaultAsync(c => c.ProductTypeID.Equals(productTypeId) && c.CustomerID.Equals(customerId));
         }
     }
 }

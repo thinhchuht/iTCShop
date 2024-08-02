@@ -15,9 +15,9 @@
             }
         }
 
-        public Task<ResponseModel> DeleteOrderDetail(string id)
-        {
-            throw new NotImplementedException();
-        }
+        //public Task<ResponseModel> DeleteOrderDetail(string id)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }
