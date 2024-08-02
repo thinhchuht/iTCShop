@@ -30,7 +30,7 @@
             {
                 orders = orders.Where(o => o.OrderDate >= startDate && o.OrderDate <= endDate).ToList();
                 TempData.Put("orders", orders);
-                return RedirectToAction("HomeAdminReport","Admin");
+                return RedirectToAction("HomeAdminReport", "Admin");
             };
             if (string.IsNullOrEmpty(search) && string.IsNullOrEmpty(status))
             {
@@ -99,6 +99,9 @@
                     CustomerId = customer.ID
                 };
                 TempData.Keep();
+                var token = Guid.NewGuid().ToString();
+                TempData["OrderToken"] = token;
+                ViewBag.OrderToken = token;
                 return View(order);
             }
             catch (Exception ex)
@@ -108,10 +111,17 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> GetAllOrders(int payMethod, string shipAddress, string customerId, decimal totalPay)
+        public async Task<IActionResult> GetAllOrders(int payMethod, string shipAddress, string customerId, decimal totalPay, string orderToken)
         {
+            if (TempData["OrderToken"] == null || TempData["OrderToken"].ToString() != orderToken)
+            {
+                var rs = ResponseModel.FailureResponse("Your order is already submited!");
+                TempData.Put("response", rs);
+                return RedirectToAction("HomePage", "Home");
+            }
             try
             {
+                var cartDetails = TempData.Peek<List<CartDetailsRequest>>("cartDetails");
                 var order = new Order()
                 {
                     TotalPay = totalPay,
@@ -120,10 +130,9 @@
                     ShipAddress = shipAddress,
                 };
                 await orderService.AddOrder(order);
-                var cartDetails = TempData.Peek<List<CartDetailsRequest>>("cartDetails");
                 foreach (var item in cartDetails)
                 {
-                    var allProducts = await productDbServices.GetProductsByProductType(item.ProductTypeID);
+                    var allProducts = await productDbServices.GetOnStockProductsByProductType(item.ProductTypeID);
                     var products = allProducts.Take(item.Quantity).ToList();
                     foreach (var p in products)
                     {
@@ -136,9 +145,11 @@
                 await cartDetailsServices.DeleteAllCartDetail(customerId);
                 return RedirectToAction("GetAllOrders");
             }
-            catch (Exception ex)
+            catch
             {
-                return BadRequest(ex.Message);
+                TempData.Put("response", ResponseModel.ExceptionResponse());
+                return RedirectToAction("HomePage", "Home");
+
             }
         }
     }

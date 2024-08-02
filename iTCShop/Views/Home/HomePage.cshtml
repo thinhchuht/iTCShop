@@ -15,9 +15,6 @@
     if (ViewBag.Sort == "priceDes") desc = true;
     var acs = false;
     if (ViewBag.Sort == "priceAcs") acs = true;
-    var response = TempData.Get<ResponseModel>("response");
-
-
 }
 <link rel="stylesheet" href="~/css/Site.css">
 <div id="carouselExampleInterval" class="carousel slide center" data-bs-ride="carousel">
@@ -71,9 +68,10 @@
         }
     }
 </div>
-@{
+@*@{
+    var response = TempData.Get<ResponseModel>("response");
     if (response != null)
     {
         Html.RenderPartial("_ErrorPartial", response);
     }
-}
+}*@

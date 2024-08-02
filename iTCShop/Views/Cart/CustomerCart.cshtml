@@ -6,6 +6,8 @@
     var i = 0;
     decimal total = 0;
 }
+
+<h1> Cart </h1>
 <table class="table table-success table-striped table-hover">
     <thead>
         <tr>
@@ -28,7 +30,7 @@
             total += item.ProductType.Price * item.Quantity;
             <tr>
                 <th scope="row">@(++i)</th>
-                <td>@item.ProductType.Picture</td>
+                <td><img src="~/Asset/@item.ProductType.Picture" alt="Image" style="height: 50px; width: 50px" /></td>
                 <td>@item.ProductType.Name</td>
                 <td>@item.ProductType.Color</td>
                 <td>@item.ProductType.Memory</td>
@@ -44,7 +46,7 @@
                 <td>
                     <form action="/Cart/AddCartDetails" method="post">
                         <input type="hidden" name="productTypeID" value="@item.ProductTypeID" />
-                        <input type="hidden" name="cartID" value="@item.CartID" />
+                        <input type="hidden" name="cartID" value="@item.ID" />
                         <button type="submit" class="btn btn-primary" id="@item.ID">Add</button>
                     </form>
                 </td>
@@ -67,3 +69,10 @@
         <input type="hidden" name="cartDetails[@index].Price" value="@item.ProductType.Price" />
     }
 </form>
+@* @{
+    var response = TempData.Get<ResponseModel>("response");
+    if (response != null)
+    {
+        Html.RenderPartial("_ErrorPartial", response);
+    }
+} *@

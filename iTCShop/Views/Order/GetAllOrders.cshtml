@@ -40,7 +40,7 @@
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th>Product ID</th>
+                                        <th>Type ID</th>
                                         <th>Quantity</th>
                                         <th>Price</th>
                                     </tr>
@@ -49,7 +49,7 @@
                                     @foreach (var detail in order.OrderDetails)
                                     {
                                         <tr>
-                                            <td>@detail.ProductID</td>
+                                            <td>@detail.Product.ProductTypeId</td>
                                             <td>@detail.Quantity</td>
                                             <td>@MoneyDTO.Convert(@detail.Price)</td>
                                         </tr>

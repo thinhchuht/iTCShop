@@ -35,12 +35,6 @@
             else customers = TempData.Get<List<Customer>>("customers");
             ViewBag.Sort = TempData["sort"];
             ViewBag.Search = TempData["search"];
-            foreach ( var customer in customers)
-            {
-                var a = customer.Orders?.Count(o => o.Status == OrderStatus.Completed);
-                var b = customer.Orders?.Where(o => o.Status == OrderStatus.Completed).Sum(o => o.TotalPay);
-            }
-           
             return View(customers);
         }
 
@@ -48,7 +42,7 @@
         public async Task<IActionResult> HomeAdminReport()
         {
             var orders = TempData.Get<List<Order>>("orders");
-            if(orders == null) orders = await orderService.GetAllCompletedOrders();
+            orders ??= await orderService.GetAllCompletedOrders();
             var mostSoldProductType = orders
               .SelectMany(o => o.OrderDetails)
               .GroupBy(od => od.Product.ProductTypeId)

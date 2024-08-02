@@ -1,17 +1,16 @@
-﻿@model ResponseModel
+﻿@* Your existing view *@
+@model ResponseModel
 @{
     ViewBag.Title = "Login";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
-<h2>Login to access all the feature of our Website</h2>
+<h2>Login to access all the features of our Website</h2>
 <br />
 
 <h3 class="text-danger">@ViewBag.Fail</h3>
 
 <form method="post" action="/Login/Login">
-
     <div class="form-horizontal">
         <hr />
         <div class="form-group">
@@ -27,12 +26,42 @@
                 <input type="password" id="password" name="password" class="form-control" />
             </div>
         </div>
-
-        <div class="form-group" style="margin-top: 20px">
-            <div class="col-md-offset-2 col-md-10">
+        <div class="form-group" style="margin-top: 20px; display: flex; justify-content: space-between" >
+            <div class="col-md-offset-2 col-md-6">
                 <input type="submit" value="Login" class="btn btn-primary" />
+            </div>
+            <a style="flex-basis: 28%; color:blue" href data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">
+                Forgot Password?
+            </a>
+        </div>
+       
+    </div>
+</form>
+
+<div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="forgotPasswordModalLabel">Forgot Password</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="/Login/ForgotPassword">
+                    <div class="form-group mb-3">
+                        <label for="forgotPasswordUserName">UserName</label>
+                        <input type="text" class="form-control" id="forgotPasswordUserName" name="forgotPasswordUserName" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="forgotPasswordEmail">Email address</label>
+                        <input type="email" class="form-control" id="forgotPasswordEmail" name="forgotPasswordEmail" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="newPassword">New Password</label>
+                        <input type="password" class="form-control" id="newPassword" name="newPassword" required minlength="6">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
             </div>
         </div>
     </div>
-</form>
-@Html.Partial("_ErrorPartial",Model)
+</div>

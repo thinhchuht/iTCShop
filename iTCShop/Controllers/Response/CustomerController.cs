@@ -1,7 +1,7 @@
 ﻿namespace iTCShop.Controllers.Response
 {
 
-    public class CustomerController(ICustomerServices customerServices, ICartService cartService) : Controller
+    public class CustomerController(ICustomerServices customerServices) : Controller
     {
         //public async Task<IActionResult> GetAllCustomers()
         //{
@@ -18,25 +18,21 @@
         {
             try
             {
-                var customer = new Customer(customerRequest.Name, customerRequest.Email, customerRequest.UserName, customerRequest.Password, customerRequest.Phone, customerRequest.Address, customerRequest.DateOfBirth);
-                cartService.CreateCart(customer.ID);
+                var customer = new Customer(customerRequest.Name, customerRequest.Email, customerRequest.UserName, customerRequest.Password, "0"+customerRequest.Phone, customerRequest.Address, customerRequest.DateOfBirth);
+                //var response = await cartDetailsServices.CreateCart(customer.ID);
+                //if (!response.IsSuccess()) return View("RegisterCustomer", response);
                 var rs = await customerServices.AddCustomer(customer);
-                if (rs.IsSuccess())
-                {
-                    ViewBag.RegRs = "Register sucessfully. Go to login.";
-                    ViewBag.isReg = true;
-                    return View("RegisterCustomer",rs);
-                }
-                else
-                {
-                    return View("RegisterCustomer",rs);
-                }
+                ViewBag.RegRs = "Register sucessfully. Go to login.";
+                ViewBag.isReg = true;
+                TempData.PutResponse(rs);
+                return View("RegisterCustomer");
             }
             catch
             {
                 return View();
             }
         }
+
         public async Task<IActionResult> UpdateStatus(string id)
         {
             var customer = await customerServices.GetCustomerById(id);
@@ -68,23 +64,18 @@
         {
             var customers = await customerServices.GetAll();
             var customerLst = new List<Customer>();
-            switch (sort)
+            customerLst = sort switch
             {
-                case "ID":
-                    customerLst = customers.Where(p => p.ID.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
-                    break;
-                case "Name":
-                    customerLst = customers.Where(p => p.Name.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
-                    break;
-                default:
-                    customerLst = customers.Where(p => p.UserName.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
-                    break;
-            }
+                "ID" => customers.Where(p => p.ID.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList(),
+                "Name" => customers.Where(p => p.Name.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList(),
+                _ => customers.Where(p => p.UserName.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList(),
+            };
             TempData.Put("customers", customerLst);
             TempData["sort"] = sort;
             TempData["search"] = search;
             return RedirectToAction("HomeAdminCustomers", "Admin"); ;
         }
+
         [HttpPost]
         public async Task<IActionResult> Edit(Customer updatedCustomer)
         {
@@ -92,7 +83,7 @@
             customer.Name = updatedCustomer.Name;
             customer.Email = updatedCustomer.Email;
             customer.Password = updatedCustomer.Password;
-            customer.Phone = updatedCustomer.Phone;
+            customer.Phone = "0"+updatedCustomer.Phone;
             customer.Address = updatedCustomer.Address;
             customer.DateOfBirth = updatedCustomer.DateOfBirth;
 

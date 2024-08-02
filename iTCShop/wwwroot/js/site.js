@@ -46,38 +46,9 @@ function setProductId(id, check,name='',memory='',color='') {
     
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-    const attachAddCartEvent = () => {
-        const icons = document.querySelectorAll('.product .fa-plus');
-        icons.forEach(icon => {
-            icon.onclick = () => addCart(icon);
-        });
-    };
-
-    attachAddCartEvent();
-
-    const login = document.getElementById("log");
-    login.onclick = () => {
-        console.log(login.innerText);
-        if (login.innerText.trim() === "Login") {
-            window.location.href = "/Login/Login";
-        } else {
-            fetch('/Login/LogOut', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            }).then(response => {
-                if (response.ok) {
-                    console.log(response);
-                    window.location.href = '/Login/Login';
-                } else {
-                    alert('Logout failed.');
-                }
-            }).catch(error => {
-                console.error('Error:', error);
-                alert('Logout failed.');
-            });
-        }
+window.onpageshow = function (event) {
+    if (event.persisted) {
+        window.location.reload();
     }
-});
+};
+

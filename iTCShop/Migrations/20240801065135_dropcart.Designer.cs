@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using iTCShop.Data;
 
@@ -11,9 +12,11 @@ using iTCShop.Data;
 namespace iTCShop.Migrations
 {
     [DbContext(typeof(iTCShopDbContext))]
-    partial class iTCShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240801065135_dropcart")]
+    partial class dropcart
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,7 +75,7 @@ namespace iTCShop.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProductTypeID")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -80,8 +83,6 @@ namespace iTCShop.Migrations
                     b.HasKey("ID");
 
                     b.HasIndex("CustomerID");
-
-                    b.HasIndex("ProductTypeID");
 
                     b.ToTable("CartDetails");
                 });
@@ -225,6 +226,9 @@ namespace iTCShop.Migrations
                     b.Property<int>("Battery")
                         .HasColumnType("int");
 
+                    b.Property<string>("CartDetailsID")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Color")
                         .HasColumnType("nvarchar(max)");
 
@@ -251,6 +255,8 @@ namespace iTCShop.Migrations
 
                     b.HasKey("ID");
 
+                    b.HasIndex("CartDetailsID");
+
                     b.ToTable("ProductTypes");
                 });
 
@@ -270,12 +276,6 @@ namespace iTCShop.Migrations
                     b.HasOne("iTCShop.Models.Customer", null)
                         .WithMany("CartDetail")
                         .HasForeignKey("CustomerID");
-
-                    b.HasOne("iTCShop.Models.ProductType", "ProductType")
-                        .WithMany()
-                        .HasForeignKey("ProductTypeID");
-
-                    b.Navigation("ProductType");
                 });
 
             modelBuilder.Entity("iTCShop.Models.Customer", b =>
@@ -322,6 +322,18 @@ namespace iTCShop.Migrations
                         .IsRequired();
 
                     b.Navigation("ProductType");
+                });
+
+            modelBuilder.Entity("iTCShop.Models.ProductType", b =>
+                {
+                    b.HasOne("iTCShop.Models.CartDetails", null)
+                        .WithMany("ProductTypes")
+                        .HasForeignKey("CartDetailsID");
+                });
+
+            modelBuilder.Entity("iTCShop.Models.CartDetails", b =>
+                {
+                    b.Navigation("ProductTypes");
                 });
 
             modelBuilder.Entity("iTCShop.Models.Customer", b =>
