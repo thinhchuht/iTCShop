@@ -24,7 +24,8 @@
 <div class="search-bar" style="display:flex; justify-content: flex-end; height: 50px">
     <form action="/Order/Search" method="get" style="display: flex">
         <select name="status">
-            <option value="" disabled selected hidden>Status</option>            @{
+            <option value="" disabled selected hidden>Status</option>            
+            @{
                 for (int i = 1; i < orderStatuses.ToList().Count; i++)
                 {
                     <option value="@orderStatuses.ToList()[i]">@orderStatuses.ToList()[i]</option>

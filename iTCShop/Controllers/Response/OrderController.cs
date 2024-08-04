@@ -30,7 +30,7 @@
 
             if (startDate != null && endDate != null)
             {
-                orders = orders.Where(o => o.OrderDate >= startDate && o.OrderDate <= endDate).ToList();
+                orders = orders.Where(o => o.OrderDate >= startDate && o.OrderDate <= endDate && string.Equals(o.Status.ToString(), OrderStatus.Completed.ToString())).ToList();
                 TempData.Put("orders", orders);
                 TempData.Put("startDate", startDate);
                 TempData.Put("endDate", endDate);

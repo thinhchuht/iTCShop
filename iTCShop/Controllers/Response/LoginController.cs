@@ -5,7 +5,7 @@
 
         public IActionResult Login()
         {
-            if (HttpContext.Session.GetCustomer() != null)
+            if (HttpContext.Session.GetCustomer() != null || HttpContext.Session.GetAdmin() != null)
             {
                 HttpContext.Session.Clear();
                 TempData.PutResponse(ResponseModel.FailureResponse("You have been logged out of the current account."));

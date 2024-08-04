@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 
 namespace iTCShop.Models
 {
@@ -14,6 +15,7 @@ namespace iTCShop.Models
         public string  Color       { get; set; }
         public int     RAM         { get; set; } 
         public string  Picture     { get; set; }
+ 
         
 
         public ProductType() { }
