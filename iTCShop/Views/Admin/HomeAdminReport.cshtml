@@ -8,6 +8,8 @@
     int totalOrders = Model.Count;
     decimal averageOrderValue = totalOrders > 0 ? totalRevenue / totalOrders : 0;
     var i = 0;
+    var views = ViewBag.StartDate;
+    var a = ViewBag.EndDate;
     var mostValueTypes = TempData.Get<dynamic>("mostSold");
 }
 
@@ -16,11 +18,11 @@
 <form method="get" action="~/Order/Search" class="row g-3 mb-3" style="display: flex; justify-content:flex-end">
     <div class="col-auto">
         <label for="startDate" class="col-form-label">Start Date</label>
-        <input type="date" class="form-control" id="startDate" name="startDate" value="" required>
+        <input type="datetime-local" class="form-control" id="startDate" name="startDate" value="@ViewBag.StartDate" required>
     </div>
     <div class="col-auto">
         <label for="endDate" class="col-form-label">End Date</label>
-        <input type="date" class="form-control" id="endDate" name="endDate" value="" required>
+        <input type="datetime-local" class="form-control" id="endDate" name="endDate" value="@ViewBag.EndDate" required>
     </div>
     <div class="col-auto">
         <button type="submit" class="btn btn-primary mt-4">Filter</button>

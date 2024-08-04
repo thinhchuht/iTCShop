@@ -44,10 +44,10 @@
     <form action="/ProductType/Search" method="get">
         <input type="text" id="search" name="search" placeholder="Tìm kiếm" value="@ViewBag.Search">
         <select name="sort" id="arrange">
-            <option value="nameAZ" selected="@az">Theo tên A - Z</option>
-            <option value="nameZA" selected="@za">Theo tên Z - A</option>
-            <option value="priceDes" selected="@desc">Theo giá giảm dần</option>
-            <option value="priceAcs" selected="@acs">Theo giá tăng dần</option>
+            <option value="nameAZ" selected="@az">By name A - Z</option>
+            <option value="nameZA" selected="@za">By name Z - A</option>
+            <option value="priceDes" selected="@desc">By descending price</option>
+            <option value="priceAcs" selected="@acs">By ascending price</option>
         </select>
         <button type="submit" class="btn btn-primary">Tìm kiếm</button> 
     </form>
@@ -63,7 +63,7 @@
                 <del>@(item.Price + 5000)</del>
                 <p style="color: red; font-size: large; font-weight: bold">$ @item.Price</p>
                 <p>@item.Memory GB @item.Color</p>
-                <i class="fa-solid fa-plus" style="color:red; font-size: large; border:1px solid red; padding-top: 5px; margin-bottom: 8px;" product-type-id="@item.ID"></i>
+                <i class="fa-solid fa-plus" style="color:red; font-size: large; border:1px solid red; padding-top: 5px; margin-bottom: 8px;" product-type-id="@item.ID" onclick="addCart(this)"></i>
             </div>
         }
     }

@@ -39,9 +39,9 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddCartDetails(string productTypeId, string cartId) 
+        public async Task<IActionResult> AddCartDetails(string productTypeId, string customerID) 
         {
-            var rs = await cartDetailsServices.AddCartDetail(productTypeId, cartId);
+            var rs = await cartDetailsServices.AddCartDetail(productTypeId, customerID);
             if (!rs.IsSuccess()) TempData.PutResponse(rs);
             TempData.Keep();
             return RedirectToAction("CustomerCart");

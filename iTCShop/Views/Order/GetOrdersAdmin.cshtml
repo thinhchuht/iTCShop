@@ -8,15 +8,15 @@
     var indexOrder = 0;
     var orderStatuses = Enum.GetValues(typeof(OrderStatus)).Cast<OrderStatus>();
     var isOrder = false;
-    if (ViewBag.Sort == "ID") isOrder = true;
+    if (ViewBag.Sort == "orderID") isOrder = true;
     var isCust = false;
     if (ViewBag.Sort == "customerID") isCust = true;
-    var is1 = false;
-    if (ViewBag.Status == "Pending") is1 = true;
-     var is2 = false;
-    if (ViewBag.Status == "InProgress") is2 = true;
-    var is3 = false;
-    if (ViewBag.Status == "Completed") is3 = true;
+    // var is1 = false;
+    // if (ViewBag.Status == "Pending") is1 = true;
+    //  var is2 = false;
+    // if (ViewBag.Status == "InProgress") is2 = true;
+    // var is3 = false;
+    // if (ViewBag.Status == "Completed") is3 = true;
 }
 
 
@@ -24,17 +24,15 @@
 <div class="search-bar" style="display:flex; justify-content: flex-end; height: 50px">
     <form action="/Order/Search" method="get" style="display: flex">
         <select name="status">
-            <option value=""></option>
-            @{
+            <option value="" disabled selected hidden>Status</option>            @{
                 for (int i = 1; i < orderStatuses.ToList().Count; i++)
                 {
-                    <option value="@orderStatuses.ToList()[i]" selected="@($"is{i}")">@orderStatuses.ToList()[i]</option>
-                   
+                    <option value="@orderStatuses.ToList()[i]">@orderStatuses.ToList()[i]</option>
                 }
             }
         </select>
         <select name="sort">
-            <option value=""></option>
+            <option value="" disabled selected hidden>Type of Search</option>
             <option value="orderID" selected="@isOrder">Order ID</option>
             <option value="customerID" selected="@(isCust)">Customer ID</option>
         </select>

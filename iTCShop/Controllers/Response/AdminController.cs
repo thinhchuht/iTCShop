@@ -56,6 +56,10 @@
             TempData.Put<dynamic>("mostSold", mostSoldProductType);
             ViewBag.Sort = TempData["sort"];
             ViewBag.Search = TempData["search"];
+            ViewBag.StartDate = TempData.Get<DateTime>("startDate");
+            ViewBag.EndDate = TempData.Get<DateTime>("endDate");
+             //= TempData["startDate"];
+             //= TempData["endDate"];
             return View(orders);
         }
 

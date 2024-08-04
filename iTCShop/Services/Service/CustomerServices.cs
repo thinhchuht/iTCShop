@@ -10,13 +10,14 @@
                 if (customer.DateOfBirth > DateTime.Now) return ResponseModel.FailureResponse("That not your bithday!");
                 foreach (var cus in customers)
                 {
-                    if (customer.Email == cus.Email) return ResponseModel.FailureResponse("This Email is already being used !");
+                    if (customer.Email    == cus.Email) return ResponseModel.FailureResponse("This Email is already being used !");
                     if (customer.UserName == cus.UserName) return ResponseModel.FailureResponse("This UserName is already being used !");
+                    if (customer.Phone    == cus.Phone) return ResponseModel.FailureResponse("This Phone Number is already being used!");
                 }
                 await baseDbServices.AddAsync(customer);
                 return ResponseModel.SuccessResponse();
             }
-            catch
+            catch   
             {
                 return ResponseModel.ExceptionResponse();
             }
@@ -59,7 +60,7 @@
                 iTCShopDbContext.SaveChanges();
                 return ResponseModel.SuccessResponse();
             }
-            catch 
+            catch
             {
                 return ResponseModel.ExceptionResponse();
             }

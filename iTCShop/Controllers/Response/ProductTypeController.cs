@@ -30,12 +30,11 @@
                 switch (sort)
                 {
                     case "typeID":
-                        productTypes = productTypes.Where(p => p.Name.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+                        productTypes = productTypes.Where(p => p.ID.Contains(search.Trim(), StringComparison.OrdinalIgnoreCase)).ToList();
                         TempData.Put("productTypes",productTypes);
-                        
                         return RedirectToAction("HomeAdminProductType", "Admin");
                     default :
-                        productTypes = productTypes.Where(p => p.Name.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+                        productTypes = productTypes.Where(p => p.Name.Contains(search.Trim(), StringComparison.OrdinalIgnoreCase)).ToList();
                         break;
                 }
             }

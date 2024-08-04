@@ -1,4 +1,6 @@
-﻿namespace iTCShop.Controllers.Response
+﻿using iTCShop.Models;
+
+namespace iTCShop.Controllers.Response
 {
     public class ProductController(IProductDbServices productDbServices) : Controller
     {
@@ -52,7 +54,7 @@
             try
             {
                 var result = await productDbServices.DeleteProduct(imei);
-                return RedirectToAction("HomeAdmin","Admin");
+                return RedirectToAction("HomeAdmin", "Admin");
             }
             catch (Exception ex)
             {
@@ -61,7 +63,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateProduct( ProductRequest productRequest)
+        public async Task<IActionResult> UpdateProduct(ProductRequest productRequest)
         {
             try
             {
@@ -75,11 +77,39 @@
             }
         }
 
-        public async Task<IActionResult> Search(string search, string sort)
+        public async Task<IActionResult> Search(string search, string sort, string status)
         {
             var products = await productDbServices.GetAllProducts();
+            //3 đều trống -> return all
+            //if (string.IsNullOrEmpty(search) && string.IsNullOrEmpty(status) && string.IsNullOrEmpty(sort))
+            //{
 
-           if(!string.IsNullOrEmpty(search))
+            //    return RedirectToAction("HomeAdmin", "Admin");
+            //}
+
+            //theo status
+            if (!string.IsNullOrEmpty(status))
+            {
+                products = products.Where(o => string.Equals(o.Status.ToString(), status, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            //search trống , sort còn -> báo lỗi
+            if (string.IsNullOrEmpty(search) && !string.IsNullOrEmpty(sort))
+            {
+                TempData.Clear();
+                TempData.PutResponse(ResponseModel.FailureResponse("Fill out your search bar with the type of search!"));
+            }
+
+            //search có , sort trống -> lỗi
+            if (!string.IsNullOrEmpty(search) && string.IsNullOrEmpty(sort))
+            {
+                {
+                    TempData.Clear();
+                    TempData.PutResponse(ResponseModel.FailureResponse("Select your type of search!"));
+                }
+            }
+
+            if (!string.IsNullOrEmpty(search))
             {
                 switch (sort)
                 {
@@ -94,6 +124,7 @@
                         break;
                 }
             }
+
             TempData.Put("products", products);
             TempData["Search"] = search;
             TempData["Sort"] = sort;

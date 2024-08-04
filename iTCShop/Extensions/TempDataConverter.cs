@@ -10,7 +10,7 @@ namespace iTCShop.Extensions
             tempData[key] = JsonConvert.SerializeObject(value);
         }
 
-        public static T Get<T>( this ITempDataDictionary tempData, string key) where T : class
+        public static T Get<T>( this ITempDataDictionary tempData, string key) 
         {
             tempData.TryGetValue(key, out var o);
             return o == null ? default : JsonConvert.DeserializeObject<T>((string)o);

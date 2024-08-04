@@ -11,7 +11,8 @@
     var isName= false;
     if (ViewBag.Sort == "name") isName = true;
     var isImei = false;
-    if (ViewBag.Sort == "imei") isTypeID = true;
+    if (ViewBag.Sort == "imei") isImei = true;
+    var orderStatuses = Enum.GetValues(typeof(OrderStatus)).Cast<OrderStatus>();
 }
 <style>
     body {
@@ -116,6 +117,15 @@
     <div class="search-bar" style="display:flex; justify-content: space-between; height: 50px">
         <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addProductDiv" style="height:50px">Add New Product </button>
         <form action="/Product/Search" method="get" style="display: flex">
+            <select name="status">
+                <option value="" disabled selected hidden>Status</option>
+                @{
+                    for (int index = 1; index < orderStatuses.ToList().Count; index++)
+                    {
+                        <option value="@orderStatuses.ToList()[index]">@orderStatuses.ToList()[index]</option>
+                    }
+                }
+            </select>
             <select name="sort" style="height: 50px">
                 <option value="typeID" selected="@isTypeID">Type ID</option>
                 <option value="name" selected="@isName">Product Name</option>

@@ -32,6 +32,8 @@
             {
                 orders = orders.Where(o => o.OrderDate >= startDate && o.OrderDate <= endDate).ToList();
                 TempData.Put("orders", orders);
+                TempData.Put("startDate", startDate);
+                TempData.Put("endDate", endDate);
                 return RedirectToAction("HomeAdminReport", "Admin");
             };
 
@@ -131,7 +133,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> GetAllOrders(int payMethod, string shipAddress, string customerId, decimal totalPay, string orderToken)
+        public async Task<IActionResult> GetAllOrders(int payMethod, string shipAddress, string customerId, decimal totalPay)
         {
             try
             {
