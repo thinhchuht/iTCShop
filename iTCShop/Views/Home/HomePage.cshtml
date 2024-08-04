@@ -42,14 +42,14 @@
 <div class="filter center">
     <h2 id="title">IPHONE</h2>
     <form action="/ProductType/Search" method="get">
-        <input type="text" id="search" name="search" placeholder="Tìm kiếm" value="@ViewBag.Search">
-        <select name="sort" id="arrange">
+        <input type="text" id="search" name="search" placeholder="Search by name" value="@ViewBag.Search" style="height: 40px">
+        <select name="sort" id="arrange" style="height: 40px">
             <option value="nameAZ" selected="@az">By name A - Z</option>
             <option value="nameZA" selected="@za">By name Z - A</option>
             <option value="priceDes" selected="@desc">By descending price</option>
             <option value="priceAcs" selected="@acs">By ascending price</option>
         </select>
-        <button type="submit" class="btn btn-primary">Tìm kiếm</button> 
+        <button type="submit" class="btn btn-primary" style="height: 40px; margin-top: -5px">Search</button>
     </form>
 </div>
 
@@ -58,7 +58,7 @@
         foreach (var item in Model)
         {
             <div class="product" id="@item.ID">
-                <img src="~/asset/@item.Picture" alt="" style="height:300px;width:300px; border-radius:10px">
+                <img src="~/ProductImages/@item.Picture" alt="" style="height:300px;width:300px; border-radius:10px">
                 <p style="font-size: larger; font-weight: bold">@item.Name</p>
                 <del>@(item.Price + 5000)</del>
                 <p style="color: red; font-size: large; font-weight: bold">$ @item.Price</p>

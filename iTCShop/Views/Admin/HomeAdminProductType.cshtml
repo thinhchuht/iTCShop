@@ -79,7 +79,7 @@
                     <td>@productType.Memory</td>
                     <td>@productType.Color</td>
                     <td>@productType.RAM</td>
-                    <td style="text-align:center"><img src="~/asset/@productType.Picture" alt="Product Image" style="width: 50px; height: 50px;"></td>
+                    <td style="text-align:center"><img src="~/ProductImages/@productType.Picture" alt="Product Image" style="width: 50px; height: 50px;"></td>
                     <td>
                         <div class="action-buttons">
                             <button type="button" class="btn btn-warning btn-sm edit-btn" data-toggle="modal" data-target="#editProductDiv" onclick="setProductId('@productType.ID','type','@productType.Name','@productType.Memory','@productType.Color')">Edit</button>
@@ -108,15 +108,8 @@
     ViewData["divId"] = "addProductDiv";
     ViewData["formId"] = "addProductForm";
     ViewData["formAction"] = "/ProductType/AddProductType";
-    ViewData["buttonText"] = "Save Changes";
+    ViewData["buttonText"] = "Add";
     ViewData["functionName"] = "Add";
     Html.RenderPartial("ProductTypePartial", new iTCShop.Models.ProductType());
 }
 
-@{
-    var response = TempData.Get<ResponseModel>("response");
-    if (response != null)
-    {
-        Html.RenderPartial("_ErrorPartial", response);
-    }
-}

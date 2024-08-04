@@ -64,9 +64,19 @@
         {
             try
             {
+                var uploadsDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/ProductImages");
+                if (!Directory.Exists(uploadsDir))
+                {
+                    Directory.CreateDirectory(uploadsDir);
+                }
+                var filePath = Path.Combine(uploadsDir, productTypesRequest.Picture.FileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await productTypesRequest.Picture.CopyToAsync(stream);
+                }
                 var product = new ProductType(productTypesRequest.Name, productTypesRequest.Price, productTypesRequest.Description,
                                           productTypesRequest.Size, productTypesRequest.Battery, productTypesRequest.Memory, productTypesRequest.Color,
-                                          productTypesRequest.RAM);
+                                          productTypesRequest.RAM, productTypesRequest.Picture.FileName);
                 var result = await productTypesServices.AddProductType(product);
                 if (!result.IsSuccess()) TempData.Put("response", result);
                 TempData.Keep();
@@ -98,8 +108,18 @@
         {
             try
             {
+                var uploadsDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/ProductImages");
+                if (!Directory.Exists(uploadsDir))
+                {
+                    Directory.CreateDirectory(uploadsDir);
+                }
+                var filePath = Path.Combine(uploadsDir, productTypesRequest.Picture.FileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await productTypesRequest.Picture.CopyToAsync(stream);
+                }
                 var newProduct = new ProductType(productTypesRequest.Name, productTypesRequest.Price, productTypesRequest.Description, productTypesRequest.Size,
-                                         productTypesRequest.Battery, productTypesRequest.Memory, productTypesRequest.Color, productTypesRequest.RAM);
+                                         productTypesRequest.Battery, productTypesRequest.Memory, productTypesRequest.Color, productTypesRequest.RAM, productTypesRequest.Picture.FileName);
                 var result = await productTypesServices.UpdateProductType(newProduct);
                 if (result.IsSuccess()) return RedirectToAction("HomeAdminProductType", "Admin");
                 else return BadRequest(result);

@@ -22,10 +22,10 @@
 
         public async Task<IActionResult> Search(string search, string sort, string status, DateTime? startDate, DateTime? endDate)
         {
-            ViewBag.Search    = search;
-            ViewBag.Sort      = sort;
-            ViewBag.Status    = status;
-            var orders        = await orderService.GetAllOrders();
+            ViewBag.Search = search;
+            ViewBag.Sort = sort;
+            ViewBag.Status = status;
+            var orders = await orderService.GetAllOrders();
             var ordersomerLst = new List<Order>();
 
             if (startDate != null && endDate != null)
@@ -65,7 +65,7 @@
                 {
                     orders = orders.Where(o => string.Equals(o.Status.ToString(), status, StringComparison.OrdinalIgnoreCase)).ToList();
                 }
-             
+
                 switch (sort)
                 {
                     case "customerID":
@@ -87,9 +87,9 @@
         public async Task<IActionResult> ChangeStatus(int newStatus, string orderId)
         {
             var orderList = new List<Order>();
-            var order     = await orderService.GetOrderById(orderId);
-            order.Status  = (OrderStatus)newStatus;
-            var rs        = orderService.UpdateOrder(order);
+            var order = await orderService.GetOrderById(orderId);
+            order.Status = (OrderStatus)newStatus;
+            var rs = orderService.UpdateOrder(order);
             if (rs.IsSuccess())
             {
                 foreach (var item in order.OrderDetails)
@@ -115,16 +115,13 @@
                 var customer = HttpContext.Session.GetCustomer();
                 var order = new Order()
                 {
-                    TotalPay   = total,
+                    TotalPay = total,
                     CustomerId = customer.ID
                 };
                 TempData.Keep();
-                var token              = Guid.NewGuid().ToString();
-                TempData["OrderToken"] = token;
-                ViewBag.OrderToken     = token;
                 return View(order);
             }
-            catch 
+            catch
             {
                 TempData.PutResponse(ResponseModel.ExceptionResponse());
                 return RedirectToAction("HomePage", "Home");
@@ -137,19 +134,24 @@
         {
             try
             {
+                if (payMethod == 2)
+                {
+                    TempData.PutResponse(ResponseModel.FailureResponse("Bank tranfer has not been supported yet, try a different method"));
+                    return RedirectToAction("CustomerCart", "Cart");
+                }
                 var cartDetails = TempData.Peek<List<CartDetailsRequest>>("cartDetails");
                 var order = new Order()
                 {
-                    TotalPay    = totalPay,
-                    CustomerId  = customerId,
-                    PayMethod   = (OrderPayMethod)payMethod,
+                    TotalPay = totalPay,
+                    CustomerId = customerId,
+                    PayMethod = (OrderPayMethod)payMethod,
                     ShipAddress = shipAddress,
                 };
                 await orderService.AddOrder(order);
                 foreach (var item in cartDetails)
                 {
                     var allProducts = await productDbServices.GetOnStockProductsByProductType(item.ProductTypeID);
-                    var products    = allProducts.Take(item.Quantity).ToList();
+                    var products = allProducts.Take(item.Quantity).ToList();
                     foreach (var p in products)
                     {
                         var orderDetail = new OrderDetail(1, p.ProductType.Price, p.IMEI, order.ID);

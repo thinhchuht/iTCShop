@@ -10,8 +10,9 @@
 
     public enum OrderPayMethod
     {
-        BankTransfer   = 1,   
-        CashOnDelivery = 2
+        CashOnDelivery = 1,
+        BankTransfer   = 2
+     
     }
 
     public class Order

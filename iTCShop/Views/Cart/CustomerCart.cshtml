@@ -30,7 +30,7 @@
             total += item.ProductType.Price * item.Quantity;
             <tr>
                 <th scope="row">@(++i)</th>
-                <td><img src="~/Asset/@item.ProductType.Picture" alt="Image" style="height: 50px; width: 50px" /></td>
+                <td><img src="~/ProductImages/@item.ProductType.Picture" alt="Image" style="height: 50px; width: 50px" /></td>
                 <td>@item.ProductType.Name</td>
                 <td>@item.ProductType.Color</td>
                 <td>@item.ProductType.Memory</td>
