@@ -1,13 +1,15 @@
-﻿namespace iTCShop.Controllers.Response
+﻿using Microsoft.IdentityModel.Tokens;
+
+namespace iTCShop.Controllers.Response
 {
-    public class ProductTypeController(IProductsTypeServices productTypesServices) : Controller
+    public class ProductTypeController(IProductsTypeServices productTypesServices, IProductDbServices productDbServices) : Controller
     {
         public async Task<IActionResult> ProductPartial()
         {
             var productTypes = await productTypesServices.GetAllProductTypes();
             return PartialView(productTypes);
         }
-     
+
         public async Task<IActionResult> GetProductTypeById(string id)
         {
             try
@@ -31,9 +33,9 @@
                 {
                     case "typeID":
                         productTypes = productTypes.Where(p => p.ID.Contains(search.Trim(), StringComparison.OrdinalIgnoreCase)).ToList();
-                        TempData.Put("productTypes",productTypes);
+                        TempData.Put("productTypes", productTypes);
                         return RedirectToAction("HomeAdminProductType", "Admin");
-                    default :
+                    default:
                         productTypes = productTypes.Where(p => p.Name.Contains(search.Trim(), StringComparison.OrdinalIgnoreCase)).ToList();
                         break;
                 }
@@ -94,8 +96,8 @@
             try
             {
                 var result = await productTypesServices.DeleteProductType(id);
-                if (!result.IsSuccess()) return BadRequest(result);
-               return RedirectToAction("HomeAdminProductType", "Admin");
+                if (!result.IsSuccess()) TempData.PutResponse(result);
+                return RedirectToAction("HomeAdminProductType", "Admin");
             }
             catch (Exception ex)
             {
@@ -104,30 +106,36 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateProductType(ProductTypesRequest productTypesRequest)
+        public async Task<IActionResult> UpdateProductType(ProductTypesRequest productTypesRequest, string id)
         {
-            try
+            var product = await productDbServices.GetProductsByProductType(id);
+            if(!product.IsNullOrEmpty())
             {
-                var uploadsDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/ProductImages");
-                if (!Directory.Exists(uploadsDir))
-                {
-                    Directory.CreateDirectory(uploadsDir);
-                }
-                var filePath = Path.Combine(uploadsDir, productTypesRequest.Picture.FileName);
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await productTypesRequest.Picture.CopyToAsync(stream);
-                }
-                var newProduct = new ProductType(productTypesRequest.Name, productTypesRequest.Price, productTypesRequest.Description, productTypesRequest.Size,
-                                         productTypesRequest.Battery, productTypesRequest.Memory, productTypesRequest.Color, productTypesRequest.RAM, productTypesRequest.Picture.FileName);
-                var result = await productTypesServices.UpdateProductType(newProduct);
-                if (result.IsSuccess()) return RedirectToAction("HomeAdminProductType", "Admin");
-                else return BadRequest(result);
+                TempData.PutResponse(ResponseModel.FailureResponse("This product is already on the market, you can not apply change!"));
+                return RedirectToAction("HomeAdminProductType", "Admin");
             }
-            catch (Exception ex)
+            var rs = await productTypesServices.DeleteProductType(id);
+            if (!rs.IsSuccess())
             {
-                return BadRequest(ex.Message);
+                TempData.PutResponse(rs);
+                return RedirectToAction("HomeAdminProductType", "Admin");
             }
+            var uploadsDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/ProductImages");
+            if (!Directory.Exists(uploadsDir))
+            {
+                Directory.CreateDirectory(uploadsDir);
+            }
+            var filePath = Path.Combine(uploadsDir, productTypesRequest.Picture.FileName);
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await productTypesRequest.Picture.CopyToAsync(stream);
+            }
+            var newProduct = new ProductType(productTypesRequest.Name, productTypesRequest.Price, productTypesRequest.Description, productTypesRequest.Size,
+                                     productTypesRequest.Battery, productTypesRequest.Memory, productTypesRequest.Color, productTypesRequest.RAM, productTypesRequest.Picture.FileName);
+            var result = await productTypesServices.AddProductType(newProduct);
+            if (!result.IsSuccess()) TempData.PutResponse(rs);
+            return RedirectToAction("HomeAdminProductType", "Admin");
         }
     }
 }
+

@@ -1,6 +1,6 @@
 ﻿namespace iTCShop.Controllers.Response
 {
-    public class OrderController(IOrderService orderService, IOrderDetailServices orderDetailServices, IProductDbServices productDbServices, ICartDetailsServices cartDetailsServices) : Controller
+    public class OrderController(IOrderService orderService, IOrderDetailServices orderDetailServices, IProductDbServices productDbServices, ICartDetailsServices cartDetailsServices, ICustomerServices customerServices, IMailService mailService) : Controller
     {
         public async Task<IActionResult> GetAllOrders()
         {
@@ -98,6 +98,10 @@
                 }
             }
             orderList.Add(order);
+            if(order.Status == OrderStatus.Completed)
+            {
+                mailService.SendOrderCompletionEmail(order, await customerServices.GetCustomerById(order.CustomerId));
+            }
             return RedirectToAction("GetAllOrders");
         }
 

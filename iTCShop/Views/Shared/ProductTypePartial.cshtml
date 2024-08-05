@@ -6,6 +6,7 @@
     var formAction = ViewData["formAction"];
     var buttonText = ViewData["buttonText"];
     var isEdit = ViewData["functionName"].ToString().Contains("Edit") ? true : false;
+
 }
 
 <div class="modal fade" id="@divId" tabindex="-1" role="dialog" aria-labelledby="editProductModalLabel" aria-hidden="true">
@@ -20,7 +21,7 @@
             <div class="modal-body">
                 <form id="@formId" action="@formAction" method="post" enctype="multipart/form-data">
                     <div class="form-group">
-                        <label for="productName">ID</label>
+                        <label for="productId">ID</label>
                         <input type="text" class="form-control" id="productId" name="id" value="" required readonly>
                     </div>
                     <label for="productName">Name</label>

@@ -24,7 +24,6 @@
         public OrderStatus         Status       { get; set; }
         public OrderPayMethod      PayMethod    { get; set; }
         public string              CustomerId   { get; set; }
-        //public Customer            Customer     { get; set; }
         public List<OrderDetail>   OrderDetails { get; set; }
 
         public Order()

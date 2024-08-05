@@ -36,9 +36,9 @@
                 await baseDbServices.DeleteAsync<ProductType>(id);
                 return ResponseModel.SuccessResponse();
             }
-            catch (Exception ex)
+            catch 
             {
-                return ResponseModel.FailureResponse(ex.ToString());
+                return ResponseModel.ExceptionResponse();
             }
         }
 
@@ -50,9 +50,9 @@
                 await baseDbServices.UpdateAsync(newProduct, product);
                 return ResponseModel.SuccessResponse();
             }
-            catch (Exception ex)
+            catch
             {
-                return ResponseModel.FailureResponse(ex.ToString());
+                return ResponseModel.ExceptionResponse();
             }
         }
     }

@@ -21,6 +21,7 @@ services.AddScoped<IAdminServices, AdminService>();
 services.AddScoped<ICartDetailsServices, CartDetailsServices>();
 services.AddScoped<IOrderDetailServices, OrderDetailService>();
 services.AddScoped<IOrderService, OrderService>();
+services.AddSingleton<IMailService, MailService>();
 services.AddHttpContextAccessor();
 var app = builder.Build();
 
