@@ -93,6 +93,7 @@ namespace iTCShop.Controllers.Response
                 products = products.Where(o => string.Equals(o.Status.ToString(), status, StringComparison.OrdinalIgnoreCase)).ToList();
             }
 
+            
             //search trống , sort còn -> báo lỗi
             if (string.IsNullOrEmpty(search) && !string.IsNullOrEmpty(sort))
             {
@@ -124,7 +125,10 @@ namespace iTCShop.Controllers.Response
                         break;
                 }
             }
-
+            if (string.IsNullOrEmpty(search) && string.IsNullOrEmpty(sort))
+            {
+                TempData.Clear();
+            }
             TempData.Put("products", products);
             TempData["Search"] = search;
             TempData["Sort"] = sort;

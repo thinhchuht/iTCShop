@@ -43,9 +43,9 @@
                 iTCShopDbContext.SaveChanges();
                 return ResponseModel.SuccessResponse();
             }
-            catch (Exception ex)
+            catch 
             {
-                return ResponseModel.FailureResponse(ex.ToString());
+                return ResponseModel.ExceptionResponse();
             }
         }
     }

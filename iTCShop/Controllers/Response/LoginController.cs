@@ -52,6 +52,21 @@
         }
 
         [HttpPost]
+        public async Task<IActionResult> ChangePassAdmin(string password)
+        {
+            var admin = HttpContext.Session.GetAdmin();
+            admin.Password = password;
+            var rs = await adminServices.UpdateAdmin(admin);
+            if(!rs.IsSuccess())
+            {
+                TempData.PutResponse(rs);
+            }
+            HttpContext.Session.Clear();
+            HttpContext.Session.SetObjectAsJson("admin", admin);
+            return RedirectToAction("HomeAdmin", "Home");
+
+        }
+        [HttpPost]
         public IActionResult LogOut()
         {
             HttpContext.Session.Clear();

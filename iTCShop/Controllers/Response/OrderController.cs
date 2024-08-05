@@ -88,19 +88,35 @@
         {
             var orderList = new List<Order>();
             var order = await orderService.GetOrderById(orderId);
+            if(order.Status == OrderStatus.Completed)
+            {
+                TempData.PutResponse(ResponseModel.FailureResponse("You can not change the order that is completed!"));
+                return RedirectToAction("GetAllOrders");
+            }
             order.Status = (OrderStatus)newStatus;
             var rs = orderService.UpdateOrder(order);
-            if (rs.IsSuccess())
+           
+            if (!rs.IsSuccess())
             {
-                foreach (var item in order.OrderDetails)
-                {
-                    await productDbServices.UpdateProductStatus(item.ProductID, newStatus);
-                }
+                TempData.PutResponse(rs);
+                return RedirectToAction("GetAllOrders");
+
+            }
+            foreach (var item in order.OrderDetails)
+            {
+                await productDbServices.UpdateProductStatus(item.ProductID, newStatus);
             }
             orderList.Add(order);
             if(order.Status == OrderStatus.Completed)
             {
-                mailService.SendOrderCompletionEmail(order, await customerServices.GetCustomerById(order.CustomerId));
+                try
+                {
+                    mailService.SendOrderCompletionEmail(order, await customerServices.GetCustomerById(order.CustomerId));
+                }
+                catch
+                {
+                    TempData.PutResponse(ResponseModel.FailureResponse("Something is wrong while we sending mail to your email, we will contact you later!"));
+                }
             }
             return RedirectToAction("GetAllOrders");
         }

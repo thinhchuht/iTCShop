@@ -13,8 +13,10 @@ namespace iTCShop.Services.Service
                 using (var client = new SmtpClient())
                 {
                     client.CheckCertificateRevocation = false;
-                    client.Connect("smtp.gmail.com", 587, SecureSocketOptions.None);
-                    client.Send(message);
+                    client.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
+                client.Authenticate("thinhchuht0@gmail.com", "sbpe apta ksal uygf");
+                client.Send(message);
+
                     client.Disconnect(true);
                 };
         }
@@ -22,7 +24,7 @@ namespace iTCShop.Services.Service
         private MimeMessage CreateMailMessage(Order order, Customer customer)
         {
             var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("iTCShop", "thinhld2249@gmail.com"));
+            message.From.Add(new MailboxAddress("iTCShop", "thinhchuht0@gmail.com"));
             message.To.Add(new MailboxAddress(customer.Name, customer.Email));
             message.Subject = "Your Order is Completed";
 
@@ -43,9 +45,9 @@ namespace iTCShop.Services.Service
                 orderDetailsHtml += $@"
             <tr>
                 <td>{detail.ProductID}</td>
-                <td>{detail.Quantity}</td>
+                <td>{MoneyDTO.Convert(detail.Quantity)}</td>
                 <td>{detail.Price}Đ</td>
-                <td>{detail.TotalAmount}Đ</td>
+                <td>{MoneyDTO.Convert(detail.TotalAmount)}Đ</td>
             </tr>";
             }
 
@@ -54,9 +56,11 @@ namespace iTCShop.Services.Service
         <body>
             <h1>Thank you for your purchase!</h1>
             <p>Your order with ID {order.ID} has been completed.</p>
-            <p>Order Date: {order.OrderDate.ToString("MM/dd/yyyy")}</p>
+            <p>Order Date: {order.OrderDate.ToString()}</p>
+
             <p>Shipping Address: {order.ShipAddress}</p>
-            <p>Total Pay: {order.TotalPay:C}</p>
+  <p>Completed Order Date: {DateTime.Now.ToString()}</p>
+            <p>Total Pay: {MoneyDTO.Convert(order.TotalPay)}</p>
             <h2>Order Details:</h2>
             <table border='1'>
                 <thead>
