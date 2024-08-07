@@ -27,6 +27,29 @@
     .action-buttons button {
         margin-right: 5px;
     }
+
+    .search-bar {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+
+        .search-bar input, .search-bar select, .search-bar button {
+            padding: 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+        }
+
+        .search-bar select {
+            margin-right: 10px;
+        }
+
+        .search-bar button {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
 </style>
 
 <div class="container mt-5">
@@ -48,7 +71,7 @@
     <!-- Add Button -->
 
 
-    <table class="table custom-table">
+    <table class="table table-striped table-bordered">
         <thead>
             <tr>
                 <th>No.</th>

@@ -16,7 +16,7 @@
     var acs = false;
     if (ViewBag.Sort == "priceAcs") acs = true;
 }
-<link rel="stylesheet" href="~/css/Site.css">
+<link rel="stylesheet" href="~/css/Site.css" />
 <div id="carouselExampleInterval" class="carousel slide center" data-bs-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active" data-bs-interval="10000">
@@ -42,36 +42,27 @@
 <div class="filter center">
     <h2 id="title">IPHONE</h2>
     <form action="/ProductType/Search" method="get">
-        <input type="text" id="search" name="search" placeholder="Search by name" value="@ViewBag.Search" style="height: 40px">
-        <select name="sort" id="arrange" style="height: 40px">
+        <input type="text" id="search" name="search" placeholder="Search by name" value="@ViewBag.Search" class="form-control">
+        <select name="sort" id="arrange" class="form-select">
             <option value="nameAZ" selected="@az">By name A - Z</option>
             <option value="nameZA" selected="@za">By name Z - A</option>
             <option value="priceDes" selected="@desc">By descending price</option>
             <option value="priceAcs" selected="@acs">By ascending price</option>
         </select>
-        <button type="submit" class="btn btn-primary" style="height: 40px; margin-top: -5px">Search</button>
+        <button type="submit" class="btn btn-primary">Search</button>
     </form>
 </div>
 
 <div id="partialProductType" class="content center">
-    @{
-        foreach (var item in Model)
-        {
-            <div class="product" id="@item.ID">
-                <img src="~/ProductImages/@item.Picture" alt="" style="height:300px;width:300px; border-radius:10px">
-                <p style="font-size: larger; font-weight: bold">@item.Name</p>
-                <del>@(item.Price + 5000)</del>
-                <p style="color: red; font-size: large; font-weight: bold">$ @item.Price</p>
-                <p>@item.Memory GB @item.Color</p>
-                <i class="fa-solid fa-plus" style="color:red; font-size: large; border:1px solid red; padding-top: 5px; margin-bottom: 8px;" product-type-id="@item.ID" onclick="addCart(this)"></i>
-            </div>
-        }
+    @foreach (var item in Model)
+    {
+        <div class="product position-relative">
+            <img src="~/ProductImages/@item.Picture" alt="@item.Name" class="img-fluid">
+            <p class="mt-2 fw-bold">@item.Name</p>
+            <del class="text-muted">@String.Format("{0:C}", item.Price + 5000)</del>
+            <p class="text-danger fw-bold">$@item.Price</p>
+            <p>@item.Memory GB @item.Color</p>
+            <i class="fa-solid fa-plus position-absolute bottom-0 end-0 m-3" product-type-id="@item.ID" onclick="addCart(this)"></i>
+        </div>
     }
 </div>
-@*@{
-    var response = TempData.Get<ResponseModel>("response");
-    if (response != null)
-    {
-        Html.RenderPartial("_ErrorPartial", response);
-    }
-}*@

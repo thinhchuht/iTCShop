@@ -26,24 +26,22 @@
 
 
 <body>
-    <header class="header" >
+    <header class="header">
         <div class="adminHeader">
-            <div class="headLeft"  >
-                <a href="~/Home/HomePage" style="color: black">Home</a>
-                <a href="~/Aprods" style="color: black">Admin</a>
+            <div class="headLeft">
+                <a href="~/Home/HomePage" class="nav-link">Home</a>
+                <a href="~/Aprods" class="nav-link">Admin</a>
             </div>
-            <div>
-                <a href="/Login/ChangePassAdmin" id="log" style="border:none; color: black; background-color: aqua; font-weight: bold">
-                    <i class="fa-solid fa-user" style="color: #000000;"></i>
-                    &nbsp;Change Password
+            <div class="headRight">
+                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                    <i class="fa-solid fa-user"></i>
+                    Change Password
+                </button>
+                <a href="/Login/Login" class="btn btn-danger">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                    @ViewBag.Log
                 </a>
-                <a href="/Login/Login" id="log" style="border:none; color: black; background-color: aqua; font-weight: bold">
-                    <i class="fa-solid fa-right-to-bracket" style="color: #000000;"></i>
-                    &nbsp;@ViewBag.Log
-                </a>
-               
             </div>
-            
         </div>
     </header>
 
@@ -52,27 +50,44 @@
         <div class="leftBar">
             <div class="menu">
                 <h3>Danh Mục</h3>
-                <table>
-                    <tr>
-                        <td id="product"><a href="~/AProds">Products</a> </td>
-                    </tr>
-                    <tr>
-                        <td id="productType"> <a href="~/ATypes">Product Types</a></td>
-                    </tr>
-                    <tr>
-                        <td id="Order"> <a href="~/Order/GetAllOrders">Orders</a></td>
-                    </tr>
-                    <tr>
-                        <td id="account"><a href="~/ACusts">Accounts</a> </td>
-                    </tr>
-                    <tr>
-                        <td id="revenue"><a href="~/ARev">Reports</a> </td>
-                    </tr>
-                </table>
+                <ul>
+                    <li><a href="~/AProds">Products</a></li>
+                    <li><a href="~/ATypes">Product Types</a></li>
+                    <li><a href="~/Order/GetAllOrders">Orders</a></li>
+                    <li><a href="~/ACusts">Accounts</a></li>
+                    <li><a href="~/ARev">Reports</a></li>
+                </ul>
             </div>
         </div>
-        <div class="rightContent">
+        <div class="rightContent container-fluid">
             @RenderBody()
+        </div>
+    </div>
+    <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="changePasswordModalLabel">Change Password</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="changePasswordForm" method="post" action="/Login/ChangePassAdmin">
+                        <div class="mb-3">
+                            <label for="currentPassword" class="form-label">Current Password</label>
+                            <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newPassword" class="form-label">New Password</label>
+                            <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Change Password</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
     @{

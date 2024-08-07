@@ -1,6 +1,4 @@
-﻿@* Your existing view *@
-@model ResponseModel
-@{
+﻿@{
     ViewBag.Title = "Login";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -15,14 +13,14 @@
         <hr />
         <div class="form-group">
             <label for="userName" class="control-label col-md-2">UserName:</label>
-            <div class="col-md-10">
+            <div class="col-md-12">
                 <input type="text" id="userName" name="userName" class="form-control" />
             </div>
         </div>
         <br />
         <div class="form-group">
             <label for="password" class="control-label col-md-2">Password:</label>
-            <div class="col-md-10">
+            <div class="col-md-12">
                 <input type="password" id="password" name="password" class="form-control" />
             </div>
         </div>
@@ -65,3 +63,10 @@
         </div>
     </div>
 </div>
+@{
+    var response = TempData.Get<ResponseModel>("response");
+    if (response != null)
+    {
+        Html.RenderPartial("_ErrorPartial", response);
+    }
+}

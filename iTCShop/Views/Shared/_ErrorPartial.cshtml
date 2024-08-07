@@ -4,7 +4,8 @@
         
         if (Model != null)
         {
-            <text>alert("@Model.Message")</text>
+            var message = @Model.Message.Replace("\n", "\\n").Replace("\r", "");
+            <text>alert("@message")</text>
         }
     }
 </script>

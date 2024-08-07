@@ -7,7 +7,7 @@
             try
             {
                 var products = await GetAllProductTypes();
-              if(products.Any(p => p.ID == product.ID)) return ResponseModel.FailureResponse("There is already have this type of phone!"); 
+                if(products.Any(p => p.ID == product.ID)) return ResponseModel.FailureResponse("There is already have this type of phone!"); 
                 await baseDbServices.AddAsync(product);
                 return ResponseModel.SuccessResponse();
             }

@@ -1,4 +1,5 @@
-﻿using iTCShop.Models;
+﻿using OfficeOpenXml;
+using System.Text;
 
 namespace iTCShop.Controllers.Response
 {
@@ -30,6 +31,41 @@ namespace iTCShop.Controllers.Response
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpPost] 
+        public async Task<IActionResult> ImportExcel (IFormFile importFile)
+        {
+            var products = new List<ProductRequest>();
+
+            using (var stream = new MemoryStream())
+            {
+                await importFile.CopyToAsync(stream);
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                using (var package = new ExcelPackage(stream))
+                {
+                    var worksheet = package.Workbook.Worksheets[0];
+                    var rowCount = worksheet.Dimension.Rows;
+
+                    for (int row = 2; row <= rowCount; row++)
+                    {
+                        var product = new ProductRequest
+                        {
+                            Imei = worksheet.Cells[row, 1].Value.ToString(),
+                            ProductTypeId = worksheet.Cells[row, 2].Value.ToString(),
+                        };
+                        products.Add(product);
+                    }
+                }
+            }
+            var str = new StringBuilder();
+            foreach (var product in products)
+            {
+               var rs = await productDbServices.AddProduct(product);
+                if (!rs.IsSuccess()) str.AppendLine($"{product.Imei} with type {product.ProductTypeId} due to: {rs.Message}");
+            }
+            TempData.PutResponse(ResponseModel.FailureResponse($"Cannot add these products:\n{str}"));
+            return RedirectToAction("HomeAdmin", "Admin");
         }
 
         [HttpPost]

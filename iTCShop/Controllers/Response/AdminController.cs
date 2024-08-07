@@ -4,15 +4,19 @@
     {
 
         [Route("AProds")]
-        public async Task<IActionResult> HomeAdmin()
+        public async Task<IActionResult> HomeAdmin(int page = 1, int pageSize = 10)
         {
+          
             var list = new ResponseListsView();
             var productTypes = await productsTypeServices.GetAllProductTypes();
             list.ProductTypes.AddRange(productTypes);
             var products = new List<Product>();
             if (TempData["products"] == null) products = await productDbServices.GetAllProducts();
             else products = TempData.Get<List<Product>>("products");
-            list.Products.AddRange(products);
+            var totalProducts = products.Count;
+            var totalPages = (int)Math.Ceiling((double)totalProducts / pageSize);
+            var paginatedProducts = products.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            list.Products.AddRange(paginatedProducts);
             ViewBag.Search = TempData["Search"];
             ViewBag.Sort = TempData["Sort"];
             return View(list);
@@ -73,7 +77,8 @@
     {
         public List<Product> Products { get; set; }
         public List<ProductType> ProductTypes { get; set; }
-
+        public int CurrentPage { get; set; }
+        public int TotalPages { get; set; }
         public ResponseListsView()
         {
             Products = new List<Product>();

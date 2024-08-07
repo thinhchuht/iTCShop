@@ -11,6 +11,7 @@
                 TempData.PutResponse(ResponseModel.FailureResponse("You have been logged out of the current account."));
 
             }
+           
             return View();
         }
 
@@ -52,10 +53,25 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> ChangePassAdmin(string password)
+        public async Task<IActionResult> ChangePassAdmin(string currentPassword, string confirmPassword, string newPassword)
         {
+            if(newPassword != confirmPassword)
+            {
+                TempData.PutResponse(ResponseModel.FailureResponse("You have to confirm the right password"));
+                return RedirectToAction("HomeAdmin", "Admin");
+            }
             var admin = HttpContext.Session.GetAdmin();
-            admin.Password = password;
+            if(admin.Password != currentPassword)
+            {
+                TempData.PutResponse(ResponseModel.FailureResponse("You have entered wrong password"));
+                return RedirectToAction("HomeAdmin", "Admin");
+            }
+            if(admin.Password == newPassword) 
+            {
+                TempData.PutResponse(ResponseModel.FailureResponse("You can not enter the same password"));
+                return RedirectToAction("HomeAdmin", "Admin");
+            }
+            admin.Password = newPassword;
             var rs = await adminServices.UpdateAdmin(admin);
             if(!rs.IsSuccess())
             {
@@ -63,7 +79,7 @@
             }
             HttpContext.Session.Clear();
             HttpContext.Session.SetObjectAsJson("admin", admin);
-            return RedirectToAction("HomeAdmin", "Home");
+            return RedirectToAction("HomeAdmin", "Admin");
 
         }
         [HttpPost]
