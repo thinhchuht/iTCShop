@@ -7,7 +7,9 @@
     var isName = ViewBag.Sort == "Name";
     var isUserName = ViewBag.Sort == "UserName";
     var isPhone = ViewBag.Sort == "Phone";
-    var i = 0;
+    var currentPage = ViewBag.CurrentPage;
+    var totalPages = ViewBag.TotalPages;
+    var i = (currentPage - 1) * 10;
 }
 
 <h2 class="text">Customer Management</h2>
@@ -77,4 +79,8 @@
             }
         </tbody>
     </table>
+    @{
+        ViewData["action"] = "HomeAdminCustomers";
+        Html.RenderPartial("PaginationPartial");
+    }
 </div>

@@ -3,7 +3,9 @@
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewBag.Title = "Product Type";
-    var i = 0;
+    var currentPage = ViewBag.CurrentPage;
+    var totalPages = ViewBag.TotalPages;
+    var i = (currentPage - 1) * 10;
 }
 
 <style>
@@ -117,6 +119,11 @@
         </tbody>
     </table>
 </div>
+
+@{
+    ViewData["action"] = "HomeAdminProductType";
+    Html.RenderPartial("PaginationPartial");
+}
 
 @{
     ViewData["divId"] = "editProductDiv";

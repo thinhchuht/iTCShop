@@ -2,7 +2,7 @@
 {
     public class OrderController(IOrderService orderService, IOrderDetailServices orderDetailServices, IProductDbServices productDbServices, ICartDetailsServices cartDetailsServices, ICustomerServices customerServices, IMailService mailService) : Controller
     {
-        public async Task<IActionResult> GetAllOrders()
+        public async Task<IActionResult> GetAllOrders(int page = 1, int pageSize = 10)
         {
             var customer = HttpContext.Session.GetCustomer();
             var admin = HttpContext.Session.GetAdmin();
@@ -14,9 +14,11 @@
                     var cusOrders = await orderService.GetOrdersByCustomerId(customer.ID);
                     return View("GetAllOrders", cusOrders);
                 }
-
                 var allOrders = await orderService.GetAllOrders();
-                return View("GetOrdersAdmin", allOrders);
+                var items = PaginateList.Paginate(allOrders, page, pageSize);
+                ViewBag.CurrentPage = page;
+                ViewBag.TotalPages = items.TotalPages;
+                return View("GetOrdersAdmin", items.List);
             }
         }
 

@@ -5,13 +5,15 @@
     ViewData["Title"] = "Orders";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     var indexOrderDetail = 0;
-    var indexOrder = 0;
     var orderStatuses = Enum.GetValues(typeof(OrderStatus)).Cast<OrderStatus>();
     var isOrder = false;
     if (ViewBag.Sort == "orderID") isOrder = true;
     var isCust = false;
     if (ViewBag.Sort == "customerID") isCust = true;
-}
+    var totalPages = ViewBag.TotalPages;
+    var currentPage = ViewBag.CurrentPage;
+    var indexOrder = (currentPage - 1) * 10;
+}   
 <style>
 
     .search-bar {
@@ -127,6 +129,10 @@
         }
     </tbody>
 </table>
+@{
+    ViewData["action"] = "GetAllOrders";
+    Html.RenderPartial("PaginationPartial");
+}
 
     <div class="modal fade" id="changeStatusModal" tabindex="-1" aria-labelledby="changeStatusModalLabel" aria-hidden="true">
     <div class="modal-dialog">

@@ -7,7 +7,9 @@
     decimal totalRevenue = Model.Sum(order => order.TotalPay);
     int totalOrders = Model.Count;
     decimal averageOrderValue = totalOrders > 0 ? totalRevenue / totalOrders : 0;
-    var i = 0;
+    int currentPage = ViewBag.CurrentPage;
+    int totalPages = ViewBag.TotalPages;
+    var i = (currentPage - 1) * 10;
     var views = ViewBag.StartDate;
     var a = ViewBag.EndDate;
     var mostValueTypes = TempData.Get<dynamic>("mostSold");
@@ -118,6 +120,22 @@
                 }
             </tbody>
         </table>
+        <nav class="pagination">
+            <ul class="pagination">
+                <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                    <a class="page-link" href="@Url.Action("HomeAdminReport", new { page = currentPage - 1, pageSize = 10 })">Previous</a>
+                </li>
+                @for (int j = 1; j <= totalPages; j++)
+                {
+                    <li class="page-item @(j == currentPage ? "active" : "")">
+                        <a class="page-link" href="@Url.Action("HomeAdminReport", new { page = j, pageSize = 10 })">@j</a>
+                    </li>
+                }
+                <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                    <a class="page-link" href="@Url.Action("HomeAdminReport", new { page = currentPage + 1, pageSize = 10 })">Next</a>
+                </li>
+            </ul>
+        </nav>
     </div>
 
     <h2>
