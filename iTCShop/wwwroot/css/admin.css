@@ -22,7 +22,10 @@ a {
     justify-content: space-between;
     padding: 0 30px;
     color: white;
- 
+    position: fixed;
+    top: 0px;
+    z-index: 1;
+    width: 100%;
 }
 
 .headLeft {

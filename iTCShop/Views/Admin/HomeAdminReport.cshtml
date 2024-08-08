@@ -120,7 +120,13 @@
                 }
             </tbody>
         </table>
-        <nav class="pagination">
+
+
+        @{
+            ViewData["action"] = "HomeAdminReport";
+            Html.RenderPartial("PaginationPartial");
+        }
+  @*       <nav class="pagination">
             <ul class="pagination">
                 <li class="page-item @(currentPage == 1 ? "disabled" : "")">
                     <a class="page-link" href="@Url.Action("HomeAdminReport", new { page = currentPage - 1, pageSize = 10 })">Previous</a>
@@ -135,7 +141,7 @@
                     <a class="page-link" href="@Url.Action("HomeAdminReport", new { page = currentPage + 1, pageSize = 10 })">Next</a>
                 </li>
             </ul>
-        </nav>
+        </nav> *@
     </div>
 
     <h2>

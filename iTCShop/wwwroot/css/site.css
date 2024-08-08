@@ -36,7 +36,9 @@ a {
     height: 80px;
     background-color: #fff;
     border-bottom: 1px solid #ddd;
-  
+    position: fixed;
+    top: 0px;
+    z-index: 1;
 }
 
     #header p {

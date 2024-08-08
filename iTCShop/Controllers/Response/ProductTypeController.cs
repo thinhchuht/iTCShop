@@ -84,9 +84,10 @@ namespace iTCShop.Controllers.Response
                 TempData.Keep();
                 return RedirectToAction("HomeAdminProductType", "Admin");
             }
-            catch (Exception ex)
+            catch 
             {
-                return BadRequest(ex.Message);
+                TempData.PutResponse(ResponseModel.ExceptionResponse());
+                return RedirectToAction("HomeAdminProductType", "Admin");
             }
         }
 
@@ -101,7 +102,8 @@ namespace iTCShop.Controllers.Response
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                TempData.PutResponse(ResponseModel.ExceptionResponse());
+                return RedirectToAction("HomeAdminProductType", "Admin");
             }
         }
 

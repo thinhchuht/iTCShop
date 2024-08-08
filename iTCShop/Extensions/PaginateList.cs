@@ -7,7 +7,6 @@
             var totalItems = list.Count;
             var totalPages = (int)Math.Ceiling((double)totalItems / size);
             var items = list.Skip((page - 1) * size).Take(size).ToList();
-            //list.AddRange(items);
             return (items, totalPages);
         }
     }

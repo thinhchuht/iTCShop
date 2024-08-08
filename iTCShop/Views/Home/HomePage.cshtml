@@ -59,8 +59,8 @@
         <div class="product position-relative">
             <img src="~/ProductImages/@item.Picture" alt="@item.Name" class="img-fluid">
             <p class="mt-2 fw-bold">@item.Name</p>
-            <del class="text-muted">@String.Format("{0:C}", item.Price + 5000)</del>
-            <p class="text-danger fw-bold">$@item.Price</p>
+            <del class="text-muted">@MoneyDTO.Convert(item.Price+500)</del>
+            <p class="text-danger fw-bold">@MoneyDTO.Convert(item.Price)</p>
             <p>@item.Memory GB @item.Color</p>
             <i class="fa-solid fa-plus position-absolute bottom-0 end-0 m-3" product-type-id="@item.ID" onclick="addCart(this)"></i>
         </div>
