@@ -64,7 +64,7 @@ namespace iTCShop.Controllers.Response
                var rs = await productDbServices.AddProduct(product);
                 if (!rs.IsSuccess()) str.AppendLine($"{product.Imei} with type {product.ProductTypeId} due to: {rs.Message}");
             }
-            TempData.PutResponse(ResponseModel.FailureResponse($"Cannot add these products:\n{str}"));
+            if(str.Length > 0) TempData.PutResponse(ResponseModel.FailureResponse($"Cannot add these products:\n{str}"));
             return RedirectToAction("HomeAdmin", "Admin");
         }
 
@@ -109,14 +109,7 @@ namespace iTCShop.Controllers.Response
         public async Task<IActionResult> Search(string search, string sort, string status)
         {
             var products = await productDbServices.GetAllProducts();
-            //3 đều trống -> return all
-            //if (string.IsNullOrEmpty(search) && string.IsNullOrEmpty(status) && string.IsNullOrEmpty(sort))
-            //{
-
-            //    return RedirectToAction("HomeAdmin", "Admin");
-            //}
-
-            //theo status
+          
             if (!string.IsNullOrEmpty(status))
             {
                 products = products.Where(o => string.Equals(o.Status.ToString(), status, StringComparison.OrdinalIgnoreCase)).ToList();

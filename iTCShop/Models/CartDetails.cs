@@ -6,7 +6,7 @@
         public int               Quantity      { get; set; }
         public string            ProductTypeID { get; set; }
         public string            CustomerID    { get; set; }
-        public ProductType ProductType { get; set; }
+        public ProductType       ProductType { get; set; }
 
         public CartDetails() { }
         public CartDetails(string id) 

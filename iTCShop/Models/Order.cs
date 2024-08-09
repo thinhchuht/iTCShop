@@ -28,7 +28,7 @@
 
         public Order()
         {
-            ID        = Guid.NewGuid().ToString();
+            ID        = DateTimeOffset.Now.ToString("ddMMyyyyHHmmssffffff") + "-" + new Random().Next(1,100).ToString();
             OrderDate = DateTime.Now;
             Status    = OrderStatus.Pending;
         }

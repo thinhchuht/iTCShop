@@ -12,7 +12,7 @@
 
         public OrderDetail(int quantity, decimal price, string productID, string orderId)
         {
-            ID          = Guid.NewGuid().ToString();
+            ID          = $"{DateTimeOffset.Now.ToString("ddMMyyyyHHmmssffffff")}{(new Random().Next(1,50)).ToString()}";
             Quantity    = quantity;
             Price       = price;
             TotalAmount = price*quantity;

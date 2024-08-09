@@ -41,6 +41,7 @@
                 else
                 {
                     existCartDetail.Quantity += 1;
+                    if (existCartDetail.Quantity > 5) return ResponseModel.FailureResponse("You should only purcharse 10 of these, if you want to buy more, contact our shop");
                     checkStock = await productDbServices.IsAvailableCheck(productTypeId, existCartDetail.Quantity);
                     if (!checkStock.IsSuccess()) return checkStock;
                 }

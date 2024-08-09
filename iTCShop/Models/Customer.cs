@@ -27,7 +27,7 @@
 
         public Customer(string name, string email, string userName, string password, string phone, string address, DateTime dateOfBirth, string id = null)
         {
-            ID           = id ?? Guid.NewGuid().ToString();
+            ID           = id ?? DateTimeOffset.Now.ToString("ddMMyyyyHHmmssffffff") + new Random().Next(1, 100).ToString(); 
             Name         = name;
             Email        = email;
             UserName     = userName;
