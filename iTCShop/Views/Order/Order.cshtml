@@ -30,7 +30,7 @@
             </div>
             <div class="form-group">
                 <label for="totalPay">Total Pay</label>
-                <input type="number" step="0.01" class="form-control" id="totalPay" value="@Model.TotalPay" name="totalPay" readonly>
+                <input type="number" step="1" class="form-control" id="totalPay" value="@Model.TotalPay" name="totalPay" readonly>
             </div>
             <select class="form-control" id="payMethod" name="PayMethod">
                 @foreach (OrderPayMethod method in Enum.GetValues(typeof(OrderPayMethod)))

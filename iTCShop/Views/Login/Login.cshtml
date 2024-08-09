@@ -63,10 +63,3 @@
         </div>
     </div>
 </div>
-@{
-    var response = TempData.Get<ResponseModel>("response");
-    if (response != null)
-    {
-        Html.RenderPartial("_ErrorPartial", response);
-    }
-}

@@ -26,8 +26,8 @@
             {
                 var customer = new Customer(customerRequest.Name, customerRequest.Email, customerRequest.UserName, customerRequest.Password, "0"+customerRequest.Phone, customerRequest.Address, customerRequest.DateOfBirth);
                 var rs = await customerServices.AddCustomer(customer);
+                if(rs.IsSuccess())
                 ViewBag.RegRs = "Register sucessfully. Go to login.";
-                ViewBag.isReg = true;
                 TempData.PutResponse(rs);
                 return View("RegisterCustomer");
             }

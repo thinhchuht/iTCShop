@@ -109,7 +109,6 @@
 </style>
 
 <div class="container table-container">
-    <h2 class="table-title">Product List</h2>
     <div class="container table-container">
         <h2 class="table-title">Product List</h2>
         <div class="search-bar" style="display:flex; justify-content: space-between; height: 50px">
@@ -188,16 +187,6 @@
         ViewData["action"] = "HomeAdmin";
         Html.RenderPartial("PaginationPartial");
     }
-@*     <nav class="pagination">
-        <ul class="pagination">
-            @for (int ind = 1; ind <= ViewBag.TotalPages; ind++)
-            {
-                <li class="page-item @(ind == ViewBag.CurrentPage ? "active" : "")">
-                    <a class="page-link" href="@Url.Action("HomeAdmin", new { page = ind, pageSize = 10 })">@ind</a>
-                </li>
-            }
-        </ul>
-    </nav> *@
 
     @{
         ViewData["divId"] = "editProductDiv";

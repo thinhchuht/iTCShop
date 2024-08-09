@@ -22,7 +22,7 @@ namespace iTCShop.Models
         public ProductType(string name, decimal price, string description, decimal size, int battery, int memory, string color, int rAM, string fileName)
         {
             Name        = "IPhone " + name;
-            ID          = string.Concat(Regex.Matches(Name, @"\b(\d+|\w)")) + memory + string.Concat(Regex.Matches(color, @"\b(\d+|\w)"));
+            ID          = string.Concat(Regex.Matches(Name, @"\b(\d+|\w)")) + memory + color + DateTimeOffset.Now.ToString("ddMMyyyyHHmmssffffff");
             Price       = price;
             Description = description;
             Size        = size;

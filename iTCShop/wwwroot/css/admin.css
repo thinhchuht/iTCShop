@@ -56,14 +56,14 @@ a {
 
 /* Sidebar styles */
 .leftBar {
-    width: 220px; /* Fixed width for sidebar */
+    width: 220px; 
     background-color: #f9f9f9;
     margin-top: 70px;
     padding: 20px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    position: fixed; /* Keep sidebar fixed */
-    height: calc(100vh - 60px); /* Full height minus header */
-    overflow-y: auto; /* Scroll if content exceeds view */
+    position: fixed; 
+    height: calc(100vh - 60px); 
+    overflow-y: auto; 
 }
 
     .leftBar .menu h3 {
@@ -94,11 +94,12 @@ a {
                 color: white;
             }
 
-/* Main content area */
+
 .rightContent {
-    margin-left: 240px; /* Space for sidebar */
+    margin-top: 100px;
+    margin-left: 240px; 
     padding: 20px;
-    flex: 1; /* Take remaining space */
+    flex: 1; 
 }
 
 /* Table container styles */

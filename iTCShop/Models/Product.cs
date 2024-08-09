@@ -6,10 +6,11 @@ namespace iTCShop.Models
     {
         public Product() {}
 
-        public Product(string iMEI , string productTypeId)
+        public Product(string iMEI , string productTypeId, OrderStatus orderStatus)
         {
             IMEI          = iMEI;
             ProductTypeId = productTypeId;
+            Status        = orderStatus;
         }
 
         public string      IMEI          { get; set; }

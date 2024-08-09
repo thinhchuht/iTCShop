@@ -1,4 +1,6 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using OfficeOpenXml;
+using System.Text;
 
 namespace iTCShop.Controllers.Response
 {
@@ -100,7 +102,7 @@ namespace iTCShop.Controllers.Response
                 if (!result.IsSuccess()) TempData.PutResponse(result);
                 return RedirectToAction("HomeAdminProductType", "Admin");
             }
-            catch (Exception ex)
+            catch 
             {
                 TempData.PutResponse(ResponseModel.ExceptionResponse());
                 return RedirectToAction("HomeAdminProductType", "Admin");

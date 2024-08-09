@@ -11,13 +11,13 @@
                 var productTypes = await iTCShopDbContext.ProductTypes.ToListAsync();
                 if (products.Any(p => p.IMEI == productRequest.Imei)) return ResponseModel.FailureResponse("There is already a phone with this IMEI!");
                 if (!productTypes.Any(p => p.ID == productRequest.ProductTypeId)) return ResponseModel.FailureResponse("This product type does not exist!");
-                var newProduct = new Product(productRequest.Imei, productRequest.ProductTypeId);
+                var newProduct = new Product(productRequest.Imei, productRequest.ProductTypeId, OrderStatus.OnStock);
                 await baseDbServices.AddAsync(newProduct);
                 return ResponseModel.SuccessResponse();
             }
-            catch (Exception ex)
+            catch 
             {
-                return ResponseModel.FailureResponse(ex.ToString());
+                return ResponseModel.ExceptionResponse();
             }
         }
 
@@ -102,14 +102,15 @@
                 var productType = await baseDbServices.GetById<ProductType>(productRequest.ProductTypeId);
                 if (productType == null) return ResponseModel.FailureResponse("Can not found ProducTypeID");
                 var oldProduct = await GetProductByImei(productRequest.Imei);
-                var newProduct = new Product(productRequest.Imei,productType.ID);
+                if(oldProduct.Status != OrderStatus.OnStock && oldProduct.Status != OrderStatus.Pending) { return ResponseModel.FailureResponse("You cannot change product that is already on the market!"); }
+                var newProduct = new Product(productRequest.Imei,productType.ID,oldProduct.Status);
                 
                 await baseDbServices.UpdateAsync(newProduct, oldProduct);
                 return ResponseModel.SuccessResponse();
             }
-            catch (Exception ex)
+            catch
             {
-                return ResponseModel.FailureResponse(ex.ToString());
+                return ResponseModel.ExceptionResponse();
             }
         }
 

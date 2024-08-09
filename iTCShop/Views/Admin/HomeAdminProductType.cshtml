@@ -118,12 +118,13 @@
             }
         </tbody>
     </table>
+    @{
+        ViewData["action"] = "HomeAdminProductType";
+        Html.RenderPartial("PaginationPartial");
+    }
 </div>
 
-@{
-    ViewData["action"] = "HomeAdminProductType";
-    Html.RenderPartial("PaginationPartial");
-}
+
 
 @{
     ViewData["divId"] = "editProductDiv";

@@ -101,16 +101,9 @@ namespace iTCShop.Controllers.Response
         [HttpPost]
         public async Task<IActionResult> UpdateProduct(ProductRequest productRequest)
         {
-            try
-            {
                 var result = await productDbServices.UpdateProduct(productRequest);
-                if (result.IsSuccess()) return Redirect("~/AProds");
-                return BadRequest(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+                if (!result.IsSuccess()) TempData.PutResponse(result);
+                    return Redirect("~/AProds");
         }
 
         public async Task<IActionResult> Search(string search, string sort, string status)
