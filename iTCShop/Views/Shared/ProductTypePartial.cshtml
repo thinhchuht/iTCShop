@@ -64,6 +64,18 @@
                     <button type="submit" class="btn btn-primary">@buttonText</button>
                 </form>
                 <hr />
+            @*     @{
+                    if (isEdit == false)
+                    {
+                        <form id="importForm" action="/ProductType/ImportExcel" method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="importFile">Import from Excel:</label>
+                                <input type="file" name="importFile" id="importFile" class="form-control mb-3" accept=".xls,.xlsx" required>
+                            </div>
+                            <button type="submit" class="btn btn-secondary">Import</button>
+                        </form>
+                    }
+                } *@
             </div>
         </div>
     </div>

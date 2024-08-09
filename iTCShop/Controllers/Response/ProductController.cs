@@ -37,7 +37,7 @@ namespace iTCShop.Controllers.Response
         public async Task<IActionResult> ImportExcel (IFormFile importFile)
         {
             var products = new List<ProductRequest>();
-
+            var strData = new StringBuilder();
             using (var stream = new MemoryStream())
             {
                 await importFile.CopyToAsync(stream);
@@ -49,12 +49,21 @@ namespace iTCShop.Controllers.Response
 
                     for (int row = 2; row <= rowCount; row++)
                     {
-                        var product = new ProductRequest
+                        try
                         {
-                            Imei = worksheet.Cells[row, 1].Value.ToString(),
-                            ProductTypeId = worksheet.Cells[row, 2].Value.ToString(),
-                        };
-                        products.Add(product);
+                            var product = new ProductRequest
+                            {
+                                Imei = worksheet.Cells[row, 1].Value.ToString(),
+                                ProductTypeId = worksheet.Cells[row, 2].Value.ToString(),
+                            };
+                            products.Add(product);
+                        }
+                        catch
+                        {
+                            strData.Append($"{row},");
+                            continue;
+                        }
+                       
                     }
                 }
             }
@@ -64,7 +73,9 @@ namespace iTCShop.Controllers.Response
                var rs = await productDbServices.AddProduct(product);
                 if (!rs.IsSuccess()) str.AppendLine($"{product.Imei} with type {product.ProductTypeId} due to: {rs.Message}");
             }
-            if(str.Length > 0) TempData.PutResponse(ResponseModel.FailureResponse($"Cannot add these products:\n{str}"));
+            if (str.Length > 0) TempData.PutResponse(ResponseModel.FailureResponse($"Cannot add these product :\n{str}"));
+            if (strData.Length > 0 && str.Length == 0) TempData.PutResponse(ResponseModel.FailureResponse($"Data ta at rows : {strData} is invalid"));
+            if (strData.Length > 0 && str.Length > 0) TempData.PutResponse(ResponseModel.FailureResponse($"Data ta at rows : {strData} is invalid \nCannot add these product :\n{str}"));
             return RedirectToAction("HomeAdmin", "Admin");
         }
 

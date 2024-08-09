@@ -1,6 +1,4 @@
 ﻿using Microsoft.IdentityModel.Tokens;
-using OfficeOpenXml;
-using System.Text;
 
 namespace iTCShop.Controllers.Response
 {
@@ -92,6 +90,59 @@ namespace iTCShop.Controllers.Response
                 return RedirectToAction("HomeAdminProductType", "Admin");
             }
         }
+
+        //[HttpPost]
+        //public async Task<IActionResult> ImportExcel(IFormFile importFile)
+        //{
+        //    var productTypes = new List<ProductType>();
+        //    var strData = new StringBuilder();
+        //    using (var stream = new MemoryStream())
+        //    {
+        //        await importFile.CopyToAsync(stream);
+        //        ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+        //        using (var package = new ExcelPackage(stream))
+        //        {
+        //            var worksheet = package.Workbook.Worksheets[0];
+        //            var rowCount = worksheet.Dimension.Rows;
+
+        //            for (int row = 2; row <= rowCount; row++)
+        //            {
+        //                try
+        //                {
+        //                    var productType = new ProductType
+        //                    {
+        //                        Name = worksheet.Cells[row, 1].Value.ToString(),
+        //                        Price = Convert.ToDecimal(worksheet.Cells[row, 2].Value),
+        //                        Description = worksheet.Cells[row, 3].Value.ToString(),
+        //                        Size = Convert.ToDecimal(worksheet.Cells[row, 4].Value),
+        //                        Battery = Convert.ToInt32(worksheet.Cells[row, 5].Value),
+        //                        Memory = Convert.ToInt32(worksheet.Cells[row, 6].Value),
+        //                        Color = worksheet.Cells[row, 7].Value.ToString(),
+        //                        RAM = Convert.ToInt32(worksheet.Cells[row, 8].Value),
+        //                    };
+        //                    productType.ID  = string.Concat(Regex.Matches(productType.Name, @"\b(\d+|\w)")) + productType.Memory + string.Concat(Regex.Matches(productType.Color, @"\b(\d+|\w)")) + "-" + DateTimeOffset.Now.ToString("ddMMyyyyHHmmssffffff");
+        //                    productTypes.Add(productType);
+        //                }
+        //                catch
+        //                {
+        //                    strData.Append($"{row},");
+        //                    continue;
+        //                }
+        //            }
+        //        }
+        //    }
+        //    var str = new StringBuilder();
+        //    foreach (var productType in productTypes)
+        //    {
+        //        var rs = await productTypesServices.AddProductType(productType);
+        //        if (!rs.IsSuccess()) str.AppendLine($"{productType.Name} - {productType.Memory}GB - {productType.Color} can not be saved  due to: {rs.Message}");
+        //    }
+        //    if (str.Length > 0) TempData.PutResponse(ResponseModel.FailureResponse($"Cannot add these product types:\n{str}"));
+        //    if (strData.Length > 0 && str.Length == 0) TempData.PutResponse(ResponseModel.FailureResponse($"Data ta at rows : {strData} is invalid"));
+        //    if (strData.Length > 0 && str.Length > 0) TempData.PutResponse(ResponseModel.FailureResponse($"Data ta at rows : {strData} is invalid \nCannot add these product types:\n{str}"));
+        //    return RedirectToAction("HomeAdminProductType", "Admin");
+        //}
+
 
         [HttpPost]
         public async Task<IActionResult> DeleteProductType(string id)
