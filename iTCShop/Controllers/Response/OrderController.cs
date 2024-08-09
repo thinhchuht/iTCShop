@@ -82,6 +82,7 @@
                         return View("GetOrdersAdmin", orders);
                 }
             }
+            ViewBag.CurrentPage = 1;
             return View("GetOrdersAdmin", ordersomerLst);
         }
 

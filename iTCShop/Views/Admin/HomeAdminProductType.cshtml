@@ -108,10 +108,6 @@
                     <td>
                         <div class="action-buttons">
                             <button type="button" class="btn btn-warning btn-sm edit-btn" data-toggle="modal" data-target="#editProductDiv" onclick="setProductId('@productType.ID','type','@productType.Name.Substring(7)','@productType.Memory','@productType.Color')">Edit</button>
-                            <form action="/ProductType/DeleteProductType" method="post" style="display:inline;">
-                                <input type="hidden" name="id" value="@productType.ID" />
-                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                            </form>
                         </div>
                     </td>
                 </tr>

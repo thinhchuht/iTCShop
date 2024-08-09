@@ -6,12 +6,12 @@
         {
             try
             {
-                //var productType = await baseDbServices.GetById<ProductType>(productRequest.ProductTypeId);
+               
                 var products = await GetAllProducts();
-                var productTypes = await iTCShopDbContext.ProductTypes.ToListAsync();
-                if (products.Any(p => p.IMEI == productRequest.Imei)) return ResponseModel.FailureResponse("There is already a phone with this IMEI!");
-                if (!productTypes.Any(p => p.ID == productRequest.ProductTypeId)) return ResponseModel.FailureResponse("This product type does not exist!");
-                var newProduct = new Product(productRequest.Imei, productRequest.ProductTypeId, OrderStatus.OnStock);
+                var productTypes =  iTCShopDbContext.ProductTypes.ToList();
+                if (products.Any(p => p.IMEI == productRequest.Imei.Trim())) return ResponseModel.FailureResponse("There is already a phone with this IMEI!");
+                if (!productTypes.Any(p => p.ID == productRequest.ProductTypeId.Trim())) return ResponseModel.FailureResponse("This product type does not exist!");
+                var newProduct = new Product(productRequest.Imei.Trim(), productRequest.ProductTypeId.Trim(), OrderStatus.OnStock);
                 await baseDbServices.AddAsync(newProduct);
                 return ResponseModel.SuccessResponse();
             }
