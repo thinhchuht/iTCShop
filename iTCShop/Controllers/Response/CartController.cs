@@ -1,10 +1,10 @@
 ﻿namespace iTCShop.Controllers.Response
 {
-    public class CartController(ICartService cartService, ICartDetailsServices cartDetailsServices) : Controller
+    public class CartController(ICartDetailsServices cartDetailsServices) : Controller
     {
         public async Task<IActionResult> CustomerCart()
         {
-            var customer = HttpContext.Session.GetObjectFromJson<Customer>("user");
+            var customer = HttpContext.Session.GetCustomer();
             if (customer == null)
             {
                 return RedirectToAction("Login", "Login");
@@ -14,22 +14,22 @@
                 var cartDetails = await cartDetailsServices.GetAllByCartId(customer.ID);
                 return View(cartDetails);
             }
-
         }
 
         public async Task<IActionResult> AddCart([FromBody] string productTypeId)
         {
-            var customer = HttpContext.Session.GetObjectFromJson<Customer>("user");
+            var customer = HttpContext.Session.GetCustomer();
             if (customer == null)
             {
                 return RedirectToAction("Login", "Login");
             }
             else
             {
-                var response = await cartService.AddToCart(customer.ID, productTypeId);
+                var response = await cartDetailsServices.AddCartDetail(productTypeId, customer.ID);
                 return Json(response);
             }
         }
+
         [HttpPost]
         public async Task<IActionResult> DropCartDetails(string id)
         {
@@ -37,12 +37,14 @@
             if (rs.IsSuccess()) return RedirectToAction("CustomerCart");
             return BadRequest(rs);
         }
+
         [HttpPost]
-        public async Task<IActionResult> AddCartDetails(string productTypeId, string cartId) 
+        public async Task<IActionResult> AddCartDetails(string productTypeId, string customerID) 
         {
-            var rs = await cartDetailsServices.AddCartDetail(productTypeId, cartId);
-            if (rs.IsSuccess()) return RedirectToAction("CustomerCart");
-            return BadRequest(rs);
+            var rs = await cartDetailsServices.AddCartDetail(productTypeId, customerID);
+            if (!rs.IsSuccess()) TempData.PutResponse(rs);
+            TempData.Keep();
+            return RedirectToAction("CustomerCart");
         }
     }
 }

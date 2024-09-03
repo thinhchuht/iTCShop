@@ -1,6 +1,9 @@
-﻿namespace iTCShop.Controllers.Response
+﻿using OfficeOpenXml;
+using System.Text;
+
+namespace iTCShop.Controllers.Response
 {
-    public class ProductController(IProductDbServices productDbServices, IOrderDetailServices orderDetailServices) : Controller
+    public class ProductController(IProductDbServices productDbServices) : Controller
     {
         [HttpGet("get-all-products")]
         public async Task<IActionResult> GetAllProducts()
@@ -30,14 +33,61 @@
             }
         }
 
+        [HttpPost] 
+        public async Task<IActionResult> ImportExcel (IFormFile importFile)
+        {
+            var products = new List<ProductRequest>();
+            var strData = new StringBuilder();
+            using (var stream = new MemoryStream())
+            {
+                await importFile.CopyToAsync(stream);
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                using (var package = new ExcelPackage(stream))
+                {
+                    var worksheet = package.Workbook.Worksheets[0];
+                    var rowCount = worksheet.Dimension.Rows;
+
+                    for (int row = 2; row <= rowCount; row++)
+                    {
+                        try
+                        {
+                            var product = new ProductRequest
+                            {
+                                Imei = worksheet.Cells[row, 1].Value.ToString(),
+                                ProductTypeId = worksheet.Cells[row, 2].Value.ToString(),
+                            };
+                            products.Add(product);
+                        }
+                        catch
+                        {
+                            strData.Append($"{row},");
+                            continue;
+                        }
+                       
+                    }
+                }
+            }
+            var str = new StringBuilder();
+            foreach (var product in products)
+            {
+               var rs = await productDbServices.AddProduct(product);
+                if (!rs.IsSuccess()) str.AppendLine($"{product.Imei} with type {product.ProductTypeId} due to: {rs.Message}");
+            }
+            if (str.Length > 0) TempData.PutResponse(ResponseModel.FailureResponse($"Cannot add these product :\n{str}"));
+            if (strData.Length > 0 && str.Length == 0) TempData.PutResponse(ResponseModel.FailureResponse($"Data ta at rows : {strData} is invalid"));
+            if (strData.Length > 0 && str.Length > 0) TempData.PutResponse(ResponseModel.FailureResponse($"Data ta at rows : {strData} is invalid \nCannot add these product :\n{str}"));
+            return RedirectToAction("HomeAdmin", "Admin");
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddProduct(ProductRequest productRequest)
         {
             try
             {
                 var result = await productDbServices.AddProduct(productRequest);
-                if (result.IsSuccess()) return Redirect("~/AProds");
-                return BadRequest(result);
+                if (!result.IsSuccess()) TempData.Put("response", result);
+                TempData.Keep();
+                return Redirect("~/AProds");
             }
             catch (Exception ex)
             {
@@ -51,7 +101,7 @@
             try
             {
                 var result = await productDbServices.DeleteProduct(imei);
-                return RedirectToAction("HomeAdmin","Admin");
+                return RedirectToAction("HomeAdmin", "Admin");
             }
             catch (Exception ex)
             {
@@ -60,25 +110,40 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateProduct( ProductRequest productRequest)
+        public async Task<IActionResult> UpdateProduct(ProductRequest productRequest)
         {
-            try
-            {
                 var result = await productDbServices.UpdateProduct(productRequest);
-                if (result.IsSuccess()) return Redirect("~/AProds");
-                return BadRequest(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+                if (!result.IsSuccess()) TempData.PutResponse(result);
+                    return Redirect("~/AProds");
         }
 
-        public async Task<IActionResult> Search(string search, string sort)
+        public async Task<IActionResult> Search(string search, string sort, string status)
         {
             var products = await productDbServices.GetAllProducts();
+          
+            if (!string.IsNullOrEmpty(status))
+            {
+                products = products.Where(o => string.Equals(o.Status.ToString(), status, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
 
-           if(!string.IsNullOrEmpty(search))
+            
+            //search trống , sort còn -> báo lỗi
+            if (string.IsNullOrEmpty(search) && !string.IsNullOrEmpty(sort))
+            {
+                TempData.Clear();
+                TempData.PutResponse(ResponseModel.FailureResponse("Fill out your search bar with the type of search!"));
+            }
+
+            //search có , sort trống -> lỗi
+            if (!string.IsNullOrEmpty(search) && string.IsNullOrEmpty(sort))
+            {
+                {
+                    TempData.Clear();
+                    TempData.PutResponse(ResponseModel.FailureResponse("Select your type of search!"));
+                }
+            }
+
+            if (!string.IsNullOrEmpty(search))
             {
                 switch (sort)
                 {
@@ -92,6 +157,10 @@
                         products = products.Where(p => p.IMEI.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
                         break;
                 }
+            }
+            if (string.IsNullOrEmpty(search) && string.IsNullOrEmpty(sort))
+            {
+                TempData.Clear();
             }
             TempData.Put("products", products);
             TempData["Search"] = search;

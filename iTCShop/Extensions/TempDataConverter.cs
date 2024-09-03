@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System.Runtime.CompilerServices;
 
 namespace iTCShop.Extensions
 {
@@ -9,7 +10,7 @@ namespace iTCShop.Extensions
             tempData[key] = JsonConvert.SerializeObject(value);
         }
 
-        public static T Get<T>( this ITempDataDictionary tempData, string key) where T : class
+        public static T Get<T>( this ITempDataDictionary tempData, string key) 
         {
             tempData.TryGetValue(key, out var o);
             return o == null ? default : JsonConvert.DeserializeObject<T>((string)o);
@@ -19,6 +20,11 @@ namespace iTCShop.Extensions
         {
             var value = tempData.Peek(key);
             return value == null ? default : JsonConvert.DeserializeObject<T>((string)value);
+        }
+
+        public static void PutResponse(this ITempDataDictionary tempData, ResponseModel rs)
+        {
+            tempData.Put("response", rs);
         }
     }
 }

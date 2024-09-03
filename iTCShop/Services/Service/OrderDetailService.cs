@@ -14,10 +14,5 @@
                 return ResponseModel.FailureResponse(ex.ToString());
             }
         }
-
-        public Task<ResponseModel> DeleteOrderDetail(string id)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

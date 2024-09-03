@@ -3,6 +3,11 @@
 @{
     ViewBag.Title = "Edit Account";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var phoneNumber = Model.Phone;
+    if (phoneNumber.StartsWith("0"))
+    {
+        phoneNumber = phoneNumber.Substring(1);
+    }
 }
 
 <style>
@@ -44,9 +49,11 @@
                             <label for="email">Email</label>
                             <input type="email" class="form-control" id="email" name="Email" value="@Model.Email" required readonly>
                         </div>
-                        <div class="form-group">
-                            <label for="phone">Phone</label>
-                            <input type="text" class="form-control" id="phone" name="Phone" value="@Model.Phone" required pattern="^\d{10}$" title="Has to be 10 number.">
+                 
+                        <label for="Phone" class="form-label">Phone Number</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">(+84)</span>
+                            <input type="text" class="form-control" placeholder="Last 9 number" name="Phone" aria-label="" value="@phoneNumber" aria-describedby="basic-addon1" pattern="^\d{9}$" title="Has to be last 9 number.">
                         </div>
                         <div class="form-group">
                             <label for="address">Address</label>
@@ -69,8 +76,8 @@
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-success">Save Changes</button>
-                <a href="~/Customer/GetCustomerInfo" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-success" style="width:30%">Save Changes</button>
+                <a href="~/Customer/GetCustomerInfo" class="btn btn-secondary" style="width:30%">Cancel</a>
             </form>
         </div>
     </div>

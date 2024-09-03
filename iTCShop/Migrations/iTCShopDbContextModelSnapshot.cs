@@ -63,22 +63,12 @@ namespace iTCShop.Migrations
                     b.ToTable("AuthorizeUsers");
                 });
 
-            modelBuilder.Entity("iTCShop.Models.Cart", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Carts");
-                });
-
             modelBuilder.Entity("iTCShop.Models.CartDetails", b =>
                 {
                     b.Property<string>("ID")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CartID")
+                    b.Property<string>("CustomerID")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProductTypeID")
@@ -89,7 +79,7 @@ namespace iTCShop.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("CartID");
+                    b.HasIndex("CustomerID");
 
                     b.HasIndex("ProductTypeID");
 
@@ -107,8 +97,8 @@ namespace iTCShop.Migrations
                     b.Property<int>("AuthId")
                         .HasColumnType("int");
 
-                    b.Property<string>("CartId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("CartDetailId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
@@ -137,8 +127,6 @@ namespace iTCShop.Migrations
                     b.HasKey("ID");
 
                     b.HasIndex("AuthId");
-
-                    b.HasIndex("CartId");
 
                     b.HasIndex("Email")
                         .IsUnique()
@@ -189,7 +177,7 @@ namespace iTCShop.Migrations
                     b.Property<string>("OrderId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<decimal>("Price")
+                    b.Property<decimal?>("Price")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ProductID")
@@ -198,7 +186,7 @@ namespace iTCShop.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("TotalAmount")
+                    b.Property<decimal?>("TotalAmount")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("ID");
@@ -279,9 +267,9 @@ namespace iTCShop.Migrations
 
             modelBuilder.Entity("iTCShop.Models.CartDetails", b =>
                 {
-                    b.HasOne("iTCShop.Models.Cart", null)
-                        .WithMany("CartDetails")
-                        .HasForeignKey("CartID");
+                    b.HasOne("iTCShop.Models.Customer", null)
+                        .WithMany("CartDetail")
+                        .HasForeignKey("CustomerID");
 
                     b.HasOne("iTCShop.Models.ProductType", "ProductType")
                         .WithMany()
@@ -298,35 +286,25 @@ namespace iTCShop.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("iTCShop.Models.Cart", "Cart")
-                        .WithMany()
-                        .HasForeignKey("CartId");
-
                     b.Navigation("Auth");
-
-                    b.Navigation("Cart");
                 });
 
             modelBuilder.Entity("iTCShop.Models.Order", b =>
                 {
-                    b.HasOne("iTCShop.Models.Customer", "Customer")
+                    b.HasOne("iTCShop.Models.Customer", null)
                         .WithMany("Orders")
                         .HasForeignKey("CustomerId");
-
-                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("iTCShop.Models.OrderDetail", b =>
                 {
-                    b.HasOne("iTCShop.Models.Order", "Order")
+                    b.HasOne("iTCShop.Models.Order", null)
                         .WithMany("OrderDetails")
                         .HasForeignKey("OrderId");
 
                     b.HasOne("iTCShop.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductID");
-
-                    b.Navigation("Order");
 
                     b.Navigation("Product");
                 });
@@ -342,13 +320,10 @@ namespace iTCShop.Migrations
                     b.Navigation("ProductType");
                 });
 
-            modelBuilder.Entity("iTCShop.Models.Cart", b =>
-                {
-                    b.Navigation("CartDetails");
-                });
-
             modelBuilder.Entity("iTCShop.Models.Customer", b =>
                 {
+                    b.Navigation("CartDetail");
+
                     b.Navigation("Orders");
                 });
 

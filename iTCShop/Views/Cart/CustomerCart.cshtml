@@ -6,6 +6,8 @@
     var i = 0;
     decimal total = 0;
 }
+
+<h1> Cart </h1>
 <table class="table table-success table-striped table-hover">
     <thead>
         <tr>
@@ -28,23 +30,23 @@
             total += item.ProductType.Price * item.Quantity;
             <tr>
                 <th scope="row">@(++i)</th>
-                <td>@item.ProductType.Picture</td>
+                <td><img src="~/ProductImages/@item.ProductType.Picture" alt="Image" style="height: 50px; width: 50px" /></td>
                 <td>@item.ProductType.Name</td>
                 <td>@item.ProductType.Color</td>
                 <td>@item.ProductType.Memory</td>
-                <td>@item.ProductType.Price</td>
+                <td>@MoneyDTO.Convert(item.ProductType.Price)</td>
                 <td>@item.Quantity</td>
-                <td>@(item.ProductType.Price * item.Quantity)</td>
+                <td>@MoneyDTO.Convert(item.ProductType.Price * item.Quantity)</td>
                 <td>
-                    <form action="/Cart/DropCartDetails" method="post">
+                    <form action="/Cart/DropCartDetails" method="post" style="background-color:none; padding: 0px;box-shadow:none">
                         <input type="hidden" name="id" value="@item.ID" />
                         <button type="submit" class="btn btn-primary" id="@item.ID">Drop</button>
                     </form>
                 </td>
                 <td>
-                    <form action="/Cart/AddCartDetails" method="post">
+                    <form action="/Cart/AddCartDetails" method="post" style="background-color:none; padding: 0px;box-shadow:none">
                         <input type="hidden" name="productTypeID" value="@item.ProductTypeID" />
-                        <input type="hidden" name="cartID" value="@item.CartID" />
+                        <input type="hidden" name="customerID" value="@item.CustomerID" />
                         <button type="submit" class="btn btn-primary" id="@item.ID">Add</button>
                     </form>
                 </td>
@@ -55,9 +57,9 @@
 <br />
 <form action="/Order/Order" method="post">
     <div>
-        <h2>Total : @total </h2>
+        <h2>Total :  @MoneyDTO.Convert(total) </h2>
         <input type="hidden" name="total" value="@total" />
-        <button type="submit" class="btn btn-primary">Order</button>
+        <button type="submit" class="btn btn-primary" style="width: 30%">Order</button>
     </div>
     @for (int index = 0; index < Model.Count; index++)
     {

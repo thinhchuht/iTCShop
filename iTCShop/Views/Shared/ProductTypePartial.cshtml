@@ -5,7 +5,8 @@
     var formId = ViewData["formId"];
     var formAction = ViewData["formAction"];
     var buttonText = ViewData["buttonText"];
-    var isEdit = ViewData["functionName"].ToString().Contains("Edit")?true: false;
+    var isEdit = ViewData["functionName"].ToString().Contains("Edit") ? true : false;
+
 }
 
 <div class="modal fade" id="@divId" tabindex="-1" role="dialog" aria-labelledby="editProductModalLabel" aria-hidden="true">
@@ -18,14 +19,15 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="@formId" action="@formAction" method="post">
+                <form id="@formId" action="@formAction" method="post" enctype="multipart/form-data">
                     <div class="form-group">
-                        <label for="productName">ID</label>
+                        <label for="productId">ID</label>
                         <input type="text" class="form-control" id="productId" name="id" value="" required readonly>
                     </div>
-                    <div class="form-group">
-                        <label for="productName">Name</label>
-                        <input type="text" class="form-control" id="productName" name="name" value="@Model?.Name" required readonly="@isEdit">
+                    <label for="productName">Name</label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Iphone</span>
+                        <input type="text" class="form-control" name="name" aria-label="" id="productName" value="" aria-describedby="basic-addon1" required>
                     </div>
                     <div class="form-group">
                         <label for="productPrice">Price</label>
@@ -45,22 +47,35 @@
                     </div>
                     <div class="form-group">
                         <label for="productMemory">Memory</label>
-                        <input type="number" class="form-control" id="productMemory" name="memory" value="@Model?.Memory" required min="1" readonly="@isEdit">
+                        <input class="form-control" id="productMemory" name="memory" required min="1">
                     </div>
                     <div class="form-group">
                         <label for="productColor">Color</label>
-                        <input type="text" class="form-control" id="productColor" name="color" value="@Model?.Color" required readonly="@isEdit">
+                        <input type="text" class="form-control" id="productColor" name="color" value="@Model?.Color" required >
                     </div>
                     <div class="form-group">
                         <label for="productRAM">RAM</label>
                         <input type="number" class="form-control" id="productRAM" name="ram" value="@Model?.RAM" min="1" required>
                     </div>
-               @*       <div class="form-group">
-                         <label for="productPicture">Picture</label>
-                         <input type="text" class="form-control" id="productPicture" name="picture" value="@Model?.Picture" required>
-                     </div> *@
+                    <div class="form-group">
+                        <label for="productPicture">Picture</label>
+                        <input type="file" class="form-control" id="productPicture" name="picture" required>
+                    </div>
                     <button type="submit" class="btn btn-primary">@buttonText</button>
                 </form>
+                <hr />
+            @*     @{
+                    if (isEdit == false)
+                    {
+                        <form id="importForm" action="/ProductType/ImportExcel" method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="importFile">Import from Excel:</label>
+                                <input type="file" name="importFile" id="importFile" class="form-control mb-3" accept=".xls,.xlsx" required>
+                            </div>
+                            <button type="submit" class="btn btn-secondary">Import</button>
+                        </form>
+                    }
+                } *@
             </div>
         </div>
     </div>

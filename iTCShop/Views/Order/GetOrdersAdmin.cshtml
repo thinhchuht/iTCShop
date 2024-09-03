@@ -5,20 +5,45 @@
     ViewData["Title"] = "Orders";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     var indexOrderDetail = 0;
-    var indexOrder = 0;
     var orderStatuses = Enum.GetValues(typeof(OrderStatus)).Cast<OrderStatus>();
     var isOrder = false;
-    if (ViewBag.Sort == "ID") isOrder = true;
+    if (ViewBag.Sort == "orderID") isOrder = true;
     var isCust = false;
     if (ViewBag.Sort == "customerID") isCust = true;
-}
+    var totalPages = ViewBag.TotalPages;
+    var currentPage = ViewBag.CurrentPage;
+    var indexOrder = (currentPage - 1) * 10;
+}   
+<style>
 
+    .search-bar {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+    }
 
+        .search-bar input, .search-bar select, .search-bar button {
+            padding: 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+        }
+
+        .search-bar select {
+            margin-right: 10px;
+        }
+
+        .search-bar button {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        </style>
 <h2>Order Management</h2>
 <div class="search-bar" style="display:flex; justify-content: flex-end; height: 50px">
     <form action="/Order/Search" method="get" style="display: flex">
         <select name="status">
-            <option value=""></option>
+            <option value="" disabled selected hidden>Status</option>            
             @{
                 for (int i = 1; i < orderStatuses.ToList().Count; i++)
                 {
@@ -27,7 +52,7 @@
             }
         </select>
         <select name="sort">
-            <option value=""></option>
+            <option value="" disabled selected hidden>Type of Search</option>
             <option value="orderID" selected="@isOrder">Order ID</option>
             <option value="customerID" selected="@(isCust)">Customer ID</option>
         </select>
@@ -59,7 +84,7 @@
                 <td>@order.ID</td>
                 <td>@order.OrderDate</td>
                 <td>@order.ShipAddress</td>
-                <td>@order.TotalPay.ToString("C0", new CultureInfo("vi-VN"))</td>
+                <td>@MoneyDTO.Convert(@order.TotalPay)</td>
                 <td>@order.Status</td>
                 <td>@order.CustomerId</td>
                 <td>@order.PayMethod</td>
@@ -93,8 +118,8 @@
                                     <td>@detail.ProductID</td>
                                     <td>@detail.Product.ProductTypeId</td>
                                     <td>@detail.Quantity</td>
-                                    <td>@detail.Price.ToString("C0", new CultureInfo("vi-VN"))</td>
-                                    <td>@detail.TotalAmount.ToString("C0", new CultureInfo("vi-VN"))</td>
+                                    <td>@MoneyDTO.Convert(@detail.Price)</td>
+                                    <td>@MoneyDTO.Convert(@detail.TotalAmount)</td>
                                 </tr>
                             }
                         </tbody>
@@ -104,9 +129,7 @@
         }
     </tbody>
 </table>
-
-<!-- Modal for Changing Status -->
-<div class="modal fade" id="changeStatusModal" tabindex="-1" aria-labelledby="changeStatusModalLabel" aria-hidden="true">
+    <div class="modal fade" id="changeStatusModal" tabindex="-1" aria-labelledby="changeStatusModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <form id="changeStatusForm" method="post" action="/Order/ChangeStatus">

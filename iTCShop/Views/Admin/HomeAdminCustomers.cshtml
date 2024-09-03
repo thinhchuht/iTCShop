@@ -3,30 +3,34 @@
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewBag.Title = "Customers";
-    var isID = false;
-    if (ViewBag.Sort == "ID") isID = true;
-    var isName = false;
-    if (ViewBag.Sort == "Name") isName = true;
-    var isUserName = false;
-    if (ViewBag.Sort == "UserName") isUserName = true;
+    var isID = ViewBag.Sort == "ID";
+    var isName = ViewBag.Sort == "Name";
+    var isUserName = ViewBag.Sort == "UserName";
+    var isPhone = ViewBag.Sort == "Phone";
+    var currentPage = ViewBag.CurrentPage;
+    var totalPages = ViewBag.TotalPages;
+    var i = (currentPage - 1) * 10;
 }
 
-<h2 class="text" >Customer Management</h2>
-<div class="search-bar" style="display:flex; justify-content: flex-end; height: 50px">
-    <form action="/Customer/Search" method="get" style="display: flex">
-        <select name="sort" class="form-select">
-            <option value="Name" selected="@isName">Name</option>
+<h2 class="text">Customer Management</h2>
+<div class="search-bar d-flex justify-content-end mb-3">
+    <form action="/Customer/Search" method="get" class="d-flex">
+        <select name="sort" class="form-select me-2">
             <option value="ID" selected="@isID">ID</option>
+            <option value="Name" selected="@isName">Name</option>
+            <option value="Phone" selected="@isPhone">Phone</option>
             <option value="UserName" selected="@isUserName">Username</option>
         </select>
-        <input type="text" name="search" placeholder="Search..." required value="@ViewBag.Search"/>
-        <button type="submit">Search</button>
+        <input type="text" name="search" placeholder="Search..." required value="@ViewBag.Search" class="form-control me-2" />
+        <button type="submit" class="btn btn-primary">Search</button>
     </form>
 </div>
-<div class="container mt-5">
+<div class="container-fluid">
     <table class="table table-striped table-bordered">
         <thead class="thead-dark">
             <tr>
+                <th scope="col">No.</th>
+                <th scope="col">ID</th>
                 <th scope="col">Name</th>
                 <th scope="col">Email</th>
                 <th scope="col">Username</th>
@@ -35,6 +39,8 @@
                 <th scope="col">Date of Birth</th>
                 <th scope="col">Create Date</th>
                 <th scope="col">Status</th>
+                <th scope="col">Completed Orders</th>
+                <th scope="col">Spent</th>
                 <th scope="col">Actions</th>
             </tr>
         </thead>
@@ -42,13 +48,15 @@
             @foreach (var customer in Model)
             {
                 <tr>
+                    <td>@(++i)</td>
+                    <td>@customer.ID</td>
                     <td>@customer.Name</td>
                     <td>@customer.Email</td>
                     <td>@customer.UserName</td>
                     <td>@customer.Phone</td>
                     <td>@customer.Address</td>
                     <td>@customer.DateOfBirth.ToString("MM/dd/yyyy")</td>
-                    <td>@customer.CreateDate</td>
+                    <td>@customer.CreateDate.ToString("MM/dd/yyyy")</td>
                     <td>
                         @if (customer.Status == CustomerStatus.Available)
                         {
@@ -59,12 +67,10 @@
                             <span class="badge bg-danger">Banned</span>
                         }
                     </td>
+                    <td>@(customer.Orders?.Count(o => o.Status == OrderStatus.Completed) ?? 0)</td>
+                    <td>@(MoneyDTO.Convert(customer.Orders?.Where(o => o.Status == OrderStatus.Completed).Sum(o => o.TotalPay)))</td>
                     <td>
-                        <form asp-action="Delete" method="post" style="display:inline;">
-                            <input type="hidden" name="id" value="@customer.ID" />
-                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                        </form>
-                        <form action="~/Customer/UpdateStatus" method="post" style="display:inline;">
+                        <form action="~/Customer/UpdateStatus" method="post" class="d-inline">
                             <input type="hidden" name="id" value="@customer.ID" />
                             <button type="submit" class="btn btn-warning btn-sm">@(customer.Status == CustomerStatus.Available ? "Ban" : "Unban")</button>
                         </form>
@@ -73,4 +79,8 @@
             }
         </tbody>
     </table>
+    @{
+        ViewData["action"] = "HomeAdminCustomers";
+        Html.RenderPartial("PaginationPartial");
+    }
 </div>

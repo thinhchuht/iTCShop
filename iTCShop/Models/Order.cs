@@ -10,8 +10,9 @@
 
     public enum OrderPayMethod
     {
-        BankTransfer   = 1,   
-        CashOnDelivery = 2
+        CashOnDelivery = 1,
+        BankTransfer   = 2
+     
     }
 
     public class Order
@@ -23,12 +24,11 @@
         public OrderStatus         Status       { get; set; }
         public OrderPayMethod      PayMethod    { get; set; }
         public string              CustomerId   { get; set; }
-        public Customer            Customer     { get; set; }
         public List<OrderDetail>   OrderDetails { get; set; }
 
         public Order()
         {
-            ID        = Guid.NewGuid().ToString();
+            ID        = DateTimeOffset.Now.ToString("ddMMyyyyHHmmssffffff") + "-" + new Random().Next(1,100).ToString();
             OrderDate = DateTime.Now;
             Status    = OrderStatus.Pending;
         }

@@ -22,7 +22,7 @@
 
         public async Task<List<Order>> GetAllOrders()
         {
-            return await iTCShopDbContext.Orders.Include(o => o.OrderDetails).ThenInclude(od => od.Product).ToListAsync();
+            return await iTCShopDbContext.Orders.Include(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.ProductType).ToListAsync();
         }
 
         public async Task<Order> GetOrderById(string id)
@@ -32,7 +32,7 @@
 
         public async Task<List<Order>> GetOrdersByCustomerId(string id)
         {
-            return await iTCShopDbContext.Orders.Include(o => o.OrderDetails).Where(o=> o.CustomerId.Equals(id)).ToListAsync();
+            return await iTCShopDbContext.Orders.Include(o => o.OrderDetails).ThenInclude(od => od.Product).Where(o=> o.CustomerId.Equals(id)).ToListAsync();
         }
 
         public ResponseModel UpdateOrder(Order order)
@@ -43,9 +43,9 @@
                 iTCShopDbContext.SaveChanges();
                 return ResponseModel.SuccessResponse();
             }
-            catch (Exception ex)
+            catch 
             {
-                return ResponseModel.FailureResponse(ex.ToString());
+                return ResponseModel.ExceptionResponse();
             }
         }
     }

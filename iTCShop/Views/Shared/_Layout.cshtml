@@ -1,7 +1,7 @@
 ﻿@using iTCShop.Extensions
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @{
-    var user = SessionValueConverter.GetObjectFromJson<Customer>(HttpContextAccessor.HttpContext.Session, "user");
+    var user = HttpContextAccessor.HttpContext.Session.GetCustomer();
 
     if (user == null)
     {
@@ -16,64 +16,96 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title</title>
+    <link rel="icon" type="image/x-icon" href="~/Asset/logo (2).png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="~/css/Site.css" />
+
 </head>
 <body>
     <header class="header" id="header">
-
-        <p style="font-weight: bold; font-size: larger; color: red">  iTCShop Welcome @user?.Name </p>
-            <button id="log" style="border:none">
-                <i class="fa-solid fa-right-to-bracket" style="color: #000000;"></i>
-                &nbsp;@ViewBag.Log
-            </button>
+        <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 10px">
+            <img src="~/Asset/logo (2).png" style="width: 70px; height: 70px">
+            <p style="padding-top: 20px;">iTCShop Welcome @user?.Name</p>
+        </div>
+        
+        <div class="header-buttons">
+            @if (ViewBag.Log == "Login")
+            {
+                <a href="/Customer/RegisterCustomer">
+                    <i class="fa-solid fa-user-plus"></i> Register
+                </a>
+            }
+            <a href="/Login/Login" id="log">
+                <i class="fa-solid fa-right-to-bracket"></i> @ViewBag.Log
+            </a>
+        </div>
     </header>
     <div class="container body-content">
         @RenderBody()
         <hr />
     </div>
-    <footer>
-        <div class="FootNavBar">
-            <div>
-                <a href="/">
-                    <i class="fa-solid fa-house"></i>
-                    <p>Home</p>
-                </a>
+    <footer class="site-footer">
+        <div class="footer-top">
+            <div class="footer-column">
+                <h4>Support - Services</h4>
+                <ul>
+                    <li>Installment purchase policies and guidelines</li>
+                    <li>Purchase and shipping policy guidelines</li>
+                    <li>Exchange old for new</li>
+                    <li>Replacement and warranty policies</li>
+                    <li>Extended warranty services</li>
+                    <li>Privacy policy</li>
+                </ul>
             </div>
-            <div>
-                <a href="/Cart/CustomerCart">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                    <p>Cart<span id="cartHome"></span></p>
-                </a>
-
+            <div class="footer-column">
+                <h4>Contact Information</h4>
+                <ul>
+                    <li>E-commerce site information</li>
+                    <li>iTC Care repair services</li>
+                    <li>Corporate customers (B2B)</li>
+                    <li>Warranty check</li>
+                </ul>
             </div>
-            <div>
-                <a href="/Customer/RegisterCustomer">
-                    <i class="fa-brands fa-facebook-messenger"></i>
-                    <p>Register</p>
-                </a>
-
+            <div class="footer-column">
+                <h4>Copyright</h4>
+                <p>ThinhChu</p>
+                <p>0968.906.303</p>
+                <p>thinhchuht0@gmail.com</p>
             </div>
-
-            <div>
-                <a href="/Order/GetAllOrders">
-                    <i class="fa-brands fa-facebook-messenger"></i>
-                    <p>Order</p>
-                </a>
-
-            </div>
-            <div>
-                <a href="/Customer/GetCustomerInfo">
-                    <i class="fa-solid fa-user"></i>
-                    <p>Account</p>
-                </a>
-
-            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2020. THINHLD CONSTRUCTION AND TRADE INVESTMENT JOINT STOCK COMPANY...</p>
         </div>
     </footer>
 
-
+    <footer class="footer">
+        <div class="FootNavBar">
+            <a href="/">
+                <i class="fa-solid fa-house"></i>
+                <p>Home</p>
+            </a>
+            <a href="/Cart/CustomerCart">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <p>Cart <span id="cartHome"></span></p>
+            </a>
+            <a href="/Order/GetAllOrders">
+                <i class="fa-solid fa-box"></i>
+                <p>Order</p>
+            </a>
+            <a href="/Customer/GetCustomerInfo">
+                <i class="fa-solid fa-user"></i>
+                <p>Account</p>
+            </a>
+        </div>
+    </footer>
+    @{
+        var response = TempData.Get<ResponseModel>("response");
+        if (response != null)
+        {
+            Html.RenderPartial("_ErrorPartial", response);
+        }
+    }
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script src="~/js/site.js"></script>
 </body>

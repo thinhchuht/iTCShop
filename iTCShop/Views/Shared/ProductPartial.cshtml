@@ -18,22 +18,34 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="@formId" action="@formAction" method="post">
-
-                    <label for="idMei">IMEI sản phẩm: </label>
-                    <input type="text" name="imei" id="imei" value="" readonly="@isEdit" />
-                    <div class="form-group">
+                <form id="@formId" action="@formAction" method="post" enctype="multipart/form-data">
+                    <label for="imei">IMEI: </label>
+                    <input type="text" name="imei" id="imei" value="" readonly="@isEdit" class="form-control mb-3" required />
+                    <div class="form-group mb-3">
                         <label for="typeId">TypeId</label>
-                        <select name="productTypeId" id="productTypeId">
+                        <select name="productTypeId" id="productTypeId" class="form-control">
                             @foreach (var p in Model)
                             {
-                                <option value="@p.ID">  @p.ID  </option>
-                            }   
+                                <option value="@p.ID">@p.ID</option>
+                            }
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary">@buttonText</button>
-
                 </form>
+                <hr>
+                @{
+                    if(isEdit == false)
+                    {
+                        <form id="importForm" action="/Product/ImportExcel" method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="importFile">Import from Excel:</label>
+                                <input type="file" name="importFile" id="importFile" class="form-control mb-3" accept=".xls,.xlsx" required>
+                            </div>
+                            <button type="submit" class="btn btn-secondary">Import</button>
+                        </form>
+                    }
+                }
+            
             </div>
         </div>
     </div>

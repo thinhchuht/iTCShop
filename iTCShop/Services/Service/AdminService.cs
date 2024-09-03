@@ -10,12 +10,29 @@
                 await baseDbServices.AddAsync(admin);
                 return ResponseModel.SuccessResponse();
             }
-            catch 
+            catch
             {
-                return ResponseModel.FailureResponse("Thất bại");
+                return ResponseModel.ExceptionResponse();
             }
         }
 
+        public async Task<ResponseModel> UpdateAdmin(Admin newAdmin)
+        {
+            try
+            {
+                var admin = await baseDbServices.GetById<Admin>(newAdmin.ID);
+                admin.Password = newAdmin.Password;
+                iTCShopDbContext.Update(admin);
+                iTCShopDbContext.SaveChanges();
+                return ResponseModel.SuccessResponse();
+            }
+            catch
+            {
+                return ResponseModel.ExceptionResponse();
+            }
+
+
+        }
         public async Task<Admin> CheckAdmin(string user, string pass)
         {
             return await iTCShopDbContext.Admins.FirstOrDefaultAsync(a => a.UserName.Equals(user) && a.Password.Equals(pass));

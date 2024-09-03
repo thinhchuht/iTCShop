@@ -6,12 +6,14 @@
         {
             try
             {
+                var products = await GetAllProductTypes();
+                if(products.Any(p => p.Name == product.Name && p.Memory == product.Memory && p.Color == product.Color)) return ResponseModel.FailureResponse("There is already have this type of phone!"); 
                 await baseDbServices.AddAsync(product);
                 return ResponseModel.SuccessResponse();
             }
-            catch (Exception ex)
+            catch
             {
-                return ResponseModel.FailureResponse(ex.ToString());
+                return ResponseModel.ExceptionResponse();
             }
         }
 
@@ -34,9 +36,9 @@
                 await baseDbServices.DeleteAsync<ProductType>(id);
                 return ResponseModel.SuccessResponse();
             }
-            catch (Exception ex)
+            catch 
             {
-                return ResponseModel.FailureResponse(ex.ToString());
+                return ResponseModel.ExceptionResponse();
             }
         }
 
@@ -48,9 +50,9 @@
                 await baseDbServices.UpdateAsync(newProduct, product);
                 return ResponseModel.SuccessResponse();
             }
-            catch (Exception ex)
+            catch
             {
-                return ResponseModel.FailureResponse(ex.ToString());
+                return ResponseModel.ExceptionResponse();
             }
         }
     }
